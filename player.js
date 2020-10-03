@@ -1,10 +1,11 @@
 var Player = /** @class */ (function () {
-    function Player(x, y, scene) {
+    function Player(x, y, obstacleLayer, scene) {
         this.sprite = scene.physics.add.sprite(x, y, 'player');
         this.sprite.setScale(0.4);
         this.scene = scene;
         scene.cameras.main.startFollow(this.sprite);
         this.keys = scene.input.keyboard.addKeys('W,A,S,D');
+        scene.physics.add.collider(this.sprite, obstacleLayer);
     }
     Player.prototype.update = function () {
         var keyDown = false;

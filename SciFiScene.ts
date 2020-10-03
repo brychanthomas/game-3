@@ -22,8 +22,10 @@ export default class SciFiScene extends Phaser.Scene {
     const map = this.make.tilemap({ key: 'tilemap' });
     const tileset = map.addTilesetImage('scifi-tileset', 'scifi_tiles');
     map.createStaticLayer('Background', tileset).setScale(2);
-    map.createStaticLayer('Obstacles', tileset).setScale(2);
+    var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
+    obstacleLayer.setScale(2);
     map.setCollisionBetween(0, 84);
+
     var debugGraphics = this.add.graphics();
     map.renderDebug(debugGraphics, {
      tileColor: null,
@@ -36,7 +38,7 @@ export default class SciFiScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, map.widthInPixels*2, map.heightInPixels*2);
     console.log(this.cameras.main);
 
-    this.player = new Player(100, 100, this);
+    this.player = new Player(100, 100, obstacleLayer, this);
   }
 
   update() {

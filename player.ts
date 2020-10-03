@@ -13,7 +13,7 @@ export class Player {
   private scene: SciFiScene;
   private keys: wasdKeys;
 
-  constructor(x: number, y: number, scene: SciFiScene) {
+  constructor(x: number, y: number, obstacleLayer: Phaser.Tilemaps.StaticTilemapLayer, scene: SciFiScene) {
     this.sprite = scene.physics.add.sprite(x, y, 'player');
     this.sprite.setScale(0.4);
     this.scene = scene;
@@ -21,6 +21,9 @@ export class Player {
     scene.cameras.main.startFollow(this.sprite);
 
     this.keys = scene.input.keyboard.addKeys('W,A,S,D');
+
+    scene.physics.add.collider(this.sprite, obstacleLayer);
+
   }
 
   update() {
