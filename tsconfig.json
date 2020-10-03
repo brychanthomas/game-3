@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "es6",
+  },
+  "files": [
+    "phaser/phaser.d.ts",
+    "game.ts",
+    "HelloWorldScene.ts"
+  ],
+}
