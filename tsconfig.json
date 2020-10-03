@@ -5,6 +5,7 @@
   "files": [
     "phaser/phaser.d.ts",
     "game.ts",
-    "HelloWorldScene.ts"
+    "SciFiScene.ts",
+    "player.ts"
   ],
 }

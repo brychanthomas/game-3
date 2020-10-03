@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+import { Player } from './player.js';
 var SciFiScene = /** @class */ (function (_super) {
     __extends(SciFiScene, _super);
     function SciFiScene() {
@@ -20,6 +21,7 @@ var SciFiScene = /** @class */ (function (_super) {
         //https://opengameart.org/content/sci-fi-interior-tiles
         this.load.image('scifi_tiles', 'assets/scifitiles-sheet.png');
         this.load.tilemapTiledJSON('tilemap', 'assets/sci-fi.json');
+        this.load.image('player', 'assets/circle.png');
     };
     SciFiScene.prototype.create = function () {
         var map = this.make.tilemap({ key: 'tilemap' });
@@ -28,15 +30,17 @@ var SciFiScene = /** @class */ (function (_super) {
         map.createStaticLayer('Obstacles', tileset);
         map.setCollisionBetween(0, 84);
         var debugGraphics = this.add.graphics();
-        map.renderDebug(debugGraphics, {
-            tileColor: null,
-            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-        });
-        this.input.keyboard.on('keydown-W', function (event) { this.scene.cameras.main.scrollY -= 4; });
-        this.input.keyboard.on('keydown-A', function (event) { this.scene.cameras.main.scrollX -= 4; });
-        this.input.keyboard.on('keydown-S', function (event) { this.scene.cameras.main.scrollY += 4; });
-        this.input.keyboard.on('keydown-D', function (event) { this.scene.cameras.main.scrollX += 4; });
+        //map.renderDebug(debugGraphics, {
+        //  tileColor: null,
+        //  collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
+        //  faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+        //});
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.setZoom(1);
+        this.player = new Player(100, 100, this);
+    };
+    SciFiScene.prototype.update = function () {
+        this.player.update();
     };
     return SciFiScene;
 }(Phaser.Scene));
