@@ -11,17 +11,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var HelloWorldScene = /** @class */ (function (_super) {
-    __extends(HelloWorldScene, _super);
-    function HelloWorldScene() {
-        return _super.call(this, 'hello-world') || this;
+var SciFiScene = /** @class */ (function (_super) {
+    __extends(SciFiScene, _super);
+    function SciFiScene() {
+        return _super.call(this, 'scifi') || this;
     }
-    HelloWorldScene.prototype.preload = function () {
+    SciFiScene.prototype.preload = function () {
         //https://opengameart.org/content/sci-fi-interior-tiles
         this.load.image('scifi_tiles', 'assets/scifitiles-sheet.png');
         this.load.tilemapTiledJSON('tilemap', 'assets/sci-fi.json');
     };
-    HelloWorldScene.prototype.create = function () {
+    SciFiScene.prototype.create = function () {
         var map = this.make.tilemap({ key: 'tilemap' });
         var tileset = map.addTilesetImage('scifi-tileset', 'scifi_tiles');
         map.createStaticLayer('Background', tileset);
@@ -31,13 +31,13 @@ var HelloWorldScene = /** @class */ (function (_super) {
         map.renderDebug(debugGraphics, {
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Colliding face edges
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255)
         });
         this.input.keyboard.on('keydown-W', function (event) { this.scene.cameras.main.scrollY -= 4; });
         this.input.keyboard.on('keydown-A', function (event) { this.scene.cameras.main.scrollX -= 4; });
         this.input.keyboard.on('keydown-S', function (event) { this.scene.cameras.main.scrollY += 4; });
         this.input.keyboard.on('keydown-D', function (event) { this.scene.cameras.main.scrollX += 4; });
     };
-    return HelloWorldScene;
+    return SciFiScene;
 }(Phaser.Scene));
-export default HelloWorldScene;
+export default SciFiScene;
