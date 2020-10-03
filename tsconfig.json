@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "module": "es6",
-    "target": "es5"
+    "target": "es5",
+    "outDir": "js"
   },
   "files": [
-    "phaser/phaser.d.ts",
-    "game.ts",
-    "SciFiScene.ts",
-    "player.ts"
+    "phaser/phaser.d.ts"
   ],
+  "include": [
+    "src"
+  ]
 }

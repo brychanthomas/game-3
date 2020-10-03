@@ -27,11 +27,11 @@ export default class SciFiScene extends Phaser.Scene {
     map.setCollisionBetween(0, 84);
 
     var debugGraphics = this.add.graphics();
-    map.renderDebug(debugGraphics, {
-     tileColor: null,
-     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
-     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    });
+    // map.renderDebug(debugGraphics, {
+    //  tileColor: null,
+    //  collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
+    //  faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    // });
     this.width = map.widthInPixels*2;
     this.height = map.heightInPixels*2;
 
