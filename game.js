@@ -5,7 +5,7 @@ var config = {
     height: 600,
     scene: [SciFiScene],
     physics: {
-        "default": 'arcade',
+        default: 'arcade',
         arcade: {
             gravity: { y: 0 }
         }

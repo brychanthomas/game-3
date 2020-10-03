@@ -2,7 +2,9 @@ import { Player } from './player.js';
 
 export default class SciFiScene extends Phaser.Scene {
 
-  private player;
+  private player: Player;
+  public width: number;
+  public height: number;
 
   constructor() {
     super('scifi');
@@ -19,18 +21,20 @@ export default class SciFiScene extends Phaser.Scene {
   create() {
     const map = this.make.tilemap({ key: 'tilemap' });
     const tileset = map.addTilesetImage('scifi-tileset', 'scifi_tiles');
-    map.createStaticLayer('Background', tileset);
-    map.createStaticLayer('Obstacles', tileset);
+    map.createStaticLayer('Background', tileset).setScale(2);
+    map.createStaticLayer('Obstacles', tileset).setScale(2);
     map.setCollisionBetween(0, 84);
     var debugGraphics = this.add.graphics();
-    //map.renderDebug(debugGraphics, {
-    //  tileColor: null,
-    //  collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
-    //  faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    //});
+    map.renderDebug(debugGraphics, {
+     tileColor: null,
+     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
+     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    });
+    this.width = map.widthInPixels*2;
+    this.height = map.heightInPixels*2;
 
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    this.cameras.main.setZoom(1);
+    this.cameras.main.setBounds(0, 0, map.widthInPixels*2, map.heightInPixels*2);
+    console.log(this.cameras.main);
 
     this.player = new Player(100, 100, this);
   }
