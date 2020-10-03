@@ -24,7 +24,10 @@ var HelloWorldScene = /** @class */ (function (_super) {
         var map = this.make.tilemap({ key: 'tilemap' });
         var tileset = map.addTilesetImage('grass-2-tiles-2-small', 'base_tiles');
         map.createStaticLayer('Background', tileset);
-        map.createStaticLayer('Obstacles', tileset);
+        this.input.keyboard.on('keydown-W', function (event) { this.scene.cameras.main.scrollY -= 4; });
+        this.input.keyboard.on('keydown-A', function (event) { this.scene.cameras.main.scrollX -= 4; });
+        this.input.keyboard.on('keydown-S', function (event) { this.scene.cameras.main.scrollY += 4; });
+        this.input.keyboard.on('keydown-D', function (event) { this.scene.cameras.main.scrollX += 4; });
     };
     return HelloWorldScene;
 }(Phaser.Scene));
