@@ -17,13 +17,14 @@ var HelloWorldScene = /** @class */ (function (_super) {
         return _super.call(this, 'hello-world') || this;
     }
     HelloWorldScene.prototype.preload = function () {
-        this.load.image('base_tiles', 'assets/grass-tiles-2-small.png');
-        this.load.tilemapTiledJSON('tilemap', 'assets/level1.json');
+        //https://opengameart.org/content/sci-fi-interior-tiles
+        this.load.image('scifi_tiles', 'assets/scifitiles-sheet.png');
+        this.load.tilemapTiledJSON('tilemap', 'assets/sci-fi.json');
     };
     HelloWorldScene.prototype.create = function () {
         var map = this.make.tilemap({ key: 'tilemap' });
-        var tileset = map.addTilesetImage('grass-2-tiles-2-small', 'base_tiles');
-        map.createStaticLayer('Background', tileset);
+        var tileset = map.addTilesetImage('scifi-tileset', 'scifi_tiles');
+        map.createStaticLayer('Obstacles', tileset);
         this.input.keyboard.on('keydown-W', function (event) { this.scene.cameras.main.scrollY -= 4; });
         this.input.keyboard.on('keydown-A', function (event) { this.scene.cameras.main.scrollX -= 4; });
         this.input.keyboard.on('keydown-S', function (event) { this.scene.cameras.main.scrollY += 4; });
