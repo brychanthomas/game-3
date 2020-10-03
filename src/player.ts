@@ -1,4 +1,4 @@
-import type SciFiScene from './SciFiScene';
+import type SciFiScene from './SciFiScene.js';
 
 interface wasdKeys {
   'W'?: Phaser.Input.Keyboard.Key,
@@ -7,6 +7,10 @@ interface wasdKeys {
   'D'?: Phaser.Input.Keyboard.Key
 }
 
+/**
+ * Abstract class that creates sprite and scene properties
+ * for players.
+*/
 abstract class Player {
 
   protected sprite: Phaser.GameObjects.Sprite;
@@ -15,19 +19,24 @@ abstract class Player {
   constructor(x: number, y: number, scene: SciFiScene) {
     this.sprite = scene.physics.add.sprite(x, y, 'player');
     this.sprite.setScale(0.4);
+    console.log(this.sprite);
     this.scene = scene;
   }
 
-  protected get x() {
+  public get x() {
     return this.sprite.x;
   }
 
-  protected get y() {
+  public get y() {
     return this.sprite.y;
   }
 
 }
 
+/**
+ * Class representing the player that is being controlled
+ * by the user, as opposed to a remote multiplayer player.
+ */
 export class LocalPlayer extends Player {
 
   private keys: wasdKeys;
@@ -42,8 +51,10 @@ export class LocalPlayer extends Player {
     scene.physics.add.collider(this.sprite, obstacleLayer);
   }
 
+  /**
+   * Update the velocity of the player based on the WASD keys.
+   */
   update() {
-    var keyDown = false;
     if (this.keys.W.isDown && this.y > 20) {
       this.sprite.body.setVelocityY(-200);
     } else if (this.keys.S.isDown && this.y < this.scene.height-20) {
@@ -59,12 +70,33 @@ export class LocalPlayer extends Player {
       this.sprite.body.setVelocityX(0);
     }
   }
+
+  get velocity() {
+    return Math.max(Math.abs(this.sprite.body.velocity.x), Math.abs(this.sprite.body.velocity.y));
+  }
 }
 
-export class RemotePlayer {
+// TODO: add multiplayer
+/**
+ * Class to represent a player that isn't being controlled
+ * by the user, and is being controlled remotely as part of
+ * multiplayer.
+ */
+export class RemotePlayer extends Player {
 
+  public id: number;
 
-  constructor() {
-
+  constructor(x: number, y: number, id: number, scene: SciFiScene) {
+    super(0, 0, scene);
+    this.id = id;
   }
+
+  set x(x: number) {
+    this.sprite.x = x;
+  }
+
+  set y(y: number) {
+    this.sprite.y = y;
+  }
+
 }

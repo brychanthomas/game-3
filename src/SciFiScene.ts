@@ -1,13 +1,16 @@
 import { LocalPlayer } from './player.js';
+import { MultiplayerHandler } from './multiplayer.js';
 
 export default class SciFiScene extends Phaser.Scene {
 
   private player: LocalPlayer;
   public width: number;
   public height: number;
+  private multiplayerHandler: MultiplayerHandler;
 
   constructor() {
     super('scifi');
+    this.multiplayerHandler = new MultiplayerHandler(this);
   }
 
   preload() {
@@ -43,5 +46,8 @@ export default class SciFiScene extends Phaser.Scene {
 
   update() {
     this.player.update();
+    if (this.player.velocity > 20) {
+      this.multiplayerHandler.sendPosition(this.player.x, this.player.y);
+    }
   }
 }

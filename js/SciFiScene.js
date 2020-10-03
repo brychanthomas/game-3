@@ -12,10 +12,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import { LocalPlayer } from './player.js';
+import { MultiplayerHandler } from './multiplayer.js';
 var SciFiScene = /** @class */ (function (_super) {
     __extends(SciFiScene, _super);
     function SciFiScene() {
-        return _super.call(this, 'scifi') || this;
+        var _this = _super.call(this, 'scifi') || this;
+        _this.multiplayerHandler = new MultiplayerHandler(_this);
+        return _this;
     }
     SciFiScene.prototype.preload = function () {
         //https://opengameart.org/content/sci-fi-interior-tiles
@@ -44,6 +47,9 @@ var SciFiScene = /** @class */ (function (_super) {
     };
     SciFiScene.prototype.update = function () {
         this.player.update();
+        if (this.player.velocity > 20) {
+            this.multiplayerHandler.sendPosition(this.player.x, this.player.y);
+        }
     };
     return SciFiScene;
 }(Phaser.Scene));
