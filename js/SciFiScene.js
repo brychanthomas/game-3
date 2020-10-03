@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Player } from './player.js';
+import { LocalPlayer } from './player.js';
 var SciFiScene = /** @class */ (function (_super) {
     __extends(SciFiScene, _super);
     function SciFiScene() {
@@ -40,7 +40,7 @@ var SciFiScene = /** @class */ (function (_super) {
         this.height = map.heightInPixels * 2;
         this.cameras.main.setBounds(0, 0, map.widthInPixels * 2, map.heightInPixels * 2);
         console.log(this.cameras.main);
-        this.player = new Player(100, 100, obstacleLayer, this);
+        this.player = new LocalPlayer(100, 100, obstacleLayer, this);
     };
     SciFiScene.prototype.update = function () {
         this.player.update();

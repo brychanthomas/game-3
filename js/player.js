@@ -1,13 +1,48 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var Player = /** @class */ (function () {
-    function Player(x, y, obstacleLayer, scene) {
+    function Player(x, y, scene) {
         this.sprite = scene.physics.add.sprite(x, y, 'player');
         this.sprite.setScale(0.4);
         this.scene = scene;
-        scene.cameras.main.startFollow(this.sprite);
-        this.keys = scene.input.keyboard.addKeys('W,A,S,D');
-        scene.physics.add.collider(this.sprite, obstacleLayer);
     }
-    Player.prototype.update = function () {
+    Object.defineProperty(Player.prototype, "x", {
+        get: function () {
+            return this.sprite.x;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Player.prototype, "y", {
+        get: function () {
+            return this.sprite.y;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return Player;
+}());
+var LocalPlayer = /** @class */ (function (_super) {
+    __extends(LocalPlayer, _super);
+    function LocalPlayer(x, y, obstacleLayer, scene) {
+        var _this = _super.call(this, x, y, scene) || this;
+        scene.cameras.main.startFollow(_this.sprite);
+        _this.keys = scene.input.keyboard.addKeys('W,A,S,D');
+        scene.physics.add.collider(_this.sprite, obstacleLayer);
+        return _this;
+    }
+    LocalPlayer.prototype.update = function () {
         var keyDown = false;
         if (this.keys.W.isDown && this.y > 20) {
             this.sprite.body.setVelocityY(-200);
@@ -28,20 +63,12 @@ var Player = /** @class */ (function () {
             this.sprite.body.setVelocityX(0);
         }
     };
-    Object.defineProperty(Player.prototype, "x", {
-        get: function () {
-            return this.sprite.x;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Player.prototype, "y", {
-        get: function () {
-            return this.sprite.y;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return Player;
+    return LocalPlayer;
+}(Player));
+export { LocalPlayer };
+var RemotePlayer = /** @class */ (function () {
+    function RemotePlayer() {
+    }
+    return RemotePlayer;
 }());
-export { Player };
+export { RemotePlayer };

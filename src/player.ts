@@ -7,23 +7,39 @@ interface wasdKeys {
   'D'?: Phaser.Input.Keyboard.Key
 }
 
-export class Player {
+abstract class Player {
 
-  private sprite: Phaser.GameObjects.Sprite;
-  private scene: SciFiScene;
-  private keys: wasdKeys;
+  protected sprite: Phaser.GameObjects.Sprite;
+  protected scene: SciFiScene;
 
-  constructor(x: number, y: number, obstacleLayer: Phaser.Tilemaps.StaticTilemapLayer, scene: SciFiScene) {
+  constructor(x: number, y: number, scene: SciFiScene) {
     this.sprite = scene.physics.add.sprite(x, y, 'player');
     this.sprite.setScale(0.4);
     this.scene = scene;
+  }
+
+  protected get x() {
+    return this.sprite.x;
+  }
+
+  protected get y() {
+    return this.sprite.y;
+  }
+
+}
+
+export class LocalPlayer extends Player {
+
+  private keys: wasdKeys;
+
+  constructor(x: number, y: number, obstacleLayer: Phaser.Tilemaps.StaticTilemapLayer, scene: SciFiScene) {
+    super(x, y, scene);
 
     scene.cameras.main.startFollow(this.sprite);
 
     this.keys = scene.input.keyboard.addKeys('W,A,S,D');
 
     scene.physics.add.collider(this.sprite, obstacleLayer);
-
   }
 
   update() {
@@ -43,12 +59,12 @@ export class Player {
       this.sprite.body.setVelocityX(0);
     }
   }
+}
 
-  private get x() {
-    return this.sprite.x;
-  }
+export class RemotePlayer {
 
-  private get y() {
-    return this.sprite.y;
+
+  constructor() {
+
   }
 }

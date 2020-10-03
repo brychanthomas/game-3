@@ -1,8 +1,8 @@
-import { Player } from './player.js';
+import { LocalPlayer } from './player.js';
 
 export default class SciFiScene extends Phaser.Scene {
 
-  private player: Player;
+  private player: LocalPlayer;
   public width: number;
   public height: number;
 
@@ -38,7 +38,7 @@ export default class SciFiScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, map.widthInPixels*2, map.heightInPixels*2);
     console.log(this.cameras.main);
 
-    this.player = new Player(100, 100, obstacleLayer, this);
+    this.player = new LocalPlayer(100, 100, obstacleLayer, this);
   }
 
   update() {
