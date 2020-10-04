@@ -123,6 +123,9 @@ export class MultiplayerHandler {
     }.bind(this), 1000);
   }
 
+  /**
+   * Send the current position of the player to the server.
+   */
   sendPosition(x: number, y: number) {
     this.communicator.send({x: x, y: y, id: this.playerid});
   }
