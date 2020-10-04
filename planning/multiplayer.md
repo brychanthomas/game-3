@@ -8,8 +8,8 @@ is denoted by a different integer value.
 
 | Type number | Name | Sender | Data | Example |
 | ----------- | ---- | ------ | ---- | ------- |
-| 1 | ID Assign | Server | idAssign | {idAssign: 0} |
-| 2 | Join request | Client | lobbyCode, id | {type: 1, id: 0, lobbyCode: "cat", username: "walter"} |
+| 1 | ID Assign | Server | idAssign | {type: 1, idAssign: 0} |
+| 2 | Join request | Client | lobbyCode, id | {type: 2, id: 0, lobbyCode: "cat", username: "walter"} |
 | 3 | Player listing | Server | lobby | {type: 3, lobby: [{id: 0, username: "Walter", x: 200, y: 300}]}
 | 5 | Velocity update | Client | velocityX, velocityY, x, y, id | {type: 5, id: 0, velocityX: 0, velocityY: 0, x: 200, y: 300} |
 | 6 | New player | Server | joinedId, joinedUsername | {type: 6, joined: {id: 1, username: "rodod
@@ -34,7 +34,7 @@ to confirm who has been selected to be the chaser.
 ## Client side
 
 There should be a class TheGame that inherits from Phaser.Game and has
-a multiplayerHandler property that will then be accessible from all 
+a multiplayerHandler property that will then be accessible from all
 scenes.
 
 The MultiplayerHandler class will have to be able to connect to the
