@@ -82,21 +82,21 @@ export class LocalPlayer extends Player {
  * by the user, and is being controlled remotely as part of
  * multiplayer.
  */
-// export class RemotePlayer extends Player {
-//
-//   public id: number;
-//
-//   constructor(x: number, y: number, id: number, scene: GameMap) {
-//     super(0, 0, scene);
-//     this.id = id;
-//   }
-//
-//   set x(x: number) {
-//     this.sprite.x = x;
-//   }
-//
-//   set y(y: number) {
-//     this.sprite.y = y;
-//   }
-//
-// }
+export class RemotePlayer extends Player {
+
+  public id: number;
+
+  constructor(x: number, y: number, id: number, scene: GameMap) {
+    super(0, 0, scene);
+    this.id = id;
+  }
+
+  set x(x: number) {
+    this.sprite.x = x;
+  }
+
+  set y(y: number) {
+    this.sprite.y = y;
+  }
+
+}
