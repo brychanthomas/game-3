@@ -10,7 +10,6 @@ export default class SciFiScene extends Phaser.Scene {
 
   constructor() {
     super('scifi');
-    this.multiplayerHandler = new MultiplayerHandler(this);
   }
 
   preload() {
@@ -46,8 +45,5 @@ export default class SciFiScene extends Phaser.Scene {
 
   update() {
     this.player.update();
-    if (this.player.velocity > 20) {
-      this.multiplayerHandler.sendPosition(this.player.x, this.player.y);
-    }
   }
 }
