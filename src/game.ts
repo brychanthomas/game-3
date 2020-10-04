@@ -1,10 +1,11 @@
-import SciFiScene from './SciFiScene.js';
+import { SciFiScene } from './SciFiScene.js';
+import { HoldingAreaScene } from './HoldingAreaScene.js';
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    scene: [SciFiScene],
+    scene: [HoldingAreaScene, SciFiScene],
     physics: {
         default: 'arcade',
         arcade: {

@@ -1,15 +1,13 @@
 import { GameMap } from './GameMap.js';
 
-export class SciFiScene extends GameMap {
-
+export class HoldingAreaScene extends GameMap {
   constructor() {
-    super('scifi', 'scifi-tileset');
+    super('holdingArea', 'scifi-tileset');
   }
 
   preload() {
-    //https://opengameart.org/content/sci-fi-interior-tiles
     this.load.image('tileset', 'assets/scifitiles-sheet.png');
-    this.load.tilemapTiledJSON('tilemap', 'assets/sci-fi.json');
+    this.load.tilemapTiledJSON('tilemap', 'assets/holdingArea.json');
     this.load.image('player', 'assets/circle.png');
   }
 

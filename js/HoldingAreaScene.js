@@ -12,20 +12,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import { GameMap } from './GameMap.js';
-var SciFiScene = /** @class */ (function (_super) {
-    __extends(SciFiScene, _super);
-    function SciFiScene() {
-        return _super.call(this, 'scifi', 'scifi-tileset') || this;
+var HoldingAreaScene = /** @class */ (function (_super) {
+    __extends(HoldingAreaScene, _super);
+    function HoldingAreaScene() {
+        return _super.call(this, 'holdingArea', 'scifi-tileset') || this;
     }
-    SciFiScene.prototype.preload = function () {
-        //https://opengameart.org/content/sci-fi-interior-tiles
+    HoldingAreaScene.prototype.preload = function () {
         this.load.image('tileset', 'assets/scifitiles-sheet.png');
-        this.load.tilemapTiledJSON('tilemap', 'assets/sci-fi.json');
+        this.load.tilemapTiledJSON('tilemap', 'assets/holdingArea.json');
         this.load.image('player', 'assets/circle.png');
     };
-    SciFiScene.prototype.update = function () {
+    HoldingAreaScene.prototype.update = function () {
         this.player.update();
     };
-    return SciFiScene;
+    return HoldingAreaScene;
 }(GameMap));
-export { SciFiScene };
+export { HoldingAreaScene };

@@ -1,4 +1,4 @@
-import { RemotePlayer } from './player.js';
+// import { RemotePlayer } from './player.js';
 
 /**
  * Opens a WebSocket connection for sending and receiving

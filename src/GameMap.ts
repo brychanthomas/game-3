@@ -1,5 +1,8 @@
 import { LocalPlayer } from './player.js';
 
+/**
+ * Abstract class to create a scene using a tilemap.
+ */
 export abstract class GameMap extends Phaser.Scene {
 
   public height: number;
@@ -12,28 +15,36 @@ export abstract class GameMap extends Phaser.Scene {
     this.tiledTilesetName = tiledTilesetName;
   }
 
+  /**
+   * Load images and tilemaps.
+   */
   abstract preload(): void;
 
+  /**
+   * Create the tilemap and the player.
+   */
   create() {
     const map = this.make.tilemap({ key: 'tilemap' });
     const tileset = map.addTilesetImage(this.tiledTilesetName, 'tileset');
-    map.createStaticLayer('Background', tileset).setScale(2);
+    map.createStaticLayer('Background', tileset).setScale(2.5);
     var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
-    obstacleLayer.setScale(2);
+    obstacleLayer.setScale(2.5);
     map.setCollisionBetween(0, 84);
 
-    var debugGraphics = this.add.graphics();
-    // map.renderDebug(debugGraphics, {
-    //  tileColor: null,
-    //  collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
-    //  faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    // });
-    this.width = map.widthInPixels*2;
-    this.height = map.heightInPixels*2;
+     // var debugGraphics = this.add.graphics();
+     // map.renderDebug(debugGraphics, {
+     //  tileColor: null,
+     //  collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
+     //  faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+     // });
 
-    this.cameras.main.setBounds(0, 0, map.widthInPixels*2, map.heightInPixels*2);
-    console.log(this.cameras.main);
+    this.width = map.widthInPixels*2.5;
+    this.height = map.heightInPixels*2.5;
+
+    this.cameras.main.setBounds(0, 0, map.widthInPixels*2.5, map.heightInPixels*2.5);
 
     this.player = new LocalPlayer(100, 100, obstacleLayer, this);
   }
+
+  abstract update(): void;
 }

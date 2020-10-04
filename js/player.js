@@ -90,27 +90,21 @@ export { LocalPlayer };
  * by the user, and is being controlled remotely as part of
  * multiplayer.
  */
-var RemotePlayer = /** @class */ (function (_super) {
-    __extends(RemotePlayer, _super);
-    function RemotePlayer(x, y, id, scene) {
-        var _this = _super.call(this, 0, 0, scene) || this;
-        _this.id = id;
-        return _this;
-    }
-    Object.defineProperty(RemotePlayer.prototype, "x", {
-        set: function (x) {
-            this.sprite.x = x;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(RemotePlayer.prototype, "y", {
-        set: function (y) {
-            this.sprite.y = y;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return RemotePlayer;
-}(Player));
-export { RemotePlayer };
+// export class RemotePlayer extends Player {
+//
+//   public id: number;
+//
+//   constructor(x: number, y: number, id: number, scene: GameMap) {
+//     super(0, 0, scene);
+//     this.id = id;
+//   }
+//
+//   set x(x: number) {
+//     this.sprite.x = x;
+//   }
+//
+//   set y(y: number) {
+//     this.sprite.y = y;
+//   }
+//
+// }

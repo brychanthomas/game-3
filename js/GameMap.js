@@ -12,6 +12,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import { LocalPlayer } from './player.js';
+/**
+ * Abstract class to create a scene using a tilemap.
+ */
 var GameMap = /** @class */ (function (_super) {
     __extends(GameMap, _super);
     function GameMap(sceneName, tiledTilesetName) {
@@ -19,23 +22,25 @@ var GameMap = /** @class */ (function (_super) {
         _this.tiledTilesetName = tiledTilesetName;
         return _this;
     }
+    /**
+     * Create the tilemap and the player.
+     */
     GameMap.prototype.create = function () {
         var map = this.make.tilemap({ key: 'tilemap' });
         var tileset = map.addTilesetImage(this.tiledTilesetName, 'tileset');
-        map.createStaticLayer('Background', tileset).setScale(2);
+        map.createStaticLayer('Background', tileset).setScale(2.5);
         var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
-        obstacleLayer.setScale(2);
+        obstacleLayer.setScale(2.5);
         map.setCollisionBetween(0, 84);
         var debugGraphics = this.add.graphics();
-        // map.renderDebug(debugGraphics, {
-        //  tileColor: null,
-        //  collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
-        //  faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-        // });
-        this.width = map.widthInPixels * 2;
-        this.height = map.heightInPixels * 2;
-        this.cameras.main.setBounds(0, 0, map.widthInPixels * 2, map.heightInPixels * 2);
-        console.log(this.cameras.main);
+        map.renderDebug(debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+        });
+        this.width = map.widthInPixels * 2.5;
+        this.height = map.heightInPixels * 2.5;
+        this.cameras.main.setBounds(0, 0, map.widthInPixels * 2.5, map.heightInPixels * 2.5);
         this.player = new LocalPlayer(100, 100, obstacleLayer, this);
     };
     return GameMap;
