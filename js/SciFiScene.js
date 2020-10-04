@@ -11,40 +11,21 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { LocalPlayer } from './player.js';
+import { GameMap } from './GameMap.js';
 var SciFiScene = /** @class */ (function (_super) {
     __extends(SciFiScene, _super);
     function SciFiScene() {
-        return _super.call(this, 'scifi') || this;
+        return _super.call(this, 'scifi', 'scifi-tileset') || this;
     }
     SciFiScene.prototype.preload = function () {
         //https://opengameart.org/content/sci-fi-interior-tiles
-        this.load.image('scifi_tiles', 'assets/scifitiles-sheet.png');
+        this.load.image('tileset', 'assets/scifitiles-sheet.png');
         this.load.tilemapTiledJSON('tilemap', 'assets/sci-fi.json');
         this.load.image('player', 'assets/circle.png');
-    };
-    SciFiScene.prototype.create = function () {
-        var map = this.make.tilemap({ key: 'tilemap' });
-        var tileset = map.addTilesetImage('scifi-tileset', 'scifi_tiles');
-        map.createStaticLayer('Background', tileset).setScale(2);
-        var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
-        obstacleLayer.setScale(2);
-        map.setCollisionBetween(0, 84);
-        var debugGraphics = this.add.graphics();
-        // map.renderDebug(debugGraphics, {
-        //  tileColor: null,
-        //  collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
-        //  faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-        // });
-        this.width = map.widthInPixels * 2;
-        this.height = map.heightInPixels * 2;
-        this.cameras.main.setBounds(0, 0, map.widthInPixels * 2, map.heightInPixels * 2);
-        console.log(this.cameras.main);
-        this.player = new LocalPlayer(100, 100, obstacleLayer, this);
     };
     SciFiScene.prototype.update = function () {
         this.player.update();
     };
     return SciFiScene;
-}(Phaser.Scene));
+}(GameMap));
 export default SciFiScene;

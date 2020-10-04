@@ -1,4 +1,4 @@
-import type SciFiScene from './SciFiScene.js';
+import type {GameMap} from './GameMap.js';
 
 interface wasdKeys {
   'W'?: Phaser.Input.Keyboard.Key,
@@ -14,9 +14,9 @@ interface wasdKeys {
 abstract class Player {
 
   protected sprite: Phaser.GameObjects.Sprite;
-  protected scene: SciFiScene;
+  protected scene: GameMap;
 
-  constructor(x: number, y: number, scene: SciFiScene) {
+  constructor(x: number, y: number, scene: GameMap) {
     this.sprite = scene.physics.add.sprite(x, y, 'player');
     this.sprite.setScale(0.4);
     console.log(this.sprite);
@@ -41,7 +41,7 @@ export class LocalPlayer extends Player {
 
   private keys: wasdKeys;
 
-  constructor(x: number, y: number, obstacleLayer: Phaser.Tilemaps.StaticTilemapLayer, scene: SciFiScene) {
+  constructor(x: number, y: number, obstacleLayer: Phaser.Tilemaps.StaticTilemapLayer, scene: GameMap) {
     super(x, y, scene);
 
     scene.cameras.main.startFollow(this.sprite);
@@ -86,7 +86,7 @@ export class RemotePlayer extends Player {
 
   public id: number;
 
-  constructor(x: number, y: number, id: number, scene: SciFiScene) {
+  constructor(x: number, y: number, id: number, scene: GameMap) {
     super(0, 0, scene);
     this.id = id;
   }
