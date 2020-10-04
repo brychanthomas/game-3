@@ -4,5 +4,31 @@
   <script>var exports = {};</script>
   <script src="phaser/phaser.js"></script>
   <script src="js/game.js" type="module"></script>
+  <style>
+  #lobbyCode {
+    position: absolute;
+    left: 350px;
+    top: 330px;
+    display: none;
+  }
+  #serverAddress {
+    position: absolute;
+    left: 350px;
+    top: 230px;
+    display: none;
+  }
+  #joinButton {
+    position: absolute;
+    left: 350px;
+    top: 430px;
+    display: none;
+    font-family: "Courier";
+  }
+  </style>
 </head>
+<body>
+  <input id="lobbyCode" type="text"></input>
+  <input id="serverAddress" type="text"></input>
+  <button id="joinButton">Join/create lobby</button>
+</body>
 </html>

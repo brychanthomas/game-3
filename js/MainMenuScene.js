@@ -14,8 +14,25 @@ var __extends = (this && this.__extends) || (function () {
 var MainMenuScene = /** @class */ (function (_super) {
     __extends(MainMenuScene, _super);
     function MainMenuScene() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        return _super.call(this, 'mainMenu') || this;
     }
+    MainMenuScene.prototype.preload = function () { };
+    MainMenuScene.prototype.create = function () {
+        this.add.text(240, 60, "The Game", { fontSize: '64px', fontFamily: "Arial Black" });
+        this.add.text(350, 300, "Lobby code:");
+        this.add.text(350, 200, "Server address:");
+        document.getElementById('lobbyCode').style.display = 'block';
+        document.getElementById('serverAddress').style.display = 'block';
+        document.getElementById('joinButton').style.display = 'block';
+        document.getElementById('joinButton').addEventListener("click", this.joinPressed.bind(this));
+    };
+    MainMenuScene.prototype.update = function () { };
+    MainMenuScene.prototype.joinPressed = function () {
+        document.getElementById('lobbyCode').style.display = 'none';
+        document.getElementById('serverAddress').style.display = 'none';
+        document.getElementById('joinButton').style.display = 'none';
+        this.scene.start('holdingArea');
+    };
     return MainMenuScene;
 }(Phaser.Scene));
 export { MainMenuScene };
