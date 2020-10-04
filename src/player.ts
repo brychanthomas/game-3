@@ -87,7 +87,7 @@ export class RemotePlayer extends Player {
   public id: number;
 
   constructor(x: number, y: number, id: number, scene: GameMap) {
-    super(0, 0, scene);
+    super(x, y, scene);
     this.id = id;
   }
 

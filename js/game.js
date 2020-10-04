@@ -1,12 +1,13 @@
 import { SciFiScene } from './SciFiScene.js';
 import { HoldingAreaScene } from './HoldingAreaScene.js';
 import { MainMenuScene } from './MainMenuScene.js';
-var config = {
+import { LoadingScene } from './LoadingScene.js';
+const config = {
     type: Phaser.AUTO,
     pixelArt: false,
     width: 800,
     height: 600,
-    scene: [MainMenuScene, HoldingAreaScene, SciFiScene],
+    scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene],
     physics: {
         default: 'arcade',
         arcade: {

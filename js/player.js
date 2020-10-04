@@ -1,60 +1,36 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 /**
  * Abstract class that creates sprite and scene properties
  * for players.
 */
-var Player = /** @class */ (function () {
-    function Player(x, y, scene) {
+class Player {
+    constructor(x, y, scene) {
         this.sprite = scene.physics.add.sprite(x, y, 'player');
         this.sprite.setScale(0.4);
         console.log(this.sprite);
         this.scene = scene;
     }
-    Object.defineProperty(Player.prototype, "x", {
-        get: function () {
-            return this.sprite.x;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Player.prototype, "y", {
-        get: function () {
-            return this.sprite.y;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return Player;
-}());
+    get x() {
+        return this.sprite.x;
+    }
+    get y() {
+        return this.sprite.y;
+    }
+}
 /**
  * Class representing the player that is being controlled
  * by the user, as opposed to a remote multiplayer player.
  */
-var LocalPlayer = /** @class */ (function (_super) {
-    __extends(LocalPlayer, _super);
-    function LocalPlayer(x, y, obstacleLayer, scene) {
-        var _this = _super.call(this, x, y, scene) || this;
-        scene.cameras.main.startFollow(_this.sprite);
-        _this.keys = scene.input.keyboard.addKeys('W,A,S,D');
-        scene.physics.add.collider(_this.sprite, obstacleLayer);
-        return _this;
+export class LocalPlayer extends Player {
+    constructor(x, y, obstacleLayer, scene) {
+        super(x, y, scene);
+        scene.cameras.main.startFollow(this.sprite);
+        this.keys = scene.input.keyboard.addKeys('W,A,S,D');
+        scene.physics.add.collider(this.sprite, obstacleLayer);
     }
     /**
      * Update the velocity of the player based on the WASD keys.
      */
-    LocalPlayer.prototype.update = function () {
+    update() {
         if (this.keys.W.isDown && this.y > 20) {
             this.sprite.body.setVelocityY(-200);
         }
@@ -73,38 +49,26 @@ var LocalPlayer = /** @class */ (function (_super) {
         else {
             this.sprite.body.setVelocityX(0);
         }
-    };
-    Object.defineProperty(LocalPlayer.prototype, "velocity", {
-        get: function () {
-            return Math.max(Math.abs(this.sprite.body.velocity.x), Math.abs(this.sprite.body.velocity.y));
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return LocalPlayer;
-}(Player));
-export { LocalPlayer };
+    }
+    get velocity() {
+        return Math.max(Math.abs(this.sprite.body.velocity.x), Math.abs(this.sprite.body.velocity.y));
+    }
+}
 // TODO: add multiplayer
 /**
  * Class to represent a player that isn't being controlled
  * by the user, and is being controlled remotely as part of
  * multiplayer.
  */
-// export class RemotePlayer extends Player {
-//
-//   public id: number;
-//
-//   constructor(x: number, y: number, id: number, scene: GameMap) {
-//     super(0, 0, scene);
-//     this.id = id;
-//   }
-//
-//   set x(x: number) {
-//     this.sprite.x = x;
-//   }
-//
-//   set y(y: number) {
-//     this.sprite.y = y;
-//   }
-//
-// }
+export class RemotePlayer extends Player {
+    constructor(x, y, id, scene) {
+        super(x, y, scene);
+        this.id = id;
+    }
+    set x(x) {
+        this.sprite.x = x;
+    }
+    set y(y) {
+        this.sprite.y = y;
+    }
+}

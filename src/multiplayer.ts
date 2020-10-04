@@ -41,7 +41,9 @@ export class MultiplayerHandler {
   private scene: GameMap;
   private playerSprites: RemotePlayer[];
 
-  constructor() {}
+  constructor() {
+    this.playerSprites = [];
+  }
 
   /**
    * Connect to a server and join a lobby. Returns a promise.
@@ -77,8 +79,8 @@ export class MultiplayerHandler {
   /**
    * Process message from server.
    */
-  onMessage(raw: string) {
-    var message = JSON.parse(raw);
+  onMessage(raw: any) {
+    var message = JSON.parse(raw.data);
     console.log(message);
     if (message.idAssign !== undefined) {
       this.playerid = message.idAssign;
@@ -113,8 +115,15 @@ export class MultiplayerHandler {
    */
   setScene(scene: GameMap) {
     this.scene = scene;
-    for(var player of this.otherPlayers) {
-      this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
-    }
+    setTimeout(function() {
+      console.log(this.otherPlayers);
+      for(var player of this.otherPlayers) {
+        this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
+      }
+    }.bind(this), 1000);
+  }
+
+  sendPosition(x: number, y: number) {
+    this.communicator.send({x: x, y: y, id: this.playerid});
   }
 }

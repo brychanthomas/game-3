@@ -2,7 +2,7 @@ import { MultiplayerHandler } from './multiplayer.js';
 
 export class LoadingScene extends Phaser.Scene {
 
-  private multiplayerHandler = new MultiplayerHandler();
+  private multiplayerHandler: MultiplayerHandler;
 
   constructor() {
     super('loading');
@@ -25,4 +25,6 @@ export class LoadingScene extends Phaser.Scene {
         this.scene.start('mainMenu');
       }.bind(this));
   }
+
+  update() {}
 }

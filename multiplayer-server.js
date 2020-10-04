@@ -2,7 +2,7 @@ var WebSocket = require('ws');
 
 const wss = new WebSocket.Server({port:5000});
 
-class Lobby() {
+class Lobby {
   constructor() {
     this.players = [];
   }
@@ -17,15 +17,27 @@ class Lobby() {
       p.connection.send(raw);
     }
   }
+
+  encode() {
+    var encoded = [];
+    for (var p of this.players) {
+      encoded.push(p.encode());
+    }
+    return encoded;
+  }
 }
 
-class Player() {
+class Player {
   constructor(connection, id, username) {
     this.connection = connection;
     this.id = id;
-    this.x = 50;
-    this.y = 50;
+    this.x = 100;
+    this.y = 100;
     this.username = username;
+  }
+
+  encode() {
+    return {id: this.id, x: this.x, y: this.y, username: this.username}
   }
 }
 
@@ -40,14 +52,15 @@ wss.on('connection', function connection(ws) {
   ws.send('{"idAssign":'+id+'}');
   id++;
 
-  conn.on('message', function incoming(raw) {
+  ws.on('message', function incoming(raw) {
     console.log('Received '+raw)
     message = JSON.parse(raw);
     if (message.join !== undefined) {
       if (lobbies[message.join] === undefined) {
         lobbies[message.join] = new Lobby();
       }
-      lobbies[message.join].broadcast({joined: {id: message.id, username: message.username}})
+      lobbies[message.join].broadcast({joined: {id: message.id, username: message.username}});
+      ws.send(JSON.stringify({lobby: lobbies[message.join].encode()}));
       let p = new Player(ws, message.id, message.username);
       lobbies[message.join].addPlayer(p);
       players[message.id] = message.join;
@@ -55,6 +68,9 @@ wss.on('connection', function connection(ws) {
     if (message.x !== undefined && message.y !== undefined) {
       let data = {id: message.id, x: message.x, y: message.y};
       lobbies[players[message.id]].broadcast(data);
+      let player = lobbies[players[message.id]].players.find((p) => p.id === message.id);
+      player.x = message.x;
+      player.y = message.y;
     }
-  }
+  });
 });
