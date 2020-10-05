@@ -1,8 +1,6 @@
-import { MultiplayerHandler } from './multiplayer.js';
+import { AScene } from './scenes.js';
 
-export class LoadingScene extends Phaser.Scene {
-
-  private multiplayerHandler: MultiplayerHandler;
+export class LoadingScene extends AScene {
 
   constructor() {
     super('loading');
@@ -16,8 +14,7 @@ export class LoadingScene extends Phaser.Scene {
     let lobbyCode = (<HTMLInputElement>document.getElementById('lobbyCode')).value;
     let username = (<HTMLInputElement>document.getElementById('username')).value;
 
-    this.multiplayerHandler = new MultiplayerHandler();
-    this.multiplayerHandler.join(address, lobbyCode, username)
+    this.game.multiplayerHandler.join(address, lobbyCode, username)
       .then(function() {
         this.scene.start('holdingArea', {multiplayerHandler: this.multiplayerHandler});
       }.bind(this))

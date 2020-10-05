@@ -1,9 +1,21 @@
 import { LocalPlayer } from './player.js';
+import type { TheGame } from './game.js';
+
+/**
+ * Class inheriting from Phaser.Scene with TheGame as game
+ * instead of Phaser.Game (allows for multiplayerHandler
+ * property to be used).
+ */
+export class AScene extends Phaser.Scene {
+
+  public game: TheGame;
+
+}
 
 /**
  * Abstract class to create a scene using a tilemap.
  */
-export abstract class GameMap extends Phaser.Scene {
+export abstract class GameMap extends AScene {
 
   public height: number;
   public width: number;

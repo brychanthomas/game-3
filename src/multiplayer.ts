@@ -1,5 +1,5 @@
 import { RemotePlayer } from './player.js';
-import type { GameMap } from './GameMap.js';
+import { GameMap } from './scenes.js';
 
 interface playerObject {
   x: number;

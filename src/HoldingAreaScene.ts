@@ -1,4 +1,4 @@
-import { GameMap } from './GameMap.js';
+import { GameMap } from './scenes.js';
 import type { MultiplayerHandler } from './multiplayer.js';
 
 export class HoldingAreaScene extends GameMap {

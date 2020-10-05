@@ -1,4 +1,4 @@
-import type { GameMap } from './GameMap.js';
+import { GameMap } from './scenes.js';
 
 interface wasdKeys {
   'W'?: Phaser.Input.Keyboard.Key,

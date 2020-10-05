@@ -1,4 +1,4 @@
-import { GameMap } from './GameMap.js';
+import { GameMap } from './scenes.js';
 export class SciFiScene extends GameMap {
     constructor() {
         super('scifi', 'scifi-tileset');

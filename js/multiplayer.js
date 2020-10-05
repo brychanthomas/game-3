@@ -102,7 +102,6 @@ export class MultiplayerHandler {
     }
     /**
      * Send the current position of the player to the server.
-     * Rate limited to 10 times a second.
      */
     sendPosition(x, y) {
         this.communicator.send({ x: x, y: y, id: this.playerid });
