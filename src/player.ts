@@ -99,6 +99,9 @@ export class RemotePlayer extends Player {
     this.sprite.y = y;
   }
 
+  /**
+   * Remove the sprite from the scene.
+   */
   destroy() {
     this.sprite.destroy();
   }
