@@ -135,6 +135,13 @@ export class MultiplayerHandler {
   }
 
   /**
-   * 
+   * Delete the remote player sprites and disconnect from the server.
    */
+   leave() {
+     for (var p of this.playerSprites) {
+       p.destroy();
+     }
+     this.otherPlayers = undefined;
+     this.communicator.close();
+   }
 }

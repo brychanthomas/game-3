@@ -31,6 +31,13 @@ abstract class Player {
     return this.sprite.y;
   }
 
+  /**
+   * Remove the sprite from the scene.
+   */
+  destroy() {
+    this.sprite.destroy();
+  }
+
 }
 
 /**
@@ -97,10 +104,6 @@ export class RemotePlayer extends Player {
 
   set y(y: number) {
     this.sprite.y = y;
-  }
-
-  destroy() {
-    this.sprite.destroy();
   }
 
 }
