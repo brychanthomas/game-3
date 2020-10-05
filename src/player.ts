@@ -99,4 +99,8 @@ export class RemotePlayer extends Player {
     this.sprite.y = y;
   }
 
+  destroy() {
+    this.sprite.destroy();
+  }
+
 }

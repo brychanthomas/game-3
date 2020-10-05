@@ -26,6 +26,10 @@ private websocket: WebSocket;
   send(data: object) {
     this.websocket.send(JSON.stringify(data));
   }
+
+  close() {
+    this.websocket.close(1000, "Leaving lobby");
+  }
 }
 
 /**
@@ -129,4 +133,8 @@ export class MultiplayerHandler {
   sendPosition(x: number, y: number) {
     this.communicator.send({x: x, y: y, id: this.playerid});
   }
+
+  /**
+   * 
+   */
 }
