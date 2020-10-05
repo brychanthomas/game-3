@@ -83,7 +83,6 @@ export class LocalPlayer extends Player {
   }
 }
 
-// TODO: add multiplayer
 /**
  * Class to represent a player that isn't being controlled
  * by the user, and is being controlled remotely as part of
