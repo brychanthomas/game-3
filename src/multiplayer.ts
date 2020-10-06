@@ -38,11 +38,13 @@ private websocket: WebSocket;
 export class MultiplayerHandler {
 
   private communicator: Communicator;
-  private playerid: number;
+  private myid: number;
   private lobbyCode: string;
   private username: string;
+  /** List of objects with player IDs, coordinates and usernames. */
   private otherPlayers: playerObject[];
   private scene: GameMap;
+  /** List of RemotePlayer instances specific to current scene. */
   private playerSprites: RemotePlayer[];
 
   constructor() {
@@ -53,31 +55,7 @@ export class MultiplayerHandler {
    * Connect to a server and join a lobby. Returns a promise.
    */
   join(address: string, lobbyCode: string, username: string) {
-    this.lobbyCode = lobbyCode;
-    this.username = username;
-    return new Promise(function(resolve: Function, reject: Function) {
-      try {
-        //try to connect to server
-        this.communicator = new Communicator(address, this.onMessage.bind(this));
-        var checksCount = 0;
-        //check if in lobby every 250ms for max of 3 seconds
-        function checkIfJoined() {
-          if (this.otherPlayers !== undefined) {
-            resolve();
-          } else {
-            checksCount++;
-            if (checksCount > 12) {
-              reject('Could not join lobby.');
-            } else {
-              setTimeout(checkIfJoined.bind(this), 250);
-            }
-          }
-        }
-        setTimeout(checkIfJoined.bind(this), 250);
-      } catch { //if communicator raised exception
-        reject('Failed to connect to server.');
-      }
-    }.bind(this));
+    // TODO
   }
 
   /**
@@ -85,32 +63,19 @@ export class MultiplayerHandler {
    */
   onMessage(raw: any) {
     var message = JSON.parse(raw.data);
-    console.log(message);
-    if (message.idAssign !== undefined) {
-      this.playerid = message.idAssign;
-      this.communicator.send({id: this.playerid, join: this.lobbyCode, username: this.username});
-    } else if (message.lobby !== undefined) {
-      this.otherPlayers = message.lobby;
-    }
-    else if (message.joined) {
-      this.otherPlayers.push({id: message.joined.id, x:50, y:50, username: message.joined.username});
-      if (this.playerSprites !== undefined) {
-        this.playerSprites.push(new RemotePlayer(50, 50, message.joined.id, this.scene));
-      }
-    }
-    else if (message.x !== undefined && message.y !== undefined && message.id !== undefined) {
-      if (this.playerSprites !== undefined) {
-        let player = this.playerSprites.find(p => p.id === message.id);
-        if (player !== undefined) {
-          player.x = message.x;
-          player.y = message.y;
-        }
-      }
-      let player = this.otherPlayers.find(p => p.id === message.id);
-      if (player !== undefined) {
-        player.x = message.x;
-        player.y = message.y;
-      }
+    switch(message.type) {
+      case 1: // ID assign
+        this.myid = message.idAssign;
+        break;
+      case 3: // Player listing
+        this.otherPlayers = message.lobby;
+        break;
+      case 5: // Velocity update from another player
+        this.updateRemotePlayer(message);
+        break;
+      case 6: // New player joined lobby
+        this.addNewPlayer(message);
+        break;
     }
   }
 
@@ -128,10 +93,36 @@ export class MultiplayerHandler {
   }
 
   /**
-   * Send the current position of the player to the server.
+   * Send the player's current velocity and position.
    */
-  sendPosition(x: number, y: number) {
-    this.communicator.send({x: x, y: y, id: this.playerid});
+  sendVelocityAndPosition(velX: number, velY: number, x: number, y: number) {
+    this.communicator.send({
+      type:5, id: this.myid, velocityX: velX, velocityY: velY, x: x, y: y
+    });
+  }
+
+  /**
+   * Set the position and velocity of a remote player based on
+   * a velocity update message.
+   */
+  updateRemotePlayer(message: any) {
+    var player = this.playerSprites.find((p) => p.id === message.id);
+    player.velocityX = message.velocityX;
+    player.velocityY = message.velocityY;
+    player.x = message.x;
+    player.y = message.y;
+  }
+
+  /**
+   * Adds a new player to the scene based on a new player message.
+   */
+  addNewPlayer(message: any) {
+    this.otherPlayers.push({
+      id: message.joinedId, username: message.username,
+      x: message.x, y: message.y
+    });
+    this.playerSprites.push(new RemotePlayer(message.x, message.y,
+      message.joinedId, this.scene));
   }
 
   /**

@@ -105,4 +105,12 @@ export class RemotePlayer extends Player {
     this.sprite.y = y;
   }
 
+  set velocityX(velX: number) {
+    this.sprite.body.setVelocityX(velX);
+  }
+
+  set velocityY(velY: number) {
+    this.sprite.body.setVelocityY(velY);
+  }
+
 }
