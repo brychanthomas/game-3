@@ -1,11 +1,30 @@
 import { RemotePlayer } from './player.js';
 import { GameMap } from './scenes.js';
 
+/**
+ * Interface representing an object with the coordinates,
+ * id and username of a player.
+ */
 interface playerObject {
   x: number;
   y: number;
   id: number;
   username: string;
+}
+
+/**
+ * Interface representing a decoded message from the server.
+ */
+interface serverMessage {
+  type: number;
+  idAssign?: number;
+  id?: number;
+  lobby?: playerObject[];
+  velocityX?: number;
+  velocityY?: number;
+  x?: number;
+  y?: number;
+  username?: string;
 }
 
 /**
@@ -55,14 +74,15 @@ export class MultiplayerHandler {
    * Connect to a server and join a lobby. Returns a promise.
    */
   join(address: string, lobbyCode: string, username: string) {
-    // TODO
+    // TODO - add join process by creating Communicator and
+    // sending join request
   }
 
   /**
    * Process message from server.
    */
   onMessage(raw: any) {
-    var message = JSON.parse(raw.data);
+    var message = <serverMessage>JSON.parse(raw.data);
     switch(message.type) {
       case 1: // ID assign
         this.myid = message.idAssign;
@@ -105,7 +125,7 @@ export class MultiplayerHandler {
    * Set the position and velocity of a remote player based on
    * a velocity update message.
    */
-  updateRemotePlayer(message: any) {
+  updateRemotePlayer(message: serverMessage) {
     var player = this.playerSprites.find((p) => p.id === message.id);
     player.velocityX = message.velocityX;
     player.velocityY = message.velocityY;
@@ -116,13 +136,13 @@ export class MultiplayerHandler {
   /**
    * Adds a new player to the scene based on a new player message.
    */
-  addNewPlayer(message: any) {
+  addNewPlayer(message: serverMessage) {
     this.otherPlayers.push({
-      id: message.joinedId, username: message.username,
+      id: message.id, username: message.username,
       x: message.x, y: message.y
     });
     this.playerSprites.push(new RemotePlayer(message.x, message.y,
-      message.joinedId, this.scene));
+      message.id, this.scene));
   }
 
   /**
