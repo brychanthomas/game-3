@@ -55,22 +55,28 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(raw) {
     console.log('Received '+raw)
     message = JSON.parse(raw);
-    if (message.join !== undefined) {
-      if (lobbies[message.join] === undefined) {
-        lobbies[message.join] = new Lobby();
-      }
-      lobbies[message.join].broadcast({joined: {id: message.id, username: message.username}});
-      ws.send(JSON.stringify({lobby: lobbies[message.join].encode()}));
-      let p = new Player(ws, message.id, message.username);
-      lobbies[message.join].addPlayer(p);
-      players[message.id] = message.join;
+    switch(message.type) {
+
+      case 2: //lobby join request
+        if (lobbies[message.lobbyCode === undefined]) {
+          lobbies[message.lobbyCode] = new Lobby();
+        }
+        lobbies[message.lobbyCode].broadcast({ //new player
+          type: 6, id: message.id, username: message.username, x: 100, y: 100
+        });
+        ws.send(JSON.stringify({ //player listing
+          type: 3, lobby: lobbies[message.lobbyCode].encode()
+        }));
+        lobbies[message.lobbyCode].addPlayer(new Player(ws, message.id, message.username));
+        players[message.id] = message.lobbyCode;
+        break;
+
+        case 5: // velocity update
+          lobbies[players[message.id]].broadcast({
+            type: 5, id: message.id, velocityX: message.velocityX,
+            velocityY: message.velocityY, x: message.x, y: message.y
+          });
     }
-    if (message.x !== undefined && message.y !== undefined) {
-      let data = {id: message.id, x: message.x, y: message.y};
-      lobbies[players[message.id]].broadcast(data);
-      let player = lobbies[players[message.id]].players.find((p) => p.id === message.id);
-      player.x = message.x;
-      player.y = message.y;
-    }
+
   });
 });
