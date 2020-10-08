@@ -32,24 +32,26 @@ export class LocalPlayer extends Player {
         scene.cameras.main.startFollow(this.sprite);
         this.keys = scene.input.keyboard.addKeys('W,A,S,D');
         scene.physics.add.collider(this.sprite, obstacleLayer);
+        console.log(this.sprite.body);
     }
     /**
      * Update the velocity of the player based on the WASD keys.
      */
     update() {
-        if (this.keys.W.isDown && this.y > 20) {
+        if (this.keys.W.isDown && this.y > 20 && !this.sprite.body.blocked.up) {
             this.sprite.body.setVelocityY(-200);
+            console.log(this.sprite.body.blocked);
         }
-        else if (this.keys.S.isDown && this.y < this.scene.height - 20) {
+        else if (this.keys.S.isDown && this.y < this.scene.height - 20 && !this.sprite.body.blocked.down) {
             this.sprite.body.setVelocityY(200);
         }
         else {
             this.sprite.body.setVelocityY(0);
         }
-        if (this.keys.A.isDown && this.x > 20) {
+        if (this.keys.A.isDown && this.x > 20 && !this.sprite.body.blocked.left) {
             this.sprite.body.setVelocityX(-200);
         }
-        else if (this.keys.D.isDown && this.x < this.scene.width - 20) {
+        else if (this.keys.D.isDown && this.x < this.scene.width - 20 && !this.sprite.body.blocked.right) {
             this.sprite.body.setVelocityX(200);
         }
         else {
