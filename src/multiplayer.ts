@@ -65,17 +65,38 @@ export class MultiplayerHandler {
   private scene: GameMap;
   /** List of RemotePlayer instances specific to current scene. */
   private playerSprites: RemotePlayer[];
+  private inLobby: boolean;
 
   constructor() {
     this.playerSprites = [];
+    this.inLobby = false;
   }
 
   /**
    * Connect to a server and join a lobby. Returns a promise.
    */
   join(address: string, lobbyCode: string, username: string) {
-    // TODO - add join process by creating Communicator and
-    // sending join request
+    this.lobbyCode = lobbyCode;
+    this.username = username;
+    return new Promise(function(resolve, reject) {
+      this.communicator = new Communicator(address, this.onMessage.bind(this));
+      var timeWaited = 0;
+
+      function checkIfConnected() {
+        if (this.inLobby) {
+          resolve();
+        } else {
+          timeWaited += 250;
+          if (timeWaited >= 5000) {
+            reject();
+          } else {
+            setTimeout(checkIfConnected.bind(this), 250);
+          }
+        }
+      }
+
+      setTimeout(checkIfConnected.bind(this), 250);
+    });
   }
 
   /**
@@ -84,18 +105,27 @@ export class MultiplayerHandler {
   onMessage(raw: any) {
     var message = <serverMessage>JSON.parse(raw.data);
     switch(message.type) {
+
       case 1: // ID assign
         this.myid = message.idAssign;
+        this.communicator.send({ //send lobby join request
+          type: 2, id: this.myid, lobbyCode: this.lobbyCode, username: this.username
+        });
         break;
+
       case 3: // Player listing
         this.otherPlayers = message.lobby;
-        break;
+        this.inLobby = true;
+        break
+
       case 5: // Velocity update from another player
         this.updateRemotePlayer(message);
         break;
+
       case 6: // New player joined lobby
         this.addNewPlayer(message);
         break;
+
     }
   }
 
@@ -154,5 +184,6 @@ export class MultiplayerHandler {
      }
      this.otherPlayers = undefined;
      this.communicator.close();
+     this.inLobby = false;
    }
 }
