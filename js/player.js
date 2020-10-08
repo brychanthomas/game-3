@@ -15,6 +15,12 @@ class Player {
     get y() {
         return this.sprite.y;
     }
+    /**
+     * Remove the sprite from the scene.
+     */
+    destroy() {
+        this.sprite.destroy();
+    }
 }
 /**
  * Class representing the player that is being controlled
@@ -54,7 +60,6 @@ export class LocalPlayer extends Player {
         return Math.max(Math.abs(this.sprite.body.velocity.x), Math.abs(this.sprite.body.velocity.y));
     }
 }
-// TODO: add multiplayer
 /**
  * Class to represent a player that isn't being controlled
  * by the user, and is being controlled remotely as part of
@@ -70,5 +75,11 @@ export class RemotePlayer extends Player {
     }
     set y(y) {
         this.sprite.y = y;
+    }
+    set velocityX(velX) {
+        this.sprite.body.setVelocityX(velX);
+    }
+    set velocityY(velY) {
+        this.sprite.body.setVelocityY(velY);
     }
 }

@@ -49,7 +49,8 @@ var players = {};
 var id = 0;
 
 wss.on('connection', function connection(ws) {
-  ws.send('{"idAssign":'+id+'}');
+  ws.send('{"type": 1, "idAssign":'+id+'}');
+  console.log("ID", id, "connected");
   id++;
 
   ws.on('message', function incoming(raw) {
@@ -58,7 +59,7 @@ wss.on('connection', function connection(ws) {
     switch(message.type) {
 
       case 2: //lobby join request
-        if (lobbies[message.lobbyCode === undefined]) {
+        if (lobbies[message.lobbyCode] === undefined) {
           lobbies[message.lobbyCode] = new Lobby();
         }
         lobbies[message.lobbyCode].broadcast({ //new player

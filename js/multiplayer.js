@@ -12,6 +12,9 @@ class Communicator {
     send(data) {
         this.websocket.send(JSON.stringify(data));
     }
+    close() {
+        this.websocket.close(1000, "Leaving lobby");
+    }
 }
 /**
  * Creates and manages multiplayer sprites and communication.
@@ -19,6 +22,7 @@ class Communicator {
 export class MultiplayerHandler {
     constructor() {
         this.playerSprites = [];
+        this.inLobby = false;
     }
     /**
      * Connect to a server and join a lobby. Returns a promise.
@@ -27,31 +31,23 @@ export class MultiplayerHandler {
         this.lobbyCode = lobbyCode;
         this.username = username;
         return new Promise(function (resolve, reject) {
-            try {
-                //try to connect to server
-                this.communicator = new Communicator(address, this.onMessage.bind(this));
-                var checksCount = 0;
-                //check if in lobby every 250ms for max of 3 seconds
-                function checkIfJoined() {
-                    if (this.otherPlayers !== undefined) {
-                        resolve();
+            this.communicator = new Communicator(address, this.onMessage.bind(this));
+            var timeWaited = 0;
+            function checkIfConnected() {
+                if (this.inLobby) {
+                    resolve();
+                }
+                else {
+                    timeWaited += 250;
+                    if (timeWaited >= 5000) {
+                        reject();
                     }
                     else {
-                        checksCount++;
-                        if (checksCount > 12) {
-                            reject('Could not join lobby.');
-                        }
-                        else {
-                            setTimeout(checkIfJoined.bind(this), 250);
-                        }
+                        setTimeout(checkIfConnected.bind(this), 250);
                     }
                 }
-                setTimeout(checkIfJoined.bind(this), 250);
             }
-            catch ( //if communicator raised exception
-            _a) { //if communicator raised exception
-                reject('Failed to connect to server.');
-            }
+            setTimeout(checkIfConnected.bind(this), 250);
         }.bind(this));
     }
     /**
@@ -60,32 +56,23 @@ export class MultiplayerHandler {
     onMessage(raw) {
         var message = JSON.parse(raw.data);
         console.log(message);
-        if (message.idAssign !== undefined) {
-            this.playerid = message.idAssign;
-            this.communicator.send({ id: this.playerid, join: this.lobbyCode, username: this.username });
-        }
-        else if (message.lobby !== undefined) {
-            this.otherPlayers = message.lobby;
-        }
-        else if (message.joined) {
-            this.otherPlayers.push({ id: message.joined.id, x: 50, y: 50, username: message.joined.username });
-            if (this.playerSprites !== undefined) {
-                this.playerSprites.push(new RemotePlayer(50, 50, message.joined.id, this.scene));
-            }
-        }
-        else if (message.x !== undefined && message.y !== undefined && message.id !== undefined) {
-            if (this.playerSprites !== undefined) {
-                let player = this.playerSprites.find(p => p.id === message.id);
-                if (player !== undefined) {
-                    player.x = message.x;
-                    player.y = message.y;
-                }
-            }
-            let player = this.otherPlayers.find(p => p.id === message.id);
-            if (player !== undefined) {
-                player.x = message.x;
-                player.y = message.y;
-            }
+        switch (message.type) {
+            case 1: // ID assign
+                this.myid = message.idAssign;
+                this.communicator.send({
+                    type: 2, id: this.myid, lobbyCode: this.lobbyCode, username: this.username
+                });
+                break;
+            case 3: // Player listing
+                this.otherPlayers = message.lobby;
+                this.inLobby = true;
+                break;
+            case 5: // Velocity update from another player
+                this.updateRemotePlayer(message);
+                break;
+            case 6: // New player joined lobby
+                this.addNewPlayer(message);
+                break;
         }
     }
     /**
@@ -101,9 +88,45 @@ export class MultiplayerHandler {
         }.bind(this), 1000);
     }
     /**
-     * Send the current position of the player to the server.
+     * Send the player's current velocity and position.
      */
-    sendPosition(x, y) {
-        this.communicator.send({ x: x, y: y, id: this.playerid });
+    sendVelocityAndPosition(velX, velY, x, y) {
+        this.communicator.send({
+            type: 5, id: this.myid, velocityX: velX, velocityY: velY, x: x, y: y
+        });
+    }
+    /**
+     * Set the position and velocity of a remote player based on
+     * a velocity update message.
+     */
+    updateRemotePlayer(message) {
+        var player = this.playerSprites.find((p) => p.id === message.id);
+        player.velocityX = message.velocityX;
+        player.velocityY = message.velocityY;
+        player.x = message.x;
+        player.y = message.y;
+    }
+    /**
+     * Adds a new player to the scene based on a new player message.
+     */
+    addNewPlayer(message) {
+        this.otherPlayers.push({
+            id: message.id, username: message.username,
+            x: message.x, y: message.y
+        });
+        this.playerSprites.push(new RemotePlayer(message.x, message.y, message.id, this.scene));
+    }
+    /**
+     * Delete the remote player sprites and disconnect from the server.
+     */
+    leave() {
+        for (var p of this.playerSprites) {
+            p.destroy();
+        }
+        this.otherPlayers = undefined;
+        if (this.communicator !== undefined) {
+            this.communicator.close();
+        }
+        this.inLobby = false;
     }
 }

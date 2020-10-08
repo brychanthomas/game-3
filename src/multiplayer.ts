@@ -1,3 +1,11 @@
+/*
+There is a bug where if you try and connect then go back to the main
+menu and try again it connects many times.
+
+I need to make it work in the holding area scene (setScene) and add in code
+to send velocity updates every time velocity changes.
+*/
+
 import { RemotePlayer } from './player.js';
 import { GameMap } from './scenes.js';
 
@@ -96,7 +104,7 @@ export class MultiplayerHandler {
       }
 
       setTimeout(checkIfConnected.bind(this), 250);
-    });
+    }.bind(this));
   }
 
   /**
@@ -104,6 +112,7 @@ export class MultiplayerHandler {
    */
   onMessage(raw: any) {
     var message = <serverMessage>JSON.parse(raw.data);
+    console.log(message);
     switch(message.type) {
 
       case 1: // ID assign
@@ -183,7 +192,9 @@ export class MultiplayerHandler {
        p.destroy();
      }
      this.otherPlayers = undefined;
-     this.communicator.close();
+     if (this.communicator !== undefined) {
+       this.communicator.close();
+     }
      this.inLobby = false;
    }
 }

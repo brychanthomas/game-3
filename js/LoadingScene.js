@@ -9,12 +9,14 @@ export class LoadingScene extends AScene {
         let address = document.getElementById('serverAddress').value;
         let lobbyCode = document.getElementById('lobbyCode').value;
         let username = document.getElementById('username').value;
+        this.game.multiplayerHandler.leave();
         this.game.multiplayerHandler.join(address, lobbyCode, username)
             .then(function () {
-            this.scene.start('holdingArea', { multiplayerHandler: this.multiplayerHandler });
+            this.scene.start('holdingArea');
         }.bind(this))
-            .catch(function () {
+            .catch(function (err) {
             this.scene.start('mainMenu');
+            console.error(err);
         }.bind(this));
     }
     update() { }
