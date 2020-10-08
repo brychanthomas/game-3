@@ -17,7 +17,7 @@ export class GameMap extends AScene {
     /**
      * Create the tilemap and the player.
      */
-    create() {
+    createTilemapAndPlayer() {
         const map = this.make.tilemap({ key: 'tilemap' });
         const tileset = map.addTilesetImage(this.tiledTilesetName, 'tileset');
         map.createStaticLayer('Background', tileset).setScale(2.5);
@@ -34,5 +34,8 @@ export class GameMap extends AScene {
         this.height = map.heightInPixels * 2.5;
         this.cameras.main.setBounds(0, 0, map.widthInPixels * 2.5, map.heightInPixels * 2.5);
         this.player = new LocalPlayer(100, 100, obstacleLayer, this);
+    }
+    create() {
+        this.createTilemapAndPlayer();
     }
 }

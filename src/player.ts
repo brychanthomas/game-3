@@ -47,6 +47,8 @@ abstract class Player {
 export class LocalPlayer extends Player {
 
   private keys: wasdKeys;
+  private previousVelocityX: number;
+  private previousVelocityY: number;
 
   constructor(x: number, y: number, obstacleLayer: Phaser.Tilemaps.StaticTilemapLayer, scene: GameMap) {
     super(x, y, scene);
@@ -78,8 +80,27 @@ export class LocalPlayer extends Player {
     }
   }
 
-  get velocity() {
-    return Math.max(Math.abs(this.sprite.body.velocity.x), Math.abs(this.sprite.body.velocity.y));
+  /**
+   * Checks if X or Y velocity has changed since last time method
+   * was called.
+   */
+  hasVelocityChanged() {
+    if (this.velocityX !== this.previousVelocityX) {
+      this.previousVelocityX = this.sprite.body.velocity.x;
+      return true;
+    } else if (this.velocityY !== this.previousVelocityY) {
+      this.previousVelocityY = this.sprite.body.velocity.y;
+      return true;
+    }
+    return false;
+  }
+
+  get velocityX() {
+    return this.sprite.body.velocity.x;
+  }
+
+  get velocityY() {
+    return this.sprite.body.velocity.y;
   }
 }
 

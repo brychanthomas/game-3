@@ -2,8 +2,7 @@
 There is a bug where if you try and connect then go back to the main
 menu and try again it connects many times.
 
-I need to make it work in the holding area scene (setScene) and add in code
-to send velocity updates every time velocity changes.
+When you run into an obstacle the sprite moves through it on other screens.
 */
 
 import { RemotePlayer } from './player.js';
@@ -112,7 +111,6 @@ export class MultiplayerHandler {
    */
   onMessage(raw: any) {
     var message = <serverMessage>JSON.parse(raw.data);
-    console.log(message);
     switch(message.type) {
 
       case 1: // ID assign
@@ -165,11 +163,13 @@ export class MultiplayerHandler {
    * a velocity update message.
    */
   updateRemotePlayer(message: serverMessage) {
-    var player = this.playerSprites.find((p) => p.id === message.id);
-    player.velocityX = message.velocityX;
-    player.velocityY = message.velocityY;
-    player.x = message.x;
-    player.y = message.y;
+    if (message.id !== this.myid) {
+      var player = this.playerSprites.find((p) => p.id === message.id);
+      player.velocityX = message.velocityX;
+      player.velocityY = message.velocityY;
+      player.x = message.x;
+      player.y = message.y;
+    }
   }
 
   /**

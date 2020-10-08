@@ -56,8 +56,26 @@ export class LocalPlayer extends Player {
             this.sprite.body.setVelocityX(0);
         }
     }
-    get velocity() {
-        return Math.max(Math.abs(this.sprite.body.velocity.x), Math.abs(this.sprite.body.velocity.y));
+    /**
+     * Checks if X or Y velocity has changed since last time method
+     * was called.
+     */
+    hasVelocityChanged() {
+        if (this.velocityX !== this.previousVelocityX) {
+            this.previousVelocityX = this.sprite.body.velocity.x;
+            return true;
+        }
+        else if (this.velocityY !== this.previousVelocityY) {
+            this.previousVelocityY = this.sprite.body.velocity.y;
+            return true;
+        }
+        return false;
+    }
+    get velocityX() {
+        return this.sprite.body.velocity.x;
+    }
+    get velocityY() {
+        return this.sprite.body.velocity.y;
     }
 }
 /**

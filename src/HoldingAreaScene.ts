@@ -3,15 +3,8 @@ import type { MultiplayerHandler } from './multiplayer.js';
 
 export class HoldingAreaScene extends GameMap {
 
-  private multiplayerHandler: MultiplayerHandler;
-
   constructor() {
     super('holdingArea', 'scifi-tileset');
-  }
-
-  init(data: any) {
-    this.multiplayerHandler = data.multiplayerHandler;
-    this.multiplayerHandler.setScene(this);
   }
 
   preload() {
@@ -20,10 +13,17 @@ export class HoldingAreaScene extends GameMap {
     this.load.image('player', 'assets/circle.png');
   }
 
+  create() {
+    this.game.multiplayerHandler.setScene(this);
+    this.createTilemapAndPlayer();
+  }
+
   update() {
     this.player.update();
-    if (this.player.velocity > 20) {
-      this.multiplayerHandler.sendPosition(this.player.x, this.player.y);
+    if (this.player.hasVelocityChanged()) {
+      this.game.multiplayerHandler.sendVelocityAndPosition(
+        this.player.velocityX, this.player.velocityY, this.player.x, this.player.y
+      );
     }
   }
 }

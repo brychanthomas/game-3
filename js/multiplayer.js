@@ -1,3 +1,9 @@
+/*
+There is a bug where if you try and connect then go back to the main
+menu and try again it connects many times.
+
+When you run into an obstacle the sprite moves through it on other screens.
+*/
 import { RemotePlayer } from './player.js';
 /**
  * Opens a WebSocket connection for sending and receiving
@@ -55,7 +61,6 @@ export class MultiplayerHandler {
      */
     onMessage(raw) {
         var message = JSON.parse(raw.data);
-        console.log(message);
         switch (message.type) {
             case 1: // ID assign
                 this.myid = message.idAssign;
@@ -100,11 +105,13 @@ export class MultiplayerHandler {
      * a velocity update message.
      */
     updateRemotePlayer(message) {
-        var player = this.playerSprites.find((p) => p.id === message.id);
-        player.velocityX = message.velocityX;
-        player.velocityY = message.velocityY;
-        player.x = message.x;
-        player.y = message.y;
+        if (message.id !== this.myid) {
+            var player = this.playerSprites.find((p) => p.id === message.id);
+            player.velocityX = message.velocityX;
+            player.velocityY = message.velocityY;
+            player.x = message.x;
+            player.y = message.y;
+        }
     }
     /**
      * Adds a new player to the scene based on a new player message.
