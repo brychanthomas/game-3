@@ -14,7 +14,7 @@ is denoted by a different integer value.
 | 5 | Velocity update | Client | velocityX, velocityY, x, y, id | {type: 5, id: 0, velocityX: 0, velocityY: 0, x: 200, y: 300} |
 | 6 | New player | Server | id, username, x, y | {type: 6, id: 1, username: "rodod",x: 100, y: 100} |
 | 7 | Set | Host Client | properties | |
-| 8 | Start | Host Client | | |
+| 8 | Start | Host Client | id | {type: 8, id: 0} |
 | 9 | Game starting | Server | | |
 | 10 | Leave | Client | id | {type: 10, id: 0} |
 | 11 | Left | Server | id | {type: 11, id: 0} |
@@ -30,6 +30,10 @@ needed because players spawn in the same place.
 
 The choice message is sent to every player at the start of every round
 to confirm who has been selected to be the chaser.
+
+The player with the lowest ID number is the host. This means that the
+host can be determined on both the client and server side without sending
+any messages and when the host leaves there is a logical successor.
 
 ## Client side
 

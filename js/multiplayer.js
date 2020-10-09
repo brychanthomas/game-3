@@ -133,4 +133,16 @@ export class MultiplayerHandler {
         }
         this.inLobby = false;
     }
+    /**
+     * Send a message to tell the server to start the game when in
+     * holding area. Only has any effect if you are host and are in
+     * holding area.
+     */
+    sendStartMessage() {
+        //if (this.amHost) {
+        this.communicator.send({
+            type: 8, id: this.myid
+        });
+        //}
+    }
 }

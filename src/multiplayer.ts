@@ -71,6 +71,8 @@ export class MultiplayerHandler {
   /** List of RemotePlayer instances specific to current scene. */
   private playerSprites: RemotePlayer[];
   private inLobby: boolean;
+  /** Whether the local player is the game host or not. */
+  public  amHost : boolean;
 
   constructor() {
     this.playerSprites = [];
@@ -193,5 +195,18 @@ export class MultiplayerHandler {
        this.communicator.close();
      }
      this.inLobby = false;
+   }
+
+   /**
+    * Send a message to tell the server to start the game when in
+    * holding area. Only has any effect if you are host and are in
+    * holding area.
+    */
+   sendStartMessage() {
+     if (this.amHost) {
+       this.communicator.send({
+         type: 8, id: this.myid
+       });
+     }
    }
 }
