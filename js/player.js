@@ -6,7 +6,6 @@ class Player {
     constructor(x, y, scene) {
         this.sprite = scene.physics.add.sprite(x, y, 'player');
         this.sprite.setScale(0.4);
-        console.log(this.sprite);
         this.scene = scene;
     }
     get x() {

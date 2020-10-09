@@ -11,6 +11,7 @@ export class HoldingAreaScene extends GameMap {
     this.load.image('tileset', 'assets/scifitiles-sheet.png');
     this.load.tilemapTiledJSON('tilemap', 'assets/holdingArea.json');
     this.load.image('player', 'assets/circle.png');
+    this.load.image('vision', 'assets/mask.png');
   }
 
   create() {
@@ -25,5 +26,6 @@ export class HoldingAreaScene extends GameMap {
         this.player.velocityX, this.player.velocityY, this.player.x, this.player.y
       );
     }
+    this.updateFog();
   }
 }

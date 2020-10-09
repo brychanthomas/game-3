@@ -38,12 +38,32 @@ export class GameMap extends AScene {
             width: this.width,
             height: this.height
         }, true);
-        rt.fill(0x000000, 1);
-        rt.draw(floorLayer);
-        rt.setTint(0x0a2948);
-        rt.setDepth(20);
+        rt.fill(0x000000, 1); //black fill
+        rt.draw(floorLayer); //show floor layer
+        rt.setTint(0x0a2948); //dark blue tint
+        rt.setDepth(20); //bring to front
+        this.vision = this.make.image({
+            x: this.player.x,
+            y: this.player.y,
+            key: 'vision',
+            add: false
+        });
+        console.log(this.vision);
+        this.vision.scale = 2.5;
+        rt.mask = new Phaser.Display.Masks.BitmapMask(this, this.vision);
+        rt.mask.invertAlpha = true;
     }
+    /**
+     * Executed when scene starts to create game objects.
+     */
     create() {
         this.createTilemapPlayerAndFog();
+    }
+    /**
+     * Updates the fog of war based on the player's position.
+     */
+    updateFog() {
+        this.vision.x = this.player.x;
+        this.vision.y = this.player.y;
     }
 }
