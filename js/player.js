@@ -6,7 +6,6 @@ class Player {
     constructor(x, y, scene) {
         this.sprite = scene.physics.add.sprite(x, y, 'player');
         this.sprite.setScale(0.4);
-        console.log(this.sprite);
         this.scene = scene;
     }
     get x() {
@@ -40,7 +39,6 @@ export class LocalPlayer extends Player {
     update() {
         if (this.keys.W.isDown && this.y > 20 && !this.sprite.body.blocked.up) {
             this.sprite.body.setVelocityY(-200);
-            console.log(this.sprite.body.blocked);
         }
         else if (this.keys.S.isDown && this.y < this.scene.height - 20 && !this.sprite.body.blocked.down) {
             this.sprite.body.setVelocityY(200);

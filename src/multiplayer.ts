@@ -140,7 +140,6 @@ export class MultiplayerHandler {
   setScene(scene: GameMap) {
     this.scene = scene;
     setTimeout(function() {
-      console.log(this.otherPlayers);
       for(var player of this.otherPlayers) {
         this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
       }

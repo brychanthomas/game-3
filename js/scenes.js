@@ -15,12 +15,12 @@ export class GameMap extends AScene {
         this.tiledTilesetName = tiledTilesetName;
     }
     /**
-     * Create the tilemap and the player.
+     * Create the tilemap, the player and the fog of war.
      */
-    createTilemapAndPlayer() {
+    createTilemapPlayerAndFog() {
         const map = this.make.tilemap({ key: 'tilemap' });
         const tileset = map.addTilesetImage(this.tiledTilesetName, 'tileset');
-        map.createStaticLayer('Background', tileset).setScale(2.5);
+        var floorLayer = map.createStaticLayer('Background', tileset).setScale(2.5);
         var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
         obstacleLayer.setScale(2.5);
         map.setCollisionBetween(0, 84);
@@ -34,8 +34,38 @@ export class GameMap extends AScene {
         this.height = map.heightInPixels * 2.5;
         this.cameras.main.setBounds(0, 0, map.widthInPixels * 2.5, map.heightInPixels * 2.5);
         this.player = new LocalPlayer(100, 100, obstacleLayer, this);
+        var rt = this.make.renderTexture({
+            width: this.width,
+            height: this.height
+        }, true);
+        rt.fill(0x000000, 1); //black fill
+        rt.draw(floorLayer); //show floor layer
+        rt.setTint(0x0a2948); //dark blue tint
+        rt.setDepth(20); //bring to front
+        this.vision = this.make.image({
+            x: this.player.x,
+            y: this.player.y,
+            key: 'vision',
+            add: false
+        });
+        this.vision.scale = 2.5; //set size of visible area
+        rt.mask = new Phaser.Display.Masks.BitmapMask(this, this.vision);
+        rt.mask.invertAlpha = true;
     }
+    /**
+     * Executed when scene starts to create game objects.
+     */
     create() {
-        this.createTilemapAndPlayer();
+        this.createTilemapPlayerAndFog();
+    }
+    /**
+     * Updates the fog of war based on the player's position.
+     */
+    updateFog() {
+        this.vision.x = this.player.x;
+        this.vision.y = this.player.y;
+    }
+    set visionSize(s) {
+        this.vision.scale = s;
     }
 }
