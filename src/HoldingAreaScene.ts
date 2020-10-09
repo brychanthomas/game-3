@@ -1,6 +1,8 @@
-import { GameMap } from './GameMap.js';
+import { GameMap } from './scenes.js';
+import type { MultiplayerHandler } from './multiplayer.js';
 
 export class HoldingAreaScene extends GameMap {
+
   constructor() {
     super('holdingArea', 'scifi-tileset');
   }
@@ -11,7 +13,17 @@ export class HoldingAreaScene extends GameMap {
     this.load.image('player', 'assets/circle.png');
   }
 
+  create() {
+    this.game.multiplayerHandler.setScene(this);
+    this.createTilemapAndPlayer();
+  }
+
   update() {
     this.player.update();
+    if (this.player.hasVelocityChanged()) {
+      this.game.multiplayerHandler.sendVelocityAndPosition(
+        this.player.velocityX, this.player.velocityY, this.player.x, this.player.y
+      );
+    }
   }
 }

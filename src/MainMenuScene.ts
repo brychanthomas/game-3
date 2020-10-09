@@ -24,6 +24,6 @@ export class MainMenuScene extends Phaser.Scene {
     document.getElementById('lobbyCode').style.display = 'none';
     document.getElementById('username').style.display = 'none';
     document.getElementById('joinButton').style.display = 'none';
-    this.scene.start('holdingArea');
+    this.scene.start('loading');
   }
 }

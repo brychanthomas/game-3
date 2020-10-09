@@ -1,4 +1,4 @@
-import type { GameMap } from './GameMap.js';
+import { GameMap } from './scenes.js';
 
 interface wasdKeys {
   'W'?: Phaser.Input.Keyboard.Key,
@@ -31,6 +31,13 @@ abstract class Player {
     return this.sprite.y;
   }
 
+  /**
+   * Remove the sprite from the scene.
+   */
+  destroy() {
+    this.sprite.destroy();
+  }
+
 }
 
 /**
@@ -40,6 +47,8 @@ abstract class Player {
 export class LocalPlayer extends Player {
 
   private keys: wasdKeys;
+  private previousVelocityX: number;
+  private previousVelocityY: number;
 
   constructor(x: number, y: number, obstacleLayer: Phaser.Tilemaps.StaticTilemapLayer, scene: GameMap) {
     super(x, y, scene);
@@ -49,54 +58,83 @@ export class LocalPlayer extends Player {
     this.keys = scene.input.keyboard.addKeys('W,A,S,D');
 
     scene.physics.add.collider(this.sprite, obstacleLayer);
+
+    console.log(this.sprite.body);
   }
 
   /**
    * Update the velocity of the player based on the WASD keys.
    */
   update() {
-    if (this.keys.W.isDown && this.y > 20) {
+    if (this.keys.W.isDown && this.y > 20 && !this.sprite.body.blocked.up) {
       this.sprite.body.setVelocityY(-200);
-    } else if (this.keys.S.isDown && this.y < this.scene.height-20) {
+      console.log(this.sprite.body.blocked);
+    } else if (this.keys.S.isDown && this.y < this.scene.height-20 && !this.sprite.body.blocked.down) {
       this.sprite.body.setVelocityY(200);
     } else {
       this.sprite.body.setVelocityY(0);
     }
-    if (this.keys.A.isDown && this.x > 20) {
+    if (this.keys.A.isDown && this.x > 20 && !this.sprite.body.blocked.left) {
       this.sprite.body.setVelocityX(-200);
-    } else if (this.keys.D.isDown && this.x < this.scene.width-20) {
+    } else if (this.keys.D.isDown && this.x < this.scene.width-20 && !this.sprite.body.blocked.right) {
       this.sprite.body.setVelocityX(200);
     } else {
       this.sprite.body.setVelocityX(0);
     }
   }
 
-  get velocity() {
-    return Math.max(Math.abs(this.sprite.body.velocity.x), Math.abs(this.sprite.body.velocity.y));
+  /**
+   * Checks if X or Y velocity has changed since last time method
+   * was called.
+   */
+  hasVelocityChanged() {
+    if (this.velocityX !== this.previousVelocityX) {
+      this.previousVelocityX = this.sprite.body.velocity.x;
+      return true;
+    } else if (this.velocityY !== this.previousVelocityY) {
+      this.previousVelocityY = this.sprite.body.velocity.y;
+      return true;
+    }
+    return false;
+  }
+
+  get velocityX() {
+    return this.sprite.body.velocity.x;
+  }
+
+  get velocityY() {
+    return this.sprite.body.velocity.y;
   }
 }
 
-// TODO: add multiplayer
 /**
  * Class to represent a player that isn't being controlled
  * by the user, and is being controlled remotely as part of
  * multiplayer.
  */
-// export class RemotePlayer extends Player {
-//
-//   public id: number;
-//
-//   constructor(x: number, y: number, id: number, scene: GameMap) {
-//     super(0, 0, scene);
-//     this.id = id;
-//   }
-//
-//   set x(x: number) {
-//     this.sprite.x = x;
-//   }
-//
-//   set y(y: number) {
-//     this.sprite.y = y;
-//   }
-//
-// }
+export class RemotePlayer extends Player {
+
+  public id: number;
+
+  constructor(x: number, y: number, id: number, scene: GameMap) {
+    super(x, y, scene);
+    this.id = id;
+  }
+
+  set x(x: number) {
+    this.sprite.x = x;
+  }
+
+  set y(y: number) {
+    this.sprite.y = y;
+  }
+
+  set velocityX(velX: number) {
+    this.sprite.body.setVelocityX(velX);
+  }
+
+  set velocityY(velY: number) {
+    this.sprite.body.setVelocityY(velY);
+  }
+
+}

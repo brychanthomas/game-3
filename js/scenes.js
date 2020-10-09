@@ -1,8 +1,15 @@
 import { LocalPlayer } from './player.js';
 /**
+ * Class inheriting from Phaser.Scene with TheGame as game
+ * instead of Phaser.Game (allows for multiplayerHandler
+ * property to be used).
+ */
+export class AScene extends Phaser.Scene {
+}
+/**
  * Abstract class to create a scene using a tilemap.
  */
-export class GameMap extends Phaser.Scene {
+export class GameMap extends AScene {
     constructor(sceneName, tiledTilesetName) {
         super(sceneName);
         this.tiledTilesetName = tiledTilesetName;
@@ -10,7 +17,7 @@ export class GameMap extends Phaser.Scene {
     /**
      * Create the tilemap and the player.
      */
-    create() {
+    createTilemapAndPlayer() {
         const map = this.make.tilemap({ key: 'tilemap' });
         const tileset = map.addTilesetImage(this.tiledTilesetName, 'tileset');
         map.createStaticLayer('Background', tileset).setScale(2.5);
@@ -27,5 +34,8 @@ export class GameMap extends Phaser.Scene {
         this.height = map.heightInPixels * 2.5;
         this.cameras.main.setBounds(0, 0, map.widthInPixels * 2.5, map.heightInPixels * 2.5);
         this.player = new LocalPlayer(100, 100, obstacleLayer, this);
+    }
+    create() {
+        this.createTilemapAndPlayer();
     }
 }
