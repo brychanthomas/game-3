@@ -1,4 +1,7 @@
 import { GameMap } from './scenes.js';
+/**
+ * Scene that players spawn into when they join.
+ */
 export class HoldingAreaScene extends GameMap {
     constructor() {
         super('holdingArea', 'scifi-tileset');
@@ -8,10 +11,15 @@ export class HoldingAreaScene extends GameMap {
         this.load.tilemapTiledJSON('tilemap', 'assets/holdingArea.json');
         this.load.image('player', 'assets/circle.png');
         this.load.image('vision', 'assets/mask.png');
+        this.load.image('playButton', 'assets/playButton.png');
     }
     create() {
         this.game.multiplayerHandler.setScene(this);
         this.createTilemapPlayerAndFog();
+        this.playButton = this.add.image(400, 500, 'playButton');
+        this.playButton.setDepth(25); //bring to top
+        this.playButton.setInteractive();
+        this.playButton.on('pointerdown', this.playButtonPressed);
     }
     update() {
         this.player.update();
@@ -19,6 +27,11 @@ export class HoldingAreaScene extends GameMap {
             this.game.multiplayerHandler.sendVelocityAndPosition(this.player.velocityX, this.player.velocityY, this.player.x, this.player.y);
         }
         this.updateFog();
-        this.visionSize = 5;
+    }
+    /**
+     * Called when play button is pressed.
+     */
+    playButtonPressed() {
+        console.log('yo');
     }
 }

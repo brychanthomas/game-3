@@ -65,6 +65,9 @@ export class GameMap extends AScene {
         this.vision.x = this.player.x;
         this.vision.y = this.player.y;
     }
+    /**
+     * Sets the size of the area the player can see in fog of war.
+     */
     set visionSize(s) {
         this.vision.scale = s;
     }

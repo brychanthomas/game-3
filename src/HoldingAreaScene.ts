@@ -1,7 +1,11 @@
 import { GameMap } from './scenes.js';
-import type { MultiplayerHandler } from './multiplayer.js';
 
+/**
+ * Scene that players spawn into when they join.
+ */
 export class HoldingAreaScene extends GameMap {
+
+  private playButton: Phaser.GameObjects.Image;
 
   constructor() {
     super('holdingArea', 'scifi-tileset');
@@ -12,11 +16,16 @@ export class HoldingAreaScene extends GameMap {
     this.load.tilemapTiledJSON('tilemap', 'assets/holdingArea.json');
     this.load.image('player', 'assets/circle.png');
     this.load.image('vision', 'assets/mask.png');
+    this.load.image('playButton', 'assets/playButton.png');
   }
 
   create() {
     this.game.multiplayerHandler.setScene(this);
     this.createTilemapPlayerAndFog();
+    this.playButton = this.add.image(400, 500, 'playButton');
+    this.playButton.setDepth(25); //bring to top
+    this.playButton.setInteractive();
+    this.playButton.on('pointerdown',this.playButtonPressed);
   }
 
   update() {
@@ -27,6 +36,12 @@ export class HoldingAreaScene extends GameMap {
       );
     }
     this.updateFog();
-    this.visionSize = 5;
+  }
+
+  /**
+   * Called when play button is pressed.
+   */
+  private playButtonPressed() {
+    console.log('yo');
   }
 }
