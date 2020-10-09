@@ -10,7 +10,7 @@ export class HoldingAreaScene extends GameMap {
     }
     create() {
         this.game.multiplayerHandler.setScene(this);
-        this.createTilemapAndPlayer();
+        this.createTilemapPlayerAndFog();
     }
     update() {
         this.player.update();

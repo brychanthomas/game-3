@@ -1,8 +1,6 @@
 /*
 There is a bug where if you try and connect then go back to the main
 menu and try again it connects many times.
-
-When you run into an obstacle the sprite moves through it on other screens.
 */
 import { RemotePlayer } from './player.js';
 /**
@@ -86,7 +84,6 @@ export class MultiplayerHandler {
     setScene(scene) {
         this.scene = scene;
         setTimeout(function () {
-            console.log(this.otherPlayers);
             for (var player of this.otherPlayers) {
                 this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
             }

@@ -15,12 +15,12 @@ export class GameMap extends AScene {
         this.tiledTilesetName = tiledTilesetName;
     }
     /**
-     * Create the tilemap and the player.
+     * Create the tilemap, the player and the fog of war.
      */
-    createTilemapAndPlayer() {
+    createTilemapPlayerAndFog() {
         const map = this.make.tilemap({ key: 'tilemap' });
         const tileset = map.addTilesetImage(this.tiledTilesetName, 'tileset');
-        map.createStaticLayer('Background', tileset).setScale(2.5);
+        var floorLayer = map.createStaticLayer('Background', tileset).setScale(2.5);
         var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
         obstacleLayer.setScale(2.5);
         map.setCollisionBetween(0, 84);
@@ -34,8 +34,16 @@ export class GameMap extends AScene {
         this.height = map.heightInPixels * 2.5;
         this.cameras.main.setBounds(0, 0, map.widthInPixels * 2.5, map.heightInPixels * 2.5);
         this.player = new LocalPlayer(100, 100, obstacleLayer, this);
+        var rt = this.make.renderTexture({
+            width: this.width,
+            height: this.height
+        }, true);
+        rt.fill(0x000000, 1);
+        rt.draw(floorLayer);
+        rt.setTint(0x0a2948);
+        rt.setDepth(20);
     }
     create() {
-        this.createTilemapAndPlayer();
+        this.createTilemapPlayerAndFog();
     }
 }
