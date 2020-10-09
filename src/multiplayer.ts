@@ -1,8 +1,6 @@
 /*
 There is a bug where if you try and connect then go back to the main
 menu and try again it connects many times.
-
-When you run into an obstacle the sprite moves through it on other screens.
 */
 
 import { RemotePlayer } from './player.js';

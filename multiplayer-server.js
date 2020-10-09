@@ -25,6 +25,12 @@ class Lobby {
     }
     return encoded;
   }
+
+  setPosition(id, x, y) {
+    var player = this.players.find((p) => p.id === id);
+    player.x = x;
+    player.y = y;
+  }
 }
 
 class Player {
@@ -77,6 +83,7 @@ wss.on('connection', function connection(ws) {
             type: 5, id: message.id, velocityX: message.velocityX,
             velocityY: message.velocityY, x: message.x, y: message.y
           });
+          lobbies[players[message.id]].setPosition(message.id, message.x, message.y);
     }
 
   });
