@@ -48,8 +48,7 @@ export class GameMap extends AScene {
             key: 'vision',
             add: false
         });
-        console.log(this.vision);
-        this.vision.scale = 2.5;
+        this.vision.scale = 2.5; //set size of visible area
         rt.mask = new Phaser.Display.Masks.BitmapMask(this, this.vision);
         rt.mask.invertAlpha = true;
     }
@@ -65,5 +64,8 @@ export class GameMap extends AScene {
     updateFog() {
         this.vision.x = this.player.x;
         this.vision.y = this.player.y;
+    }
+    set visionSize(s) {
+        this.vision.scale = s;
     }
 }

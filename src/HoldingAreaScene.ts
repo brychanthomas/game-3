@@ -27,5 +27,6 @@ export class HoldingAreaScene extends GameMap {
       );
     }
     this.updateFog();
+    this.visionSize = 5;
   }
 }

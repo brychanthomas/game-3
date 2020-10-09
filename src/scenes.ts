@@ -67,14 +67,13 @@ export abstract class GameMap extends AScene {
      rt.setTint(0x0a2948); //dark blue tint
      rt.setDepth(20); //bring to front
 
-     this.vision = this.make.image({
+     this.vision = this.make.image({ //create visible area
        x: this.player.x,
        y: this.player.y,
        key: 'vision',
        add: false
      });
-     console.log(this.vision);
-     this.vision.scale = 2.5;
+     this.vision.scale = 2.5; //set size of visible area
      rt.mask = new Phaser.Display.Masks.BitmapMask(this, this.vision);
      rt.mask.invertAlpha = true;
    }
@@ -92,6 +91,10 @@ export abstract class GameMap extends AScene {
   updateFog() {
     this.vision.x = this.player.x;
     this.vision.y = this.player.y;
+  }
+
+  set visionSize(s: number) {
+    this.vision.scale = s;
   }
 
   abstract update(): void;

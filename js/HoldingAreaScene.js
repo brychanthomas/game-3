@@ -19,5 +19,6 @@ export class HoldingAreaScene extends GameMap {
             this.game.multiplayerHandler.sendVelocityAndPosition(this.player.velocityX, this.player.velocityY, this.player.x, this.player.y);
         }
         this.updateFog();
+        this.visionSize = 5;
     }
 }
