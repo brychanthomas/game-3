@@ -19,7 +19,7 @@ export class SciFiScene extends GameMap {
     this.createTilemapPlayerAndFog();
     setTimeout(function() {
       if(this.game.multiplayerHandler.amChosen) {
-        this.player.makeRed();
+        this.player.chosen();
       }
     }.bind(this), 100);
   }

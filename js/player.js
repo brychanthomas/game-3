@@ -26,6 +26,14 @@ class Player {
     makeRed() {
         this.sprite.setTint(0xff0000);
     }
+    /**
+     * Make the player red and move them to (1000, 100).
+     */
+    chosen() {
+        this.makeRed();
+        this.sprite.x = 1000;
+        this.sprite.y = 100;
+    }
 }
 /**
  * Class representing the player that is being controlled

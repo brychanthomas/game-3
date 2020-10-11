@@ -158,9 +158,9 @@ export class MultiplayerHandler {
     this.playerSprites = [];
     setTimeout(function() {
       for(var player of this.otherPlayers) {
-        this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
+        this.playerSprites.push(new RemotePlayer(100, 100, player.id, this.scene));
         if (player.id === this.currentlyChosen) {
-          this.playerSprites[this.playerSprites.length-1].makeRed();
+          this.playerSprites[this.playerSprites.length-1].chosen();
         }
       }
     }.bind(this), 200);
