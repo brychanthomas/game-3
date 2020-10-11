@@ -166,4 +166,26 @@ export class MultiplayerHandler {
     updateNametags() {
         this.playerSprites.forEach((p) => p.updateNametag());
     }
+    /**
+     * Called when space pressed. If local player is the catcher and is
+     * within required distance of other player, sends a 'catch' message
+     * to the server with the other player's ID.
+     */
+    catch(playerX, playerY) {
+        if (this.amChosen) {
+            let closestDist = Infinity;
+            let closestId = -1;
+            this.playerSprites.forEach(function (p) {
+                if (Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y) < closestDist) {
+                    closestDist = Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y);
+                    closestId = p.id;
+                }
+            });
+            if (closestDist < 80) {
+                this.communicator.send({
+                    type: 13, id: closestId
+                });
+            }
+        }
+    }
 }

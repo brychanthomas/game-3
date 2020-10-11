@@ -22,6 +22,10 @@ export class SciFiScene extends GameMap {
         this.player.chosen();
       }
     }.bind(this), 100);
+
+    this.input.keyboard.on('keydown-SPACE', function () {
+      this.game.multiplayerHandler.catch(this.player.x, this.player.y);
+    }.bind(this));
   }
 
   update() {

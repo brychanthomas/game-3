@@ -22,14 +22,6 @@ abstract class Player {
     this.scene = scene;
   }
 
-  public get x() {
-    return this.sprite.x;
-  }
-
-  public get y() {
-    return this.sprite.y;
-  }
-
   /**
    * Remove the sprite from the scene.
    */
@@ -51,6 +43,14 @@ abstract class Player {
     this.makeRed();
     this.sprite.x = 1000;
     this.sprite.y = 100;
+  }
+
+  public get x() {
+    return this.sprite.x;
+  }
+
+  public get y() {
+    return this.sprite.y;
   }
 
 }
@@ -159,6 +159,14 @@ export class RemotePlayer extends Player {
   updateNametag() {
     this.nametag.x = this.sprite.x;
     this.nametag.y = this.sprite.y-30;
+  }
+
+  get x() {
+    return this.sprite.x;
+  }
+
+  get y() {
+    return this.sprite.y;
   }
 
 }

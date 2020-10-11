@@ -8,12 +8,6 @@ class Player {
         this.sprite.setScale(0.4);
         this.scene = scene;
     }
-    get x() {
-        return this.sprite.x;
-    }
-    get y() {
-        return this.sprite.y;
-    }
     /**
      * Remove the sprite from the scene.
      */
@@ -33,6 +27,12 @@ class Player {
         this.makeRed();
         this.sprite.x = 1000;
         this.sprite.y = 100;
+    }
+    get x() {
+        return this.sprite.x;
+    }
+    get y() {
+        return this.sprite.y;
     }
 }
 /**
@@ -102,7 +102,7 @@ export class RemotePlayer extends Player {
         this.id = id;
         this.nametag = scene.add.text(x, y - 30, username, { backgroundColor: '#000' });
         this.nametag.setOrigin(0.5);
-        this.nametag.setAlpha(0.5);
+        this.nametag.setAlpha(0.6);
     }
     set x(x) {
         this.sprite.x = x;
@@ -122,5 +122,11 @@ export class RemotePlayer extends Player {
     updateNametag() {
         this.nametag.x = this.sprite.x;
         this.nametag.y = this.sprite.y - 30;
+    }
+    get x() {
+        return this.sprite.x;
+    }
+    get y() {
+        return this.sprite.y;
     }
 }

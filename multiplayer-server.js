@@ -57,8 +57,8 @@ class Lobby {
 
   /**
    * Broadcast a 'game starting' followed by a 'chosen' message to the
-   * lobby, using a random choice of the players not yet selected.
-   * Automatically runs at intervals using setTimeout.
+   * lobby, using a random choice of the players not yet selected as
+   * the chaser. Automatically runs at intervals using setTimeout.
    */
   startNextRound() {
     let chosen = this.chooseNextChaser();
@@ -71,7 +71,7 @@ class Lobby {
         type: 12, id: chosen
       });
       this.currentlyChosen = chosen;
-      setTimeout(this.startNextRound.bind(this), 10 * 1000);
+      setTimeout(this.startNextRound.bind(this), 20 * 1000);
     }
   }
 }
