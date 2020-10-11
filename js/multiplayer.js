@@ -85,6 +85,9 @@ export class MultiplayerHandler {
                 this.currentlyChosen = message.id;
                 this.amChosen = (this.currentlyChosen === this.myid);
                 break;
+            case 14:
+                console.log('ded');
+                break;
         }
     }
     /**

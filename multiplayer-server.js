@@ -74,6 +74,14 @@ class Lobby {
       setTimeout(this.startNextRound.bind(this), 20 * 1000);
     }
   }
+
+  /**
+   * Send message to player with specific ID.
+   */
+  sendTo(id, message) {
+    var player = this.players.find((p) => p.id === id);
+    player.connection.send(JSON.stringify(message));
+  }
 }
 
 class Player {
@@ -135,6 +143,10 @@ wss.on('connection', function connection(ws) {
 
         case 8: // start game
           lobbies[players[message.id]].startNextRound();
+          break;
+
+        case 13: // catch
+          lobbies[players[message.id]].sendTo(message.id, {type:14});
           break;
     }
 

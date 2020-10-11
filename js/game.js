@@ -6,7 +6,6 @@ import { MultiplayerHandler } from './multiplayer.js';
 /**
 Next tasks:
 
-- Send catch message to server if distance is smol and space (?) pressed
 - Player becomes ghost when caught (invivible, doesn't send velocity
   to server but can still move)
 */
