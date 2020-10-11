@@ -81,6 +81,10 @@ export class MultiplayerHandler {
             case 9: // Game starting
                 this.scene.scene.start('scifi');
                 break;
+            case 12:
+                this.currentlyChosen = message.id;
+                this.amChosen = (this.currentlyChosen === this.myid);
+                break;
         }
     }
     /**
@@ -92,8 +96,11 @@ export class MultiplayerHandler {
         setTimeout(function () {
             for (var player of this.otherPlayers) {
                 this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
+                if (player.id === this.currentlyChosen) {
+                    this.playerSprites[this.playerSprites.length - 1].makeRed();
+                }
             }
-        }.bind(this), 500);
+        }.bind(this), 200);
     }
     /**
      * Send the player's current velocity and position.

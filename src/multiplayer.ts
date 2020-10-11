@@ -73,6 +73,10 @@ export class MultiplayerHandler {
   private inLobby: boolean;
   /** Whether the local player is the game host or not. */
   public  amHost : boolean;
+  /** The ID of the player that is currently the chaser. */
+  private currentlyChosen: number;
+  /** Whether or not the local player is the chaser. */
+  public  amChosen: boolean;
 
   constructor() {
     this.playerSprites = [];
@@ -138,6 +142,11 @@ export class MultiplayerHandler {
       case 9: // Game starting
         this.scene.scene.start('scifi');
         break;
+
+      case 12:
+        this.currentlyChosen = message.id;
+        this.amChosen = (this.currentlyChosen === this.myid);
+        break;
     }
   }
 
@@ -150,8 +159,11 @@ export class MultiplayerHandler {
     setTimeout(function() {
       for(var player of this.otherPlayers) {
         this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
+        if (player.id === this.currentlyChosen) {
+          this.playerSprites[this.playerSprites.length-1].makeRed();
+        }
       }
-    }.bind(this), 500);
+    }.bind(this), 200);
   }
 
   /**

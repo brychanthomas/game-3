@@ -32,6 +32,13 @@ class Lobby {
     player.x = x;
     player.y = y;
   }
+
+  chooseNextChaser() {
+    if (this.idsLeft === undefined) {
+      this.idsLeft = this.players.map((p) => p.id);
+    }
+    return this.idsLeft.pop(Math.floor(Math.random()*this.idsLeft.length));
+  }
 }
 
 class Player {
@@ -96,6 +103,10 @@ wss.on('connection', function connection(ws) {
             type: 9
           });
           lobbies[players[message.id]].gameStarted = true;
+          let chosen = lobbies[players[message.id]].chooseNextChaser();
+          lobbies[players[message.id]].broadcast({
+            type: 12, id: chosen
+          });
           break;
     }
 

@@ -17,6 +17,11 @@ export class SciFiScene extends GameMap {
   create() {
     this.game.multiplayerHandler.setScene(this);
     this.createTilemapPlayerAndFog();
+    setTimeout(function() {
+      if(this.game.multiplayerHandler.amChosen) {
+        this.player.makeRed();
+      }
+    }.bind(this), 100);
   }
 
   update() {

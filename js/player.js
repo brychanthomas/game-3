@@ -20,6 +20,12 @@ class Player {
     destroy() {
         this.sprite.destroy();
     }
+    /**
+     * Give the player sprite a red tint, indicating they are the chaser.
+     */
+    makeRed() {
+        this.sprite.setTint(0xff0000);
+    }
 }
 /**
  * Class representing the player that is being controlled
