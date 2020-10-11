@@ -7,13 +7,15 @@ import { MultiplayerHandler } from './multiplayer.js';
 /**
 Next tasks:
 
-- Set up server to choose and store a specific player
-- change color of that player on client side
+- Nametags
+- Send catch message to server if distance is smol and space (?) pressed
+- Player becomes ghost when caught (invivible, doesn't send velocity
+  to server but can still move)
 */
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
-    pixelArt: false,
+    pixelArt: true,
     width: 800,
     height: 600,
     scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene],

@@ -97,9 +97,12 @@ export class LocalPlayer extends Player {
  * multiplayer.
  */
 export class RemotePlayer extends Player {
-    constructor(x, y, id, scene) {
+    constructor(x, y, id, username, scene) {
         super(x, y, scene);
         this.id = id;
+        this.nametag = scene.add.text(x, y - 30, username, { backgroundColor: '#000' });
+        this.nametag.setOrigin(0.5);
+        this.nametag.setAlpha(0.5);
     }
     set x(x) {
         this.sprite.x = x;
@@ -112,5 +115,12 @@ export class RemotePlayer extends Player {
     }
     set velocityY(velY) {
         this.sprite.body.setVelocityY(velY);
+    }
+    /**
+     * Move the nametag to the position of the player
+     */
+    updateNametag() {
+        this.nametag.x = this.sprite.x;
+        this.nametag.y = this.sprite.y - 30;
     }
 }

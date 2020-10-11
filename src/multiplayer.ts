@@ -158,7 +158,7 @@ export class MultiplayerHandler {
     this.playerSprites = [];
     setTimeout(function() {
       for(var player of this.otherPlayers) {
-        this.playerSprites.push(new RemotePlayer(100, 100, player.id, this.scene));
+        this.playerSprites.push(new RemotePlayer(100, 100, player.id, player.username, this.scene));
         if (player.id === this.currentlyChosen) {
           this.playerSprites[this.playerSprites.length-1].chosen();
         }
@@ -200,7 +200,7 @@ export class MultiplayerHandler {
       x: message.x, y: message.y
     });
     this.playerSprites.push(new RemotePlayer(message.x, message.y,
-      message.id, this.scene));
+      message.id, message.username, this.scene));
   }
 
   /**
@@ -228,5 +228,12 @@ export class MultiplayerHandler {
          type: 8, id: this.myid
        });
      }
+   }
+
+   /**
+    * Update the position of all the remote players' nametags.
+    */
+   updateNametags() {
+     this.playerSprites.forEach((p) => p.updateNametag());
    }
 }

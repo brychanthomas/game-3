@@ -26,6 +26,7 @@ export class SciFiScene extends GameMap {
 
   update() {
     this.player.update();
+    this.game.multiplayerHandler.updateNametags();
     if (this.player.hasVelocityChanged()) {
       this.game.multiplayerHandler.sendVelocityAndPosition(
         this.player.velocityX, this.player.velocityY, this.player.x, this.player.y

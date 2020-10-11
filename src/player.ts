@@ -126,11 +126,15 @@ export class LocalPlayer extends Player {
  */
 export class RemotePlayer extends Player {
 
-  public id: number;
+  public  id: number;
+  private nametag: Phaser.GameObjects.Text;
 
-  constructor(x: number, y: number, id: number, scene: GameMap) {
+  constructor(x: number, y: number, id: number, username: string, scene: GameMap) {
     super(x, y, scene);
     this.id = id;
+    this.nametag = scene.add.text(x, y-30, username, {backgroundColor: '#000'});
+    this.nametag.setOrigin(0.5);
+    this.nametag.setAlpha(0.6);
   }
 
   set x(x: number) {
@@ -147,6 +151,14 @@ export class RemotePlayer extends Player {
 
   set velocityY(velY: number) {
     this.sprite.body.setVelocityY(velY);
+  }
+
+  /**
+   * Move the nametag to the position of the player
+   */
+  updateNametag() {
+    this.nametag.x = this.sprite.x;
+    this.nametag.y = this.sprite.y-30;
   }
 
 }
