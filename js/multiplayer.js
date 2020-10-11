@@ -84,9 +84,16 @@ export class MultiplayerHandler {
             case 12:
                 this.currentlyChosen = message.id;
                 this.amChosen = (this.currentlyChosen === this.myid);
+                this.amCaught = false;
                 break;
             case 14:
-                console.log('ded');
+                if (message.id === this.myid) {
+                    this.amCaught = true;
+                }
+                else {
+                    var player = this.playerSprites.find((p) => p.id === message.id);
+                    player.visible = false;
+                }
                 break;
         }
     }

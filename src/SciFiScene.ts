@@ -37,5 +37,7 @@ export class SciFiScene extends GameMap {
       );
     }
     this.updateFog();
+
+    this.player.caught = this.game.multiplayerHandler.amCaught;
   }
 }

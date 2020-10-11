@@ -7,8 +7,9 @@ import { MultiplayerHandler } from './multiplayer.js';
 /**
 Next tasks:
 
-- Player becomes ghost when caught (invivible, doesn't send velocity
-  to server but can still move)
+- Reason for failure shown when lobby full
+- Configurable fog of war
+- Fix player positions when new people join
 */
 
 const config: Phaser.Types.Core.GameConfig = {

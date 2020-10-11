@@ -20,7 +20,7 @@ is denoted by a different integer value.
 | 11 | Left | Server | id | {type: 11, id: 0} |
 | 12 | Choice | Server | id | {type: 12, id: 1} |
 | 13 | Catch | Chosen Client | id | {type: 13, id: 0} |
-| 14 | Caught | Server | None | {type: 14} |
+| 14 | Caught | Server | id | {type: 14, id: 1} |
 
 When new players join they are sent a 'player listing' message with
 a list of all of the existing players and their last reported

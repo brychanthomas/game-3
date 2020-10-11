@@ -8,6 +8,8 @@ Next tasks:
 
 - Player becomes ghost when caught (invivible, doesn't send velocity
   to server but can still move)
+- Reason for failure shown when lobby full
+- Configurable fog of war
 */
 const config = {
     type: Phaser.AUTO,

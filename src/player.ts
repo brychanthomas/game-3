@@ -64,6 +64,7 @@ export class LocalPlayer extends Player {
   private keys: wasdKeys;
   private previousVelocityX: number;
   private previousVelocityY: number;
+  private amCaught: boolean;
 
   constructor(x: number, y: number, obstacleLayer: Phaser.Tilemaps.StaticTilemapLayer, scene: GameMap) {
     super(x, y, scene);
@@ -100,6 +101,7 @@ export class LocalPlayer extends Player {
    * was called.
    */
   hasVelocityChanged() {
+    if (this.amCaught) { return false; }
     if (this.velocityX !== this.previousVelocityX) {
       this.previousVelocityX = this.sprite.body.velocity.x;
       return true;
@@ -116,6 +118,24 @@ export class LocalPlayer extends Player {
 
   get velocityY() {
     return this.sprite.body.velocity.y;
+  }
+
+  /**
+   * When caught is set to true, the player becomes transparent,
+   * collisions are disabled and velocity updates are not sent.
+   */
+  set caught(c: boolean) {
+    this.amCaught = c;
+    this.sprite.setAlpha(c ? 0.4 : 1);
+    if (c === true) {
+      this.sprite.body.checkCollision = {
+        down: false, left: false, none: true, right: false, up: false
+      }
+    } else {
+      this.sprite.body.checkCollision = {
+        down: true, left: true, none: false, right: true, up: true
+      }
+    }
   }
 }
 
@@ -167,6 +187,11 @@ export class RemotePlayer extends Player {
 
   get y() {
     return this.sprite.y;
+  }
+
+  set visible(v: boolean) {
+    this.sprite.visible = v;
+    this.nametag.visible = v;
   }
 
 }

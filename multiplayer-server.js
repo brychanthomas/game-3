@@ -146,7 +146,7 @@ wss.on('connection', function connection(ws) {
           break;
 
         case 13: // catch
-          lobbies[players[message.id]].sendTo(message.id, {type:14});
+          lobbies[players[message.id]].broadcast({type:14, id: message.id});
           break;
     }
 

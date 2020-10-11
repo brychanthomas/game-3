@@ -29,5 +29,6 @@ export class SciFiScene extends GameMap {
             this.game.multiplayerHandler.sendVelocityAndPosition(this.player.velocityX, this.player.velocityY, this.player.x, this.player.y);
         }
         this.updateFog();
+        this.player.caught = this.game.multiplayerHandler.amCaught;
     }
 }
