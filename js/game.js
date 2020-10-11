@@ -6,10 +6,13 @@ import { MultiplayerHandler } from './multiplayer.js';
 /**
 Next tasks:
 
-- Player becomes ghost when caught (invivible, doesn't send velocity
-  to server but can still move)
 - Reason for failure shown when lobby full
-- Configurable fog of war
+- Correct positions for existing players when new people join
+- Configurable radius for fog of war
+- Configurable speed
+- Tracking scores on server
+- Scores shown when all players have played
+- Fix weird bug when connecting on second attempt?
 */
 const config = {
     type: Phaser.AUTO,
@@ -25,6 +28,9 @@ const config = {
         }
     },
 };
+/**
+ * Phaser.Game but with an extra multiplayerHandler property
+ */
 export class TheGame extends Phaser.Game {
     constructor(config) {
         super(config);

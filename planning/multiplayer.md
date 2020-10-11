@@ -21,6 +21,7 @@ is denoted by a different integer value.
 | 12 | Choice | Server | id | {type: 12, id: 1} |
 | 13 | Catch | Chosen Client | id | {type: 13, id: 0} |
 | 14 | Caught | Server | id | {type: 14, id: 1} |
+| 15 | Scores | Server | score for each username | {type: 15, scores: [{username: "walter", score: 4}, {username: "rodod", score: 2}]}
 
 When new players join they are sent a 'player listing' message with
 a list of all of the existing players and their last reported

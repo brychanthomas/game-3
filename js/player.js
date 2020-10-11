@@ -71,7 +71,7 @@ export class LocalPlayer extends Player {
     }
     /**
      * Checks if X or Y velocity has changed since last time method
-     * was called.
+     * was called. Always false if player has been caught.
      */
     hasVelocityChanged() {
         if (this.amCaught) {
@@ -150,6 +150,9 @@ export class RemotePlayer extends Player {
     get y() {
         return this.sprite.y;
     }
+    /**
+     * Set visibility of sprite and nametag.
+     */
     set visible(v) {
         this.sprite.visible = v;
         this.nametag.visible = v;

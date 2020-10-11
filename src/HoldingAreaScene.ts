@@ -41,7 +41,8 @@ export class HoldingAreaScene extends GameMap {
   }
 
   /**
-   * Called when play button is pressed.
+   * Called when play button is pressed - sends a start message to
+   * the server.
    */
   private playButtonPressed() {
     this.game.multiplayerHandler.sendStartMessage();

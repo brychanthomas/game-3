@@ -67,9 +67,11 @@ export class MultiplayerHandler {
   private username: string;
   /** List of objects with player IDs, coordinates and usernames. */
   private otherPlayers: playerObject[];
+  /** List of objects representing the other players. */
   private scene: GameMap;
   /** List of RemotePlayer instances specific to current scene. */
   private playerSprites: RemotePlayer[];
+  /** Whether the player has successfully joined a lobby yet. */
   private inLobby: boolean;
   /** Whether the local player is the game host or not. */
   public  amHost : boolean;
@@ -78,7 +80,7 @@ export class MultiplayerHandler {
   /** Whether or not the local player is the chaser. */
   public  amChosen: boolean;
   /** Whether the local player has been caught yet this round. */
-  public amCaught: boolean;
+  public  amCaught: boolean;
 
   constructor() {
     this.playerSprites = [];
@@ -145,13 +147,13 @@ export class MultiplayerHandler {
         this.scene.scene.start('scifi');
         break;
 
-      case 12:
+      case 12: // Choice
         this.currentlyChosen = message.id;
         this.amChosen = (this.currentlyChosen === this.myid);
         this.amCaught = false;
         break;
 
-      case 14:
+      case 14: // Caught
         if (message.id === this.myid) {
           this.amCaught = true;
         } else {

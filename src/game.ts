@@ -8,8 +8,12 @@ import { MultiplayerHandler } from './multiplayer.js';
 Next tasks:
 
 - Reason for failure shown when lobby full
-- Configurable fog of war
-- Fix player positions when new people join
+- Correct positions for existing players when new people join
+- Configurable radius for fog of war
+- Configurable speed
+- Tracking scores on server
+- Scores shown when all players have played
+- Fix weird bug when connecting on second attempt?
 */
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -27,6 +31,9 @@ const config: Phaser.Types.Core.GameConfig = {
     },
 }
 
+/**
+ * Phaser.Game but with an extra multiplayerHandler property
+ */
 export class TheGame extends Phaser.Game {
   public multiplayerHandler: MultiplayerHandler;
 

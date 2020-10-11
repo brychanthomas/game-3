@@ -81,12 +81,12 @@ export class MultiplayerHandler {
             case 9: // Game starting
                 this.scene.scene.start('scifi');
                 break;
-            case 12:
+            case 12: // Choice
                 this.currentlyChosen = message.id;
                 this.amChosen = (this.currentlyChosen === this.myid);
                 this.amCaught = false;
                 break;
-            case 14:
+            case 14: // Caught
                 if (message.id === this.myid) {
                     this.amCaught = true;
                 }
