@@ -5,6 +5,7 @@ const wss = new WebSocket.Server({port:5000});
 class Lobby {
   constructor() {
     this.players = [];
+    this.gameStarted = false;
   }
 
   addPlayer(player) {
@@ -68,14 +69,18 @@ wss.on('connection', function connection(ws) {
         if (lobbies[message.lobbyCode] === undefined) {
           lobbies[message.lobbyCode] = new Lobby();
         }
-        lobbies[message.lobbyCode].broadcast({ //new player
-          type: 6, id: message.id, username: message.username, x: 100, y: 100
-        });
-        ws.send(JSON.stringify({ //player listing
-          type: 3, lobby: lobbies[message.lobbyCode].encode()
-        }));
-        lobbies[message.lobbyCode].addPlayer(new Player(ws, message.id, message.username));
-        players[message.id] = message.lobbyCode;
+        if (!lobbies[message.lobbyCode].gameStarted) {
+          lobbies[message.lobbyCode].broadcast({ //new player
+            type: 6, id: message.id, username: message.username, x: 100, y: 100
+          });
+          ws.send(JSON.stringify({ //player listing
+            type: 3, lobby: lobbies[message.lobbyCode].encode()
+          }));
+          lobbies[message.lobbyCode].addPlayer(new Player(ws, message.id, message.username));
+          players[message.id] = message.lobbyCode;
+        } else {
+          ws.close();
+        }
         break;
 
         case 5: // velocity update
@@ -90,6 +95,7 @@ wss.on('connection', function connection(ws) {
           lobbies[players[message.id]].broadcast({
             type: 9
           });
+          lobbies[players[message.id]].gameStarted = true;
           break;
     }
 
