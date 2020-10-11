@@ -69,6 +69,8 @@ export class MultiplayerHandler {
             case 3: // Player listing
                 this.otherPlayers = message.lobby;
                 this.inLobby = true;
+                let hostId = this.otherPlayers.reduce((m, c) => m = Math.min(m, c.id), this.myid);
+                this.amHost = (hostId === this.myid);
                 break;
             case 5: // Velocity update from another player
                 this.updateRemotePlayer(message);
@@ -87,7 +89,7 @@ export class MultiplayerHandler {
             for (var player of this.otherPlayers) {
                 this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
             }
-        }.bind(this), 1000);
+        }.bind(this), 500);
     }
     /**
      * Send the player's current velocity and position.
@@ -139,10 +141,10 @@ export class MultiplayerHandler {
      * holding area.
      */
     sendStartMessage() {
-        //if (this.amHost) {
-        this.communicator.send({
-            type: 8, id: this.myid
-        });
-        //}
+        if (this.amHost) {
+            this.communicator.send({
+                type: 8, id: this.myid
+            });
+        }
     }
 }

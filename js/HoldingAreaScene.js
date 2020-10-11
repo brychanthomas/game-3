@@ -20,6 +20,7 @@ export class HoldingAreaScene extends GameMap {
         this.playButton.setDepth(25); //bring to top
         this.playButton.setInteractive();
         this.playButton.on('pointerdown', this.playButtonPressed.bind(this));
+        this.playButton.visible = this.game.multiplayerHandler.amHost;
     }
     update() {
         this.player.update();
@@ -32,7 +33,6 @@ export class HoldingAreaScene extends GameMap {
      * Called when play button is pressed.
      */
     playButtonPressed() {
-        console.log('yo');
         this.game.multiplayerHandler.sendStartMessage();
     }
 }

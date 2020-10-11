@@ -4,6 +4,14 @@ import { MainMenuScene } from './MainMenuScene.js';
 import { LoadingScene } from './LoadingScene.js';
 import { MultiplayerHandler } from './multiplayer.js';
 
+/**
+Next tasks:
+
+- Make button only visible to hosts
+- Make the server respond to game starting messages from host
+- Set up server to choose and store a specific player
+- change color of that player on client side
+*/
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,

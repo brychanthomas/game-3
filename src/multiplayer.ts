@@ -123,6 +123,8 @@ export class MultiplayerHandler {
       case 3: // Player listing
         this.otherPlayers = message.lobby;
         this.inLobby = true;
+        let hostId = this.otherPlayers.reduce((m, c) => m = Math.min(m, c.id), this.myid);
+        this.amHost = (hostId === this.myid);
         break
 
       case 5: // Velocity update from another player
@@ -145,7 +147,7 @@ export class MultiplayerHandler {
       for(var player of this.otherPlayers) {
         this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
       }
-    }.bind(this), 1000);
+    }.bind(this), 500);
   }
 
   /**
