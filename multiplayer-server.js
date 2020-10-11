@@ -84,6 +84,13 @@ wss.on('connection', function connection(ws) {
             velocityY: message.velocityY, x: message.x, y: message.y
           });
           lobbies[players[message.id]].setPosition(message.id, message.x, message.y);
+          break;
+
+        case 8: // start game
+          lobbies[players[message.id]].broadcast({
+            type: 9
+          });
+          break;
     }
 
   });

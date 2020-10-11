@@ -57,8 +57,6 @@ export class LocalPlayer extends Player {
     this.keys = scene.input.keyboard.addKeys('W,A,S,D');
 
     scene.physics.add.collider(this.sprite, obstacleLayer);
-
-    console.log(this.sprite.body);
   }
 
   /**

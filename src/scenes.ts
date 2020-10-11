@@ -21,11 +21,15 @@ export abstract class GameMap extends AScene {
   public width: number;
   protected player: LocalPlayer;
   protected tiledTilesetName: string;
+  protected tilesetKey: string;
+  protected tilemapKey: string;
   protected vision: Phaser.GameObjects.Image;
 
-  constructor(sceneName: string, tiledTilesetName: string) {
+  constructor(sceneName: string, tiledTilesetName: string, tilesetKey: string, tilemapKey: string) {
     super(sceneName);
     this.tiledTilesetName = tiledTilesetName;
+    this.tilesetKey = tilesetKey;
+    this.tilemapKey = tilemapKey;
   }
 
   /**
@@ -37,8 +41,8 @@ export abstract class GameMap extends AScene {
    * Create the tilemap, the player and the fog of war.
    */
    createTilemapPlayerAndFog() {
-     const map = this.make.tilemap({ key: 'tilemap' });
-     const tileset = map.addTilesetImage(this.tiledTilesetName, 'tileset');
+     const map = this.make.tilemap({ key: this.tilemapKey });
+     const tileset = map.addTilesetImage(this.tiledTilesetName, this.tilesetKey);
      var floorLayer = map.createStaticLayer('Background', tileset).setScale(2.5);
      var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
      obstacleLayer.setScale(2.5);

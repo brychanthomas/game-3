@@ -31,7 +31,6 @@ export class LocalPlayer extends Player {
         scene.cameras.main.startFollow(this.sprite);
         this.keys = scene.input.keyboard.addKeys('W,A,S,D');
         scene.physics.add.collider(this.sprite, obstacleLayer);
-        console.log(this.sprite.body);
     }
     /**
      * Update the velocity of the player based on the WASD keys.

@@ -135,6 +135,9 @@ export class MultiplayerHandler {
         this.addNewPlayer(message);
         break;
 
+      case 9: // Game starting
+        this.scene.scene.start('scifi');
+        break;
     }
   }
 
@@ -143,6 +146,7 @@ export class MultiplayerHandler {
    */
   setScene(scene: GameMap) {
     this.scene = scene;
+    this.playerSprites = [];
     setTimeout(function() {
       for(var player of this.otherPlayers) {
         this.playerSprites.push(new RemotePlayer(player.x, player.y, player.id, this.scene));
@@ -166,10 +170,12 @@ export class MultiplayerHandler {
   updateRemotePlayer(message: serverMessage) {
     if (message.id !== this.myid) {
       var player = this.playerSprites.find((p) => p.id === message.id);
-      player.velocityX = message.velocityX;
-      player.velocityY = message.velocityY;
-      player.x = message.x;
-      player.y = message.y;
+      if (player !== undefined) {
+        player.velocityX = message.velocityX;
+        player.velocityY = message.velocityY;
+        player.x = message.x;
+        player.y = message.y;
+      }
     }
   }
 

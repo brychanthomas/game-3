@@ -10,16 +10,18 @@ export class AScene extends Phaser.Scene {
  * Abstract class to create a scene using a tilemap.
  */
 export class GameMap extends AScene {
-    constructor(sceneName, tiledTilesetName) {
+    constructor(sceneName, tiledTilesetName, tilesetKey, tilemapKey) {
         super(sceneName);
         this.tiledTilesetName = tiledTilesetName;
+        this.tilesetKey = tilesetKey;
+        this.tilemapKey = tilemapKey;
     }
     /**
      * Create the tilemap, the player and the fog of war.
      */
     createTilemapPlayerAndFog() {
-        const map = this.make.tilemap({ key: 'tilemap' });
-        const tileset = map.addTilesetImage(this.tiledTilesetName, 'tileset');
+        const map = this.make.tilemap({ key: this.tilemapKey });
+        const tileset = map.addTilesetImage(this.tiledTilesetName, this.tilesetKey);
         var floorLayer = map.createStaticLayer('Background', tileset).setScale(2.5);
         var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
         obstacleLayer.setScale(2.5);
