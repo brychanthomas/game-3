@@ -128,7 +128,8 @@ wss.on('connection', function connection(ws) {
           }));
           lobbies[message.lobbyCode].addPlayer(new Player(ws, message.id, message.username));
           players[message.id] = message.lobbyCode;
-        } else {
+        } else { //if game has already started in lobby
+          ws.send('{"type": 0, "error": "Game has already started in this lobby"}');
           ws.close();
         }
         break;

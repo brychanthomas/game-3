@@ -35,32 +35,31 @@ export class MultiplayerHandler {
     join(address, lobbyCode, username) {
         this.lobbyCode = lobbyCode;
         this.username = username;
+        this.error = undefined;
         return new Promise(function (resolve, reject) {
-            try {
-                this.communicator = new Communicator(address, this.onMessage.bind(this));
-                var timeWaited = 0;
-                function checkIfConnected() {
-                    if (this.inLobby) {
-                        resolve();
+            this.communicator = new Communicator(address, this.onMessage.bind(this));
+            var timeWaited = 0;
+            function checkIfConnected() {
+                if (this.inLobby) {
+                    resolve();
+                }
+                else {
+                    timeWaited += 250;
+                    if (this.communicator.error !== undefined) {
+                        reject("Unable to connect - server is probably down or doesn't exist.");
+                    }
+                    else if (this.error !== undefined) {
+                        reject("Server error: " + this.error);
+                    }
+                    if (timeWaited >= 5000) {
+                        reject("Timeout error - did not join lobby within 5 seconds.");
                     }
                     else {
-                        timeWaited += 250;
-                        if (this.communicator.error !== undefined) {
-                            reject("Unable to connect - server is probably down or doesn't exist.");
-                        }
-                        if (timeWaited >= 5000) {
-                            reject("Timeout error - did not join lobby within 5 seconds.");
-                        }
-                        else {
-                            setTimeout(checkIfConnected.bind(this), 250);
-                        }
+                        setTimeout(checkIfConnected.bind(this), 250);
                     }
                 }
-                setTimeout(checkIfConnected.bind(this), 250);
             }
-            catch (err) {
-                reject(err);
-            }
+            setTimeout(checkIfConnected.bind(this), 250);
         }.bind(this));
     }
     /**
@@ -69,6 +68,9 @@ export class MultiplayerHandler {
     onMessage(raw) {
         var message = JSON.parse(raw.data);
         switch (message.type) {
+            case 0:
+                this.error = message.error;
+                break;
             case 1: // ID assign
                 this.myid = message.idAssign;
                 this.communicator.send({
