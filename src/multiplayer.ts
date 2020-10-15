@@ -40,11 +40,13 @@ class Communicator {
 
 private serverAddress: string;
 private websocket: WebSocket;
+public  error: any;
 
   constructor(address: string, messageCallback: any) {
     this.serverAddress = address;
     this.websocket = new WebSocket('ws://'+this.serverAddress);
     this.websocket.onmessage = messageCallback;
+    this.websocket.onerror = function(err: any) {this.error = err}.bind(this);
   }
 
   send(data: object) {
@@ -94,23 +96,32 @@ export class MultiplayerHandler {
     this.lobbyCode = lobbyCode;
     this.username = username;
     return new Promise(function(resolve, reject) {
-      this.communicator = new Communicator(address, this.onMessage.bind(this));
-      var timeWaited = 0;
+      try {
+        this.communicator = new Communicator(address, this.onMessage.bind(this));
+        var timeWaited = 0;
 
-      function checkIfConnected() {
-        if (this.inLobby) {
-          resolve();
-        } else {
-          timeWaited += 250;
-          if (timeWaited >= 5000) {
-            reject();
+        function checkIfConnected() {
+          if (this.inLobby) {
+            resolve();
           } else {
-            setTimeout(checkIfConnected.bind(this), 250);
+            timeWaited += 250;
+            if (this.communicator.error !== undefined) {
+              reject("Unable to connect - server is probably down or doesn't exist.");
+            }
+            if (timeWaited >= 5000) {
+              reject("Timeout error - did not join lobby within 5 seconds.");
+            } else {
+              setTimeout(checkIfConnected.bind(this), 250);
+            }
           }
         }
+
+        setTimeout(checkIfConnected.bind(this), 250);
+
+      } catch (err) {
+        reject(err);
       }
 
-      setTimeout(checkIfConnected.bind(this), 250);
     }.bind(this));
   }
 

@@ -8,6 +8,7 @@ is denoted by a different integer value.
 
 | Type number | Name | Sender | Data | Example |
 | ----------- | ---- | ------ | ---- | ------- |
+| 0 | Error | Server | error | {type: 0, error: "Lobby is full"} |
 | 1 | ID Assign | Server | idAssign | {type: 1, idAssign: 0} |
 | 2 | Join request | Client | lobbyCode, id | {type: 2, id: 0, lobbyCode: "cat", username: "walter"} |
 | 3 | Player listing | Server | lobby | {type: 3, lobby: [{id: 0, username: "Walter", x: 200, y: 300}]}

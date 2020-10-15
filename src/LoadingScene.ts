@@ -21,6 +21,7 @@ export class LoadingScene extends AScene {
       .catch(function(err) {
         this.scene.start('mainMenu');
         console.error(err);
+        alert(err);
       }.bind(this));
   }
 
