@@ -6,7 +6,6 @@ import { MultiplayerHandler } from './multiplayer.js';
 /**
 Next tasks:
 
-- Reason for failure shown when lobby full
 - Correct positions for existing players when new people join
 - Configurable radius for fog of war
 - Configurable speed

@@ -116,7 +116,10 @@ export class MultiplayerHandler {
         this.playerSprites = [];
         setTimeout(function () {
             for (var player of this.otherPlayers) {
-                this.playerSprites.push(new RemotePlayer(100, 100, player.id, player.username, this.scene));
+                console.log(player);
+                let x = (this.currentlyChosen === undefined) ? player.x : 100;
+                let y = (this.currentlyChosen === undefined) ? player.y : 100;
+                this.playerSprites.push(new RemotePlayer(x, y, player.id, player.username, this.scene));
                 if (player.id === this.currentlyChosen) {
                     this.playerSprites[this.playerSprites.length - 1].chosen();
                 }
