@@ -258,7 +258,12 @@ export class MultiplayerHandler {
    sendStartMessage() {
      if (this.amHost) {
        this.communicator.send({
-         type: 8, id: this.myid
+         type: 8, id: this.myid, properties: {
+           runnerVision: (<HTMLInputElement>document.getElementById("runnerVision")).value,
+           chaserVision: (<HTMLInputElement>document.getElementById("chaserVision")).value,
+           runnerSpeed: (<HTMLInputElement>document.getElementById("runnerSpeed")).value,
+           chaserSpeed: (<HTMLInputElement>document.getElementById("chaserSpeed")).value,
+         }
        });
      }
    }

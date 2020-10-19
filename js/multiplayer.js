@@ -180,7 +180,13 @@ export class MultiplayerHandler {
     sendStartMessage() {
         if (this.amHost) {
             this.communicator.send({
-                type: 8, id: this.myid
+                type: 8, id: this.myid,
+                properties: {
+                    runnerVision: document.getElementById("runnerVision").value,
+                    chaserVision: document.getElementById("chaserVision").value,
+                    runnerSpeed: document.getElementById("runnerSpeed").value,
+                    chaserSpeed: document.getElementById("chaserSpeed").value,
+                }
             });
         }
     }
