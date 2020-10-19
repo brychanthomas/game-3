@@ -1,6 +1,21 @@
 <html>
 <head>
   <title>Game-3</title>
+
+  <script>
+//update the values shown on the labels for the properties sliders
+//when one of them is moved
+function updatePropertyLabels() {
+  document.getElementById("chaserVisionLabel")
+  .innerHTML = 'Chaser vision: '+document.getElementById("chaserVision").value;
+  document.getElementById("runnerVisionLabel")
+  .innerHTML = 'Runner vision: '+document.getElementById("runnerVision").value;
+  document.getElementById("chaserSpeedLabel")
+  .innerHTML = 'Chaser Speed: '+document.getElementById("chaserSpeed").value;
+  document.getElementById("runnerSpeedLabel")
+  .innerHTML = 'Runner Speed: '+document.getElementById("runnerSpeed").value;
+}
+  </script>
   <script>var exports = {};</script>
   <script src="phaser/phaser.js"></script>
   <script src="js/game.js" type="module"></script>
@@ -30,6 +45,45 @@
     display: none;
     font-family: "Courier";
   }
+
+  #chaserVisionLabel {
+    left: 15px;
+    top: 20px;
+  }
+  #chaserVision {
+    left: 10px;
+    top: 40px;
+  }
+  #runnerVisionLabel {
+    left: 15px;
+    top: 60px;
+  }
+  #runnerVision {
+    left: 10px;
+    top: 80px;
+  }
+  #chaserSpeedLabel {
+    left: 15px;
+    top: 100px;
+  }
+  #chaserSpeed {
+    left: 10px;
+    top: 120px;
+  }
+  #runnerSpeedLabel {
+    left: 15px;
+    top: 140px;
+  }
+  #runnerSpeed {
+    left: 10px;
+    top: 160px;
+  }
+  .properties {
+    position: absolute;
+    display: block;
+    color: white;
+    font-family: "Courier";
+  }
   </style>
 </head>
 <body>
@@ -37,5 +91,16 @@
   <input id="lobbyCode" type="text"></input>
   <input id="username" type="text"></input>
   <button id="joinButton">Join/create lobby</button>
+
+  <form onchange="updatePropertyLabels();">
+    <label for="chaserVision" id="chaserVisionLabel" class="properties">Chaser vision: 2</label>
+    <input type="range" min="1" max="5" value="2" step="0.5" id="chaserVision" class="properties">
+    <label for="runnerVision" id="runnerVisionLabel" class="properties">Runner vision: 2</label>
+    <input type="range" min="1" max="5" value="2" step="0.5" id="runnerVision" class="properties">
+    <label for="chaserSpeed" id="chaserSpeedLabel" class="properties">Chaser speed: 200</label>
+    <input type="range" min="40" max="400" value="200" step="10" id="chaserSpeed" class="properties">
+    <label for="runnerSpeed" id="runnerSpeedLabel" class="properties">Runner speed: 200</label>
+    <input type="range" min="40" max="400" value="200" step="10" id="runnerSpeed" class="properties">
+  </form>
 </body>
 </html>
