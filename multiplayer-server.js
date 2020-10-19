@@ -64,7 +64,7 @@ class Lobby {
     let chosen = this.chooseNextChaser();
     if (chosen !== undefined) {
       this.broadcast({
-        type: 9
+        type: 9, properties: this.gameProperties
       });
       this.gameStarted = true;
       this.broadcast({
@@ -143,6 +143,7 @@ wss.on('connection', function connection(ws) {
           break;
 
         case 8: // start game
+          lobbies[players[message.id]].gameProperties = message.properties;
           lobbies[players[message.id]].startNextRound();
           break;
 

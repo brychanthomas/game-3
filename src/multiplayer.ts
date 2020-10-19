@@ -18,6 +18,16 @@ interface playerObject {
 }
 
 /**
+ * Interface representing object of game properties set by host.
+ */
+interface gameProperties {
+  chaserVision: number;
+  runnerVision: number;
+  chaserSpeed: number;
+  runnerSpeed: number;
+}
+
+/**
  * Interface representing a decoded message from the server.
  */
 interface serverMessage {
@@ -31,6 +41,7 @@ interface serverMessage {
   y?: number;
   username?: string;
   error?: string;
+  properties?: gameProperties;
 }
 
 /**
@@ -85,7 +96,9 @@ export class MultiplayerHandler {
   /** Whether the local player has been caught yet this round. */
   public  amCaught: boolean;
   /** The last error message sent by the server. */
-  private  error: string;
+  private error: string;
+  /** Object containing speed and vision radius for runner and chaser. */
+  public  gameProperties: gameProperties;
 
   constructor() {
     this.playerSprites = [];
@@ -160,6 +173,7 @@ export class MultiplayerHandler {
         break;
 
       case 9: // Game starting
+        this.gameProperties = message.properties;
         this.scene.scene.start('scifi');
         break;
 
@@ -189,8 +203,8 @@ export class MultiplayerHandler {
     setTimeout(function() {
       for(var player of this.otherPlayers) {
         //spawn at (100, 100) if round started or server specified coords if in holding area
-        let x = (this.currentlyChosen === undefined) ? player.x : 100;
-        let y = (this.currentlyChosen === undefined) ? player.y : 100;
+        let x = (this.gameStarted) ? 100 : player.x;
+        let y = (this.gameStarted) ? 100 : player.y;
         this.playerSprites.push(new RemotePlayer(x, y, player.id, player.username, this.scene));
         if (player.id === this.currentlyChosen) {
           this.playerSprites[this.playerSprites.length-1].chosen();
@@ -259,10 +273,10 @@ export class MultiplayerHandler {
      if (this.amHost) {
        this.communicator.send({
          type: 8, id: this.myid, properties: {
-           runnerVision: (<HTMLInputElement>document.getElementById("runnerVision")).value,
-           chaserVision: (<HTMLInputElement>document.getElementById("chaserVision")).value,
-           runnerSpeed: (<HTMLInputElement>document.getElementById("runnerSpeed")).value,
-           chaserSpeed: (<HTMLInputElement>document.getElementById("chaserSpeed")).value,
+           runnerVision: Number((<HTMLInputElement>document.getElementById("runnerVision")).value),
+           chaserVision: Number((<HTMLInputElement>document.getElementById("chaserVision")).value),
+           runnerSpeed: Number((<HTMLInputElement>document.getElementById("runnerSpeed")).value),
+           chaserSpeed: Number((<HTMLInputElement>document.getElementById("chaserSpeed")).value),
          }
        });
      }
@@ -275,26 +289,34 @@ export class MultiplayerHandler {
      this.playerSprites.forEach((p) => p.updateNametag());
    }
 
-   /**
-    * Called when space pressed. If local player is the catcher and is
-    * within required distance of other player, sends a 'catch' message
-    * to the server with the other player's ID.
-    */
-   catch(playerX: number, playerY: number) {
-     if (this.amChosen) {
-       let closestDist = Infinity;
-       let closestId = -1;
-       this.playerSprites.forEach(function(p) {
-         if (Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y) < closestDist) {
-           closestDist = Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y);
-           closestId = p.id;
-         }
-       });
-       if (closestDist < 80) {
-         this.communicator.send({
-           type: 13, id: closestId
-         });
-       }
-     }
-   }
+  /**
+  * Called when space pressed. If local player is the catcher and is
+  * within required distance of other player, sends a 'catch' message
+  * to the server with the other player's ID.
+  */
+  catch(playerX: number, playerY: number) {
+    if (this.amChosen) {
+      let closestDist = Infinity;
+      let closestId = -1;
+      this.playerSprites.forEach(function(p) {
+        if (Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y) < closestDist) {
+          closestDist = Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y);
+          closestId = p.id;
+        }
+      });
+      if (closestDist < 80) {
+        this.communicator.send({
+          type: 13, id: closestId
+        });
+      }
+    }
+  }
+
+  /**
+   * Returns true if the game has started, false if the player's
+   * still in the holding area.
+   */
+  get gameStarted() {
+    return this.currentlyChosen !== undefined;
+  }
 }

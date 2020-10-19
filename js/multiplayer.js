@@ -90,6 +90,7 @@ export class MultiplayerHandler {
                 this.addNewPlayer(message);
                 break;
             case 9: // Game starting
+                this.gameProperties = message.properties;
                 this.scene.scene.start('scifi');
                 break;
             case 12: // Choice
@@ -117,8 +118,8 @@ export class MultiplayerHandler {
         setTimeout(function () {
             for (var player of this.otherPlayers) {
                 //spawn at (100, 100) if round started or server specified coords if in holding area
-                let x = (this.currentlyChosen === undefined) ? player.x : 100;
-                let y = (this.currentlyChosen === undefined) ? player.y : 100;
+                let x = (this.gameStarted) ? 100 : player.x;
+                let y = (this.gameStarted) ? 100 : player.y;
                 this.playerSprites.push(new RemotePlayer(x, y, player.id, player.username, this.scene));
                 if (player.id === this.currentlyChosen) {
                     this.playerSprites[this.playerSprites.length - 1].chosen();
@@ -182,10 +183,10 @@ export class MultiplayerHandler {
             this.communicator.send({
                 type: 8, id: this.myid,
                 properties: {
-                    runnerVision: document.getElementById("runnerVision").value,
-                    chaserVision: document.getElementById("chaserVision").value,
-                    runnerSpeed: document.getElementById("runnerSpeed").value,
-                    chaserSpeed: document.getElementById("chaserSpeed").value,
+                    runnerVision: Number(document.getElementById("runnerVision").value),
+                    chaserVision: Number(document.getElementById("chaserVision").value),
+                    runnerSpeed: Number(document.getElementById("runnerSpeed").value),
+                    chaserSpeed: Number(document.getElementById("chaserSpeed").value),
                 }
             });
         }
@@ -197,10 +198,10 @@ export class MultiplayerHandler {
         this.playerSprites.forEach((p) => p.updateNametag());
     }
     /**
-     * Called when space pressed. If local player is the catcher and is
-     * within required distance of other player, sends a 'catch' message
-     * to the server with the other player's ID.
-     */
+    * Called when space pressed. If local player is the catcher and is
+    * within required distance of other player, sends a 'catch' message
+    * to the server with the other player's ID.
+    */
     catch(playerX, playerY) {
         if (this.amChosen) {
             let closestDist = Infinity;
@@ -217,5 +218,12 @@ export class MultiplayerHandler {
                 });
             }
         }
+    }
+    /**
+     * Returns true if the game has started, false if the player's
+     * still in the holding area.
+     */
+    get gameStarted() {
+        return this.currentlyChosen !== undefined;
     }
 }

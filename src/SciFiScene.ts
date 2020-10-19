@@ -21,8 +21,10 @@ export class SciFiScene extends GameMap {
       if(this.game.multiplayerHandler.amChosen) {
         this.player.chosen();
       }
+      let p = this.game.multiplayerHandler.gameProperties;
+      this.player.speed = (this.game.multiplayerHandler.amChosen) ? p.chaserSpeed : p.runnerSpeed;
+      this.visionSize = (this.game.multiplayerHandler.amChosen) ? p.chaserVision : p.runnerVision;
     }.bind(this), 100);
-
     this.input.keyboard.on('keydown-SPACE', function () {
       this.game.multiplayerHandler.catch(this.player.x, this.player.y);
     }.bind(this));
