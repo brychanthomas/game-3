@@ -6,7 +6,6 @@ import { MultiplayerHandler } from './multiplayer.js';
 /**
 Next tasks:
 
-- Correct positions for existing players when new people join
 - Configurable radius for fog of war
 - Configurable speed
 - Tracking scores on server

@@ -27,6 +27,11 @@ export class HoldingAreaScene extends GameMap {
     this.playButton.setInteractive();
     this.playButton.on('pointerdown',this.playButtonPressed.bind(this));
     this.playButton.visible = this.game.multiplayerHandler.amHost;
+    if (this.game.multiplayerHandler.amHost) { //show property sliders if host
+      for (var e of document.getElementsByClassName('properties')) {
+        (<HTMLElement>e).style.display = 'block';
+      }
+    }
   }
 
   update() {
@@ -41,10 +46,14 @@ export class HoldingAreaScene extends GameMap {
   }
 
   /**
-   * Called when play button is pressed - sends a start message to
-   * the server.
+   * Called when play button is pressed - Hides property sliders and
+   * labels and sends a start message to the server.
    */
   private playButtonPressed() {
+    console.log('a');
+    for (var e of document.getElementsByClassName('properties')) {
+      (<HTMLElement>e).style.display = 'none';
+    }
     this.game.multiplayerHandler.sendStartMessage();
   }
 }
