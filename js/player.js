@@ -114,6 +114,9 @@ export class LocalPlayer extends Player {
             };
         }
     }
+    get caught() {
+        return this.amCaught;
+    }
 }
 /**
  * Class to represent a player that isn't being controlled

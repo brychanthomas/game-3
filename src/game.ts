@@ -7,8 +7,6 @@ import { MultiplayerHandler } from './multiplayer.js';
 /**
 Next tasks:
 
-- Configurable radius for fog of war
-- Configurable speed
 - Tracking scores on server
 - Scores shown when all players have played
 - Fix weird bug when connecting on second attempt?
