@@ -13,8 +13,9 @@ export class ScoreScene extends AScene {
     create() {
         this.add.text(240, 60, "Scores", { fontSize: '32px', fontFamily: "Arial Black" });
         for (var i = 0; i < this.scores.length; i++) {
-            this.add.text(240, 110 + (20 * i), i + 1 + ':');
-            this.add.text(270, 110 + (20 * i), this.scores[i].score.toString().padStart(2, "0") + ' - ' + this.scores[i].username);
+            this.add.text(240, 110 + (20 * i), i + 1 + '.');
+            this.add.text(270, 110 + (20 * i), this.scores[i].username + ':');
+            this.add.text(450, 110 + (20 * i), this.scores[i].score.toString().padStart(2, "0"));
         }
     }
 }
