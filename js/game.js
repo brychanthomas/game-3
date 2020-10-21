@@ -7,8 +7,11 @@ import { ScoreScene } from './ScoreScene.js';
 /**
 Next tasks:
 
-- Tracking scores on server
-- Scores shown when all players have played
+- Better font
+- Adjustable round length
+- Countdown
+- Transitions
+- Loading icon
 - Fix weird bug when connecting on second attempt?
 */
 const config = {

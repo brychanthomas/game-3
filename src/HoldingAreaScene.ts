@@ -50,7 +50,6 @@ export class HoldingAreaScene extends GameMap {
    * labels and sends a start message to the server.
    */
   private playButtonPressed() {
-    console.log('a');
     for (var e of document.getElementsByClassName('properties')) {
       (<HTMLElement>e).style.display = 'none';
     }

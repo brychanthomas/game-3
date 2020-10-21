@@ -193,6 +193,7 @@ export class MultiplayerHandler {
                     chaserVision: Number(document.getElementById("chaserVision").value),
                     runnerSpeed: Number(document.getElementById("runnerSpeed").value),
                     chaserSpeed: Number(document.getElementById("chaserSpeed").value),
+                    roundLength: Number(document.getElementById("roundLength").value),
                 }
             });
         }

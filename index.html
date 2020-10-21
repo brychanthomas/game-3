@@ -11,9 +11,11 @@ function updatePropertyLabels() {
   document.getElementById("runnerVisionLabel")
   .innerHTML = 'Runner vision: '+document.getElementById("runnerVision").value;
   document.getElementById("chaserSpeedLabel")
-  .innerHTML = 'Chaser Speed: '+document.getElementById("chaserSpeed").value;
+  .innerHTML = 'Chaser speed: '+document.getElementById("chaserSpeed").value;
   document.getElementById("runnerSpeedLabel")
-  .innerHTML = 'Runner Speed: '+document.getElementById("runnerSpeed").value;
+  .innerHTML = 'Runner speed: '+document.getElementById("runnerSpeed").value;
+  document.getElementById("roundLengthLabel")
+  .innerHTML = 'Round length: '+document.getElementById("roundLength").value+' seconds';
 }
   </script>
   <script>var exports = {};</script>
@@ -78,6 +80,14 @@ function updatePropertyLabels() {
     left: 10px;
     top: 160px;
   }
+  #roundLengthLabel {
+    left: 15px;
+    top: 180px;
+  }
+  #roundLength {
+    left: 10px;
+    top: 200px;
+  }
   .properties {
     position: absolute;
     display: none;
@@ -101,6 +111,8 @@ function updatePropertyLabels() {
     <input type="range" min="40" max="400" value="200" step="10" id="chaserSpeed" class="properties">
     <label for="runnerSpeed" id="runnerSpeedLabel" class="properties">Runner speed: 200</label>
     <input type="range" min="40" max="400" value="200" step="10" id="runnerSpeed" class="properties">
+    <label for="roundLength" id="roundLengthLabel" class="properties">Round length: 20 seconds</label>
+    <input type="range" min="5" max="60" value="20" step="5" id="roundLength" class="properties">
   </form>
 </body>
 </html>

@@ -8,9 +8,10 @@ import { ScoreScene } from './ScoreScene.js';
 /**
 Next tasks:
 
-- Lobby removed from server when game over
 - Better font
 - Adjustable round length
+- Countdown
+- Transitions
 - Loading icon
 - Fix weird bug when connecting on second attempt?
 */
