@@ -6,6 +6,7 @@ class Lobby {
   constructor() {
     this.players = [];
     this.gameStarted = false;
+    this.scores = {};
   }
 
   /**
@@ -13,6 +14,7 @@ class Lobby {
    */
   addPlayer(player) {
     this.players.push(player);
+    this.scores[player.id] = 0;
   }
 
   /**
@@ -72,6 +74,8 @@ class Lobby {
       });
       this.currentlyChosen = chosen;
       setTimeout(this.startNextRound.bind(this), 20 * 1000);
+    } else {
+      console.log(this.scores);
     }
   }
 
@@ -149,6 +153,7 @@ wss.on('connection', function connection(ws) {
 
         case 13: // catch
           lobbies[players[message.id]].broadcast({type:14, id: message.id});
+          lobbies[players[message.id]].scores[lobbies[players[message.id]].currentlyChosen]++;
           break;
     }
 

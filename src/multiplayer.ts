@@ -260,8 +260,11 @@ export class MultiplayerHandler {
      this.otherPlayers = undefined;
      if (this.communicator !== undefined) {
        this.communicator.close();
+       this.communicator = undefined;
      }
      this.inLobby = false;
+     this.currentlyChosen = undefined;
+     this.scene = undefined;
    }
 
    /**
