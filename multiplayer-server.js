@@ -75,7 +75,9 @@ class Lobby {
       this.currentlyChosen = chosen;
       setTimeout(this.startNextRound.bind(this), 20 * 1000);
     } else {
-      console.log(this.scores);
+      this.broadcast({
+        type: 15, scores: this.getScores()
+      });
     }
   }
 
@@ -85,6 +87,17 @@ class Lobby {
   sendTo(id, message) {
     var player = this.players.find((p) => p.id === id);
     player.connection.send(JSON.stringify(message));
+  }
+
+  /**
+   * Get the scores as a list of objects with username and score properties
+   */
+  getScores() {
+    var scores = [];
+    for (var p of this.players) {
+      scores.push({username: p.username, score: this.scores[p.id]});
+    }
+    return scores;
   }
 }
 

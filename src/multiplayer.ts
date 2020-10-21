@@ -42,6 +42,7 @@ interface serverMessage {
   username?: string;
   error?: string;
   properties?: gameProperties;
+  scores?: Object[];
 }
 
 /**
@@ -190,6 +191,10 @@ export class MultiplayerHandler {
           var player = this.playerSprites.find((p) => p.id === message.id);
           player.visible = false;
         }
+        break;
+
+      case 15: // Scores
+        this.scene.scene.start('score', message.scores);
         break;
     }
   }

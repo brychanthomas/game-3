@@ -107,6 +107,9 @@ export class MultiplayerHandler {
                     player.visible = false;
                 }
                 break;
+            case 15: // Scores
+                this.scene.scene.start('score', message.scores);
+                break;
         }
     }
     /**

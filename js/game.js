@@ -3,6 +3,7 @@ import { HoldingAreaScene } from './HoldingAreaScene.js';
 import { MainMenuScene } from './MainMenuScene.js';
 import { LoadingScene } from './LoadingScene.js';
 import { MultiplayerHandler } from './multiplayer.js';
+import { ScoreScene } from './ScoreScene.js';
 /**
 Next tasks:
 
@@ -15,7 +16,7 @@ const config = {
     pixelArt: true,
     width: 800,
     height: 600,
-    scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene],
+    scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene, ScoreScene],
     physics: {
         default: 'arcade',
         arcade: {
