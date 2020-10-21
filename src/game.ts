@@ -8,8 +8,10 @@ import { ScoreScene } from './ScoreScene.js';
 /**
 Next tasks:
 
-- Tracking scores on server
-- Scores shown when all players have played
+- Lobby removed from server when game over
+- Better font
+- Adjustable round length
+- Loading icon
 - Fix weird bug when connecting on second attempt?
 */
 

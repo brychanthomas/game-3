@@ -3,8 +3,9 @@ var WebSocket = require('ws');
 const wss = new WebSocket.Server({port:5000});
 
 class Lobby {
-  constructor() {
+  constructor(code) {
     this.players = [];
+    this.lobbyCode = code;
     this.gameStarted = false;
     this.scores = {};
   }
@@ -78,6 +79,7 @@ class Lobby {
       this.broadcast({
         type: 15, scores: this.getScores()
       });
+      this.delete();
     }
   }
 
@@ -98,6 +100,18 @@ class Lobby {
       scores.push({username: p.username, score: this.scores[p.id]});
     }
     return scores;
+  }
+
+  /**
+   * Remove lobby from lobbies object and players from players object,
+   * as well as closing all player websockets.
+   */
+  delete() {
+    for (var p of this.players) {
+      p.connection.close();
+      players[p.id] = undefined;
+    }
+    lobbies[this.lobbyCode] = undefined;
   }
 }
 
@@ -134,7 +148,7 @@ wss.on('connection', function connection(ws) {
 
       case 2: //lobby join request
         if (lobbies[message.lobbyCode] === undefined) {
-          lobbies[message.lobbyCode] = new Lobby();
+          lobbies[message.lobbyCode] = new Lobby(message.lobbyCode);
         }
         if (!lobbies[message.lobbyCode].gameStarted) {
           lobbies[message.lobbyCode].broadcast({ //new player
