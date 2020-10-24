@@ -195,7 +195,7 @@ export class MultiplayerHandler {
         break;
 
       case 15: // Scores
-        this.scene.scene.start('score', message.scores);
+        this.scene.fadeOutAndStartScene('score', message.scores);
         break;
     }
   }

@@ -8,10 +8,10 @@ export class AScene extends Phaser.Scene {
     /**
      * Fade out the camera and then start given scene.
      */
-    fadeOutAndStartScene(scene) {
+    fadeOutAndStartScene(scene, data) {
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start(scene);
+            this.scene.start(scene, data);
         });
     }
 }

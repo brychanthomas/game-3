@@ -17,5 +17,6 @@ export class ScoreScene extends AScene {
             this.add.text(270, 110 + (20 * i), this.scores[i].username + ':');
             this.add.text(450, 110 + (20 * i), this.scores[i].score.toString().padStart(2, "0"));
         }
+        this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 }
