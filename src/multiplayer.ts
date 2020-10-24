@@ -25,6 +25,7 @@ interface gameProperties {
   runnerVision: number;
   chaserSpeed: number;
   runnerSpeed: number;
+  roundLength: integer;
 }
 
 /**

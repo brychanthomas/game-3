@@ -2,6 +2,9 @@ import { GameMap } from './scenes.js';
 
 export class SciFiScene extends GameMap {
 
+  /** Text showing seconds left in round. */
+  private countdownText: Phaser.GameObjects.Text;
+
   constructor() {
     super('scifi', 'scifi-tileset', 'tileset', 'scifi-tilemap');
   }
@@ -25,9 +28,20 @@ export class SciFiScene extends GameMap {
       this.player.speed = (this.game.multiplayerHandler.amChosen) ? p.chaserSpeed : p.runnerSpeed;
       this.visionSize = (this.game.multiplayerHandler.amChosen) ? p.chaserVision : p.runnerVision;
     }.bind(this), 100);
+
     this.input.keyboard.on('keydown-SPACE', function () {
       this.game.multiplayerHandler.catch(this.player.x, this.player.y);
     }.bind(this));
+
+    this.time.addEvent({
+      delay: 1000,
+      callback: this.updateTimer,
+      callbackScope: this,
+      repeat: this.game.multiplayerHandler.gameProperties.roundLength
+    });
+    this.countdownText = this.add.text(0, 0,
+      String(this.game.multiplayerHandler.gameProperties.roundLength), {fontSize: '30px'});
+    this.countdownText.depth = 21; //bring to front
   }
 
   update() {
@@ -44,5 +58,14 @@ export class SciFiScene extends GameMap {
     if (this.player.caught) {
       this.visionSize = 5;
     }
+    this.countdownText.x = this.cameras.main.scrollX + 750;
+    this.countdownText.y = this.cameras.main.scrollY + 550;
+  }
+
+  /**
+   * Called every second by Phaser clock to update countdown text.
+   */
+  updateTimer() {
+    this.countdownText.text = String(Number(this.countdownText.text) - 1);
   }
 }

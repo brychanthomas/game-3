@@ -8,7 +8,6 @@ import { ScoreScene } from './ScoreScene.js';
 Next tasks:
 
 - Better font
-- Adjustable round length
 - Countdown
 - Transitions
 - Loading icon
