@@ -5,6 +5,15 @@ import { LocalPlayer } from './player.js';
  * property to be used).
  */
 export class AScene extends Phaser.Scene {
+    /**
+     * Fade out the camera and then start given scene.
+     */
+    fadeOutAndStartScene(scene) {
+        this.cameras.main.fadeOut(500, 0, 0, 0);
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start(scene);
+        });
+    }
 }
 /**
  * Abstract class to create a scene using a tilemap.

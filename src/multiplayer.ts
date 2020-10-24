@@ -176,7 +176,7 @@ export class MultiplayerHandler {
 
       case 9: // Game starting
         this.gameProperties = message.properties;
-        this.scene.startGameScene();
+        this.scene.fadeOutAndStartScene('scifi');
         break;
 
       case 12: // Choice
