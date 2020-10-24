@@ -9,7 +9,6 @@ import { ScoreScene } from './ScoreScene.js';
 Next tasks:
 
 - Better font
-- Countdown
 - Transitions
 - Loading icon
 - Fix weird bug when connecting on second attempt?

@@ -74,7 +74,8 @@ class Lobby {
         type: 12, id: chosen
       });
       this.currentlyChosen = chosen;
-      setTimeout(this.startNextRound.bind(this), this.gameProperties.roundLength * 1000);
+      //+500 to make up for fade in/out transitions
+      setTimeout(this.startNextRound.bind(this), (this.gameProperties.roundLength * 1000)+500);
     } else {
       this.broadcast({
         type: 15, scores: this.getScores()

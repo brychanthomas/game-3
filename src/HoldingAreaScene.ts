@@ -55,4 +55,15 @@ export class HoldingAreaScene extends GameMap {
     }
     this.game.multiplayerHandler.sendStartMessage();
   }
+
+  /**
+   * Fade out the camera and then start scifi scene.
+   */
+  public startGameScene() {
+    this.cameras.main.fadeOut(500, 0, 0, 0);
+
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+      this.scene.start('scifi');
+    });
+  }
 }

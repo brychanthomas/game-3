@@ -91,7 +91,7 @@ export class MultiplayerHandler {
                 break;
             case 9: // Game starting
                 this.gameProperties = message.properties;
-                this.scene.scene.start('scifi');
+                this.scene.startGameScene();
                 break;
             case 12: // Choice
                 this.currentlyChosen = message.id;
