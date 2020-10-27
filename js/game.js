@@ -8,7 +8,6 @@ import { ScoreScene } from './ScoreScene.js';
 Next tasks:
 
 - Better font
-- Transitions
 - Loading icon
 - Fix weird bug when connecting on second attempt?
 */

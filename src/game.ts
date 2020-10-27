@@ -9,24 +9,23 @@ import { ScoreScene } from './ScoreScene.js';
 Next tasks:
 
 - Better font
-- Transitions
 - Loading icon
 - Fix weird bug when connecting on second attempt?
 */
 
 const config: Phaser.Types.Core.GameConfig = {
-    type: Phaser.AUTO,
-    pixelArt: true,
-    width: 800,
-    height: 600,
-    scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene, ScoreScene],
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 0 },
-            debug: true
-        }
-    },
+  type: Phaser.AUTO,
+  pixelArt: true,
+  width: 800,
+  height: 600,
+  scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene, ScoreScene],
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 0 },
+      debug: true
+    }
+  },
 }
 
 /**

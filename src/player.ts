@@ -141,7 +141,7 @@ export class LocalPlayer extends Player {
       }
     }
   }
-  
+
   get caught() {
     return this.amCaught;
   }
