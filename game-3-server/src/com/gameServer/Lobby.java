@@ -2,24 +2,26 @@ package com.gameServer;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.IOException;
 import java.lang.Math;
 
-import java.lang.management.ManagementFactory;
+import java.util.Timer;
 
 public class Lobby {
 	
 	private ArrayList<Player> players;
 	private String lobbyCode;
-	private boolean gameStarted;
+	public  boolean gameStarted;
 	private HashMap<Integer, Integer> scores;
 	private ArrayList<Integer> idsLeft;
-	public  JsonObject gameProperties;
+	public  HashMap<String, Integer> gameProperties;
 	private int currentlyChosen;
-	public  double nextRoundTime;
+	private Timer timer;
 	
 	public Lobby (String code) {
 		players = new ArrayList<Player>();
@@ -27,6 +29,7 @@ public class Lobby {
 		gameStarted = false;
 		scores = new HashMap<Integer, Integer>();
 		idsLeft = new ArrayList<Integer>();
+		timer = new Timer();
 	}
 	
 	/** Add player object to lobby */
@@ -35,6 +38,7 @@ public class Lobby {
 			players.add(p);
 			this.scores.put(p._id, 0);
 			idsLeft.add(p._id);
+			System.out.println(p._id);
 		}
 	}
 	
@@ -65,7 +69,7 @@ public class Lobby {
 	}
 	
 	/** Set the position of a player as stored in its object. */
-	public void setPosition(int id, int x, int y) {
+	public void setPosition(int id, double x, double y) {
 		try {
 			Player p = getPlayerById(id);
 			p._x = x;
@@ -77,9 +81,10 @@ public class Lobby {
 	
 	/** Select a random ID to be the next chaser from the IDs that haven't been chosen yet */
 	public int chooseNextChaser() {
-		if (players.size() > 0) {
-			int id = (int)(Math.random() * players.size());
-			idsLeft.remove((Integer)id);
+		if (idsLeft.size() > 0) {
+			int id = idsLeft.get((int)(Math.random() * idsLeft.size()));
+			idsLeft.remove(Integer.valueOf(id));
+			System.out.println(idsLeft);
 			return id;
 		}
 		return -1;
@@ -87,20 +92,24 @@ public class Lobby {
 	
 	/** Start the next round or the score screen and set the nextRoundTime */
 	public void startNextRound() {
-		int chosen = chooseNextChaser();
+		int chosen = this.chooseNextChaser();
 		if (chosen != -1) {
 			JsonObject message = new JsonObject();
 			message.addProperty("type", 9);
-			message.add("properties", gameProperties);
-			broadcast(message);
-			gameStarted = true;
+			Gson gson = new Gson();
+			JsonElement props = gson.toJsonTree(this.gameProperties);
+			message.add("properties", props);
+			this.broadcast(message);
+			this.gameStarted = true;
 			message = new JsonObject();
 			message.addProperty("type", 12);
 			message.addProperty("id", chosen);
-			currentlyChosen = chosen;
-			nextRoundTime = ManagementFactory.getRuntimeMXBean().getUptime()
-					+ this.gameProperties.get("roundLength").getAsInt()
-					+ 500;
+			this.broadcast(message);
+			this.currentlyChosen = chosen;
+			
+			this.timer.schedule(new NextRoundTimerTask(lobbyCode) {},
+					(this.gameProperties.get("roundLength")*1000)+500);
+			
 		} else {
 			JsonObject message = new JsonObject();
 			message.addProperty("type", 15);
@@ -121,6 +130,7 @@ public class Lobby {
 		return ja;
 	}
 	
+	/** Close all connections with players in the lobby */
 	private void delete() {
 		for (Player p: players) {
 			try {
@@ -129,6 +139,11 @@ public class Lobby {
 				System.out.println("ERR: IOException when closing socket connection.");
 			}
 		}
+	}
+	
+	/** Increase the score of the current chaser when player caught */
+	public void incrementChaserScore() {
+		scores.put(currentlyChosen, scores.get(currentlyChosen) + 1);
 	}
 	
 }

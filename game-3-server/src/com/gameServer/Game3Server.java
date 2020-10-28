@@ -12,6 +12,8 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @ServerEndpoint("/websocketendpoint")
 public class Game3Server {
@@ -34,10 +36,71 @@ public class Game3Server {
 	}
 	
 	@OnMessage
-	public String onMessage(String message){
-	    System.out.println("Message from the client: " + message);
-	    String echoMsg = "Echo from the server : " + message;
-	    return echoMsg;
+	public void onMessage(String message, Session conn){
+		Gson gson = new Gson();
+	    MessageTemplate decoded = gson.fromJson(message, MessageTemplate.class);
+	    
+	    Lobby lobby;
+	    switch	(decoded.type) {
+	    
+	    	case 2: //lobby join request
+	    		if (!DataStorer.lobbies.containsKey(decoded.lobbyCode)) {
+	    			DataStorer.lobbies.put(decoded.lobbyCode, new Lobby(decoded.lobbyCode));
+	    		}
+	    		lobby = DataStorer.lobbies.get(decoded.lobbyCode);
+	    		if (!lobby.gameStarted) {
+	    			JsonObject reply = new JsonObject(); //new player message
+	    			reply.addProperty("type", 6);
+	    			reply.addProperty("id", decoded.id);
+	    			reply.addProperty("username", decoded.username);
+	    			reply.addProperty("x", 100);
+	    			reply.addProperty("y", 100);
+	    			lobby.broadcast(reply);
+	    			Player player = new Player(conn, decoded.id, decoded.username);
+	    			reply = new JsonObject(); //player listing
+	    			reply.addProperty("type", 3);
+	    			reply.add("lobby", lobby.encode());
+					player.send(reply.toString());
+					lobby.addPlayer(player);
+					DataStorer.players.put(decoded.id, decoded.lobbyCode);
+	    		} else {
+	    			try {
+	    				conn.getBasicRemote().sendText("{\"type\": 0, \"error\": \"Game has already started in this lobby\"}");
+	    				conn.close();
+	    			} catch (IOException e) {
+	    				System.out.println("ERR: IOException when sending lobby started message");
+	    			}
+	    		}
+	    		break;
+	    		
+	    	case 5: //velocity update
+	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
+	    		JsonObject velUpdate = new JsonObject();
+	    		velUpdate.addProperty("type", 5);
+	    		velUpdate.addProperty("id", decoded.id);
+	    		velUpdate.addProperty("velocityX", decoded.velocityX);
+	    		velUpdate.addProperty("velocityY", decoded.velocityY);
+	    		velUpdate.addProperty("x", decoded.x);
+	    		velUpdate.addProperty("y", decoded.y);
+	    		lobby.broadcast(velUpdate);
+	    		lobby.setPosition(decoded.id, decoded.x, decoded.y);
+	    		break;
+	    		
+	    	case 8: //start game
+	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
+	    		lobby.gameProperties = decoded.properties;
+	    		lobby.startNextRound();
+	    		break;
+	    		
+	    	case 13: //catch
+	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
+	    		JsonObject caughtMessage = new JsonObject();
+	    		caughtMessage.addProperty("type", 14);
+	    		caughtMessage.addProperty("id", decoded.id);
+	    		lobby.broadcast(caughtMessage);
+	    		lobby.incrementChaserScore();
+	    		break;
+	    }
 	}
 	
 	@OnError

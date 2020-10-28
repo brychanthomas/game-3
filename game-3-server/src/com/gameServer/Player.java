@@ -19,6 +19,7 @@ public class Player {
 	public Player (Session connection, int id, String username) {
 		_connection = connection;
 		_id = id;
+		_username = username;
 	}
 	
 	/** Returns the properties of the player as a JsonObject */
