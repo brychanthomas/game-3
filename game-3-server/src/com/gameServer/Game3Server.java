@@ -1,20 +1,31 @@
 package com.gameServer;
 
+import java.io.IOException;
+import java.util.HashMap;
+
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
-//import javax.websocket.Session;
+import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-//import javax.servlet.http.HttpServlet;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 
 @ServerEndpoint("/websocketendpoint")
 public class Game3Server {
 	
 	@OnOpen
-	public void onOpen() {
-		System.out.println("Open connection...");
+	public void onOpen(Session s) {
+		System.out.println("ID "+DataStorer.idCounter+" connected");
+		String message = "{\"type\": 1, \"idAssign\": "+DataStorer.idCounter+"}";
+		try {
+			s.getBasicRemote().sendText(message);
+		} catch (IOException e) {
+			System.out.println("ERR: IOException when trying to assign ID");
+		}
+		DataStorer.idCounter++;
 	}
 	
 	@OnClose
