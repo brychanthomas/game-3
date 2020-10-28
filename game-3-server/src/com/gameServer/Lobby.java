@@ -19,7 +19,7 @@ public class Lobby {
 	public  boolean gameStarted;
 	private HashMap<Integer, Integer> scores;
 	private ArrayList<Integer> idsLeft;
-	public  HashMap<String, Integer> gameProperties;
+	public  HashMap<String, Double> gameProperties;
 	private int currentlyChosen;
 	private Timer timer;
 	
@@ -108,7 +108,7 @@ public class Lobby {
 			this.currentlyChosen = chosen;
 			
 			this.timer.schedule(new NextRoundTimerTask(lobbyCode) {},
-					(this.gameProperties.get("roundLength")*1000)+500);
+					(int)(this.gameProperties.get("roundLength")*1000)+500);
 			
 		} else {
 			JsonObject message = new JsonObject();

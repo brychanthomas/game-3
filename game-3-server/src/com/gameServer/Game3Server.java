@@ -1,7 +1,6 @@
 package com.gameServer;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -11,9 +10,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @ServerEndpoint("/websocketendpoint")
 public class Game3Server {

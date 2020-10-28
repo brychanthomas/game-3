@@ -12,7 +12,7 @@ public class MessageTemplate {
 	public double velocityY;
 	public double x;
 	public double y;
-	public HashMap<String, Integer> properties;
+	public HashMap<String, Double> properties;
 	
 	public String toString() {
 		return "type: "+type+", id: "+id+", lobbyCode: "+lobbyCode+", username: "+username
