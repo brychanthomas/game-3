@@ -16,12 +16,12 @@ import com.google.gson.Gson;
 public class Game3Server {
 	
 	@OnOpen
-	public void onOpen(Session s) {
+	public void onOpen(Session session) {
 		System.out.println("ID "+DataStorer.idCounter+" connected");
 		String message = "{\"type\": 1, \"idAssign\": "+DataStorer.idCounter+"}";
-		DataStorer.assignedIds.put(DataStorer.idCounter, s);
+		DataStorer.assignedIds.put(session, DataStorer.idCounter);
 		try {
-			s.getBasicRemote().sendText(message);
+			session.getBasicRemote().sendText(message);
 		} catch (IOException e) {
 			System.out.println("ERR: IOException when trying to assign ID");
 		}
@@ -29,8 +29,24 @@ public class Game3Server {
 	}
 	
 	@OnClose
-	public void onClose() {
-		System.out.println("Close connection...");
+	public void onClose(Session session) {
+		int id = DataStorer.assignedIds.get(session);
+		String lobbyCode = DataStorer.players.get(id);
+		Lobby lobby = DataStorer.lobbies.get(lobbyCode);
+		if (lobby != null) {
+			System.out.println("ID "+id+" disconnected");
+			DataStorer.assignedIds.remove(session);
+			DataStorer.players.remove(id);
+			lobby.removePlayer(id);
+			if (lobby.numPlayers() == 0) { //if lobby is empty
+				DataStorer.lobbies.remove(lobbyCode);
+				return;
+			}
+			JsonObject leftMessage = new JsonObject();
+			leftMessage.addProperty("type", 11);
+			leftMessage.addProperty("id", id);
+			lobby.broadcast(leftMessage);
+		}
 	}
 	
 	@OnMessage
@@ -39,7 +55,7 @@ public class Game3Server {
 	    MessageTemplate decoded = gson.fromJson(message, MessageTemplate.class);
 	    
 	    //if message is not from ID it is claiming to be from
-	    if(DataStorer.assignedIds.get(decoded.id) != conn) {
+	    if(DataStorer.assignedIds.get(conn) != decoded.id) {
 	    	System.out.println("WARN: Client sent message with incorrect id");
 	    	return;
 	    }

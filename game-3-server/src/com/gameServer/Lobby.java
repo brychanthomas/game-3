@@ -156,4 +156,20 @@ public class Lobby {
 		return false;
 	}
 	
+	/** Remove a specfic ID from the lobby */
+	public void removePlayer(int id) {
+		for (Player p : players) {
+			if (p._id == id) {
+				players.remove(p);
+				idsLeft.remove(Integer.valueOf(id));
+				return;
+			}
+		}
+	}
+	
+	/** Get the number of players currently in the lobby */
+	public int numPlayers() {
+		return players.size();
+	}
+	
 }

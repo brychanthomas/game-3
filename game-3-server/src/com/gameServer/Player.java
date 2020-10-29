@@ -39,4 +39,11 @@ public class Player {
 			catch (IOException e) { e.printStackTrace(); }
 		}
 	}
+	
+	public boolean equals (Object o) {
+		if (((Player)o)._id == _id && ((Player)o)._connection == _connection) {
+			return true;
+		}
+		return false;
+	}
 }
