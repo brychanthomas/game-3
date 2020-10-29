@@ -20,7 +20,7 @@ public class Lobby {
 	private HashMap<Integer, Integer> scores;
 	private ArrayList<Integer> idsLeft;
 	public  HashMap<String, Double> gameProperties;
-	private int currentlyChosen;
+	public  int currentlyChosen;
 	private Timer timer;
 	
 	public Lobby (String code) {
@@ -144,6 +144,16 @@ public class Lobby {
 	/** Increase the score of the current chaser when player caught */
 	public void incrementChaserScore() {
 		scores.put(currentlyChosen, scores.get(currentlyChosen) + 1);
+	}
+	
+	/** Check if specific ID is in this lobby */
+	public boolean containsId(int id) {
+		for (Player p : players) {
+			if (p._id == id) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

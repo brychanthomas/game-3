@@ -98,12 +98,14 @@ public class Game3Server {
 	    		
 	    	case 13: //catch
 	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.caughtId));
-	    		JsonObject caughtMessage = new JsonObject();
-	    		caughtMessage.addProperty("type", 14);
-	    		caughtMessage.addProperty("id", decoded.caughtId);
-	    		lobby.broadcast(caughtMessage);
-	    		lobby.incrementChaserScore();
-	    		break;
+		    	if (decoded.id == lobby.currentlyChosen && lobby.containsId(decoded.caughtId)) { 
+		    		JsonObject caughtMessage = new JsonObject();
+		    		caughtMessage.addProperty("type", 14);
+		    		caughtMessage.addProperty("id", decoded.caughtId);
+		    		lobby.broadcast(caughtMessage);
+		    		lobby.incrementChaserScore();
+		    	}
+		    	break;
 	    }
 	}
 	
