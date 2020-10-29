@@ -316,7 +316,7 @@ export class MultiplayerHandler {
       });
       if (closestDist < 80) {
         this.communicator.send({
-          type: 13, id: closestId
+          type: 13, id: this.myid, caughtId: closestId
         });
       }
     }
