@@ -19,6 +19,7 @@ public class Game3Server {
 	public void onOpen(Session s) {
 		System.out.println("ID "+DataStorer.idCounter+" connected");
 		String message = "{\"type\": 1, \"idAssign\": "+DataStorer.idCounter+"}";
+		DataStorer.assignedIds.put(DataStorer.idCounter, s);
 		try {
 			s.getBasicRemote().sendText(message);
 		} catch (IOException e) {
@@ -36,6 +37,12 @@ public class Game3Server {
 	public void onMessage(String message, Session conn){
 		Gson gson = new Gson();
 	    MessageTemplate decoded = gson.fromJson(message, MessageTemplate.class);
+	    
+	    //if message is not from ID it is claiming to be from
+	    if(DataStorer.assignedIds.get(decoded.id) != conn) {
+	    	System.out.println("WARN: Client sent message with incorrect id");
+	    	return;
+	    }
 	    
 	    Lobby lobby;
 	    switch	(decoded.type) {
@@ -90,10 +97,10 @@ public class Game3Server {
 	    		break;
 	    		
 	    	case 13: //catch
-	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
+	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.caughtId));
 	    		JsonObject caughtMessage = new JsonObject();
 	    		caughtMessage.addProperty("type", 14);
-	    		caughtMessage.addProperty("id", decoded.id);
+	    		caughtMessage.addProperty("id", decoded.caughtId);
 	    		lobby.broadcast(caughtMessage);
 	    		lobby.incrementChaserScore();
 	    		break;

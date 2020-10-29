@@ -13,6 +13,7 @@ public class MessageTemplate {
 	public double x;
 	public double y;
 	public HashMap<String, Double> properties;
+	public int caughtId;
 	
 	public String toString() {
 		return "type: "+type+", id: "+id+", lobbyCode: "+lobbyCode+", username: "+username
