@@ -28,6 +28,8 @@ export class MultiplayerHandler {
     constructor() {
         this.playerSprites = [];
         this.inLobby = false;
+        this.amHost = false;
+        this.hostChangedFlag = false;
     }
     /**
      * Connect to a server and join a lobby. Returns a promise.
@@ -80,18 +82,25 @@ export class MultiplayerHandler {
             case 3: // Player listing
                 this.otherPlayers = message.lobby;
                 this.inLobby = true;
-                let hostId = this.otherPlayers.reduce((m, c) => m = Math.min(m, c.id), this.myid);
-                this.amHost = (hostId === this.myid);
+                this.updateHost();
                 break;
             case 5: // Velocity update from another player
                 this.updateRemotePlayer(message);
                 break;
             case 6: // New player joined lobby
                 this.addNewPlayer(message);
+                this.updateHost();
                 break;
             case 9: // Game starting
                 this.gameProperties = message.properties;
                 this.scene.fadeOutAndStartScene('scifi');
+                break;
+            case 11: // Left
+                var player = this.playerSprites.find((p) => p.id === message.id);
+                player.destroy();
+                this.playerSprites.splice(this.playerSprites.indexOf(player), 1);
+                this.otherPlayers.splice(this.otherPlayers.findIndex((i) => i.id === message.id), 1);
+                this.updateHost();
                 break;
             case 12: // Choice
                 this.currentlyChosen = message.id;
@@ -232,5 +241,14 @@ export class MultiplayerHandler {
      */
     get gameStarted() {
         return this.currentlyChosen !== undefined;
+    }
+    /** Update amHost and hostChangedFlag, check if I'm now the host */
+    updateHost() {
+        let hostId = this.otherPlayers.reduce((m, c) => m = Math.min(m, c.id), this.myid);
+        let amNowHost = (hostId === this.myid);
+        if (amNowHost !== this.amHost) {
+            this.hostChangedFlag = true;
+        }
+        this.amHost = amNowHost;
     }
 }

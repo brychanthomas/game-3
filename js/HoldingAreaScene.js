@@ -22,9 +22,7 @@ export class HoldingAreaScene extends GameMap {
         this.playButton.on('pointerdown', this.playButtonPressed.bind(this));
         this.playButton.visible = this.game.multiplayerHandler.amHost;
         if (this.game.multiplayerHandler.amHost) { //show property sliders if host
-            for (var e of document.getElementsByClassName('properties')) {
-                e.style.display = 'block';
-            }
+            this.setHostViewVisibility(true);
         }
     }
     update() {
@@ -34,15 +32,28 @@ export class HoldingAreaScene extends GameMap {
             this.game.multiplayerHandler.sendVelocityAndPosition(this.player.velocityX, this.player.velocityY, this.player.x, this.player.y);
         }
         this.updateFog();
+        if (this.game.multiplayerHandler.hostChangedFlag) {
+            this.game.multiplayerHandler.hostChangedFlag = false;
+            this.setHostViewVisibility(this.game.multiplayerHandler.amHost);
+        }
     }
     /**
      * Called when play button is pressed - Hides property sliders and
      * labels and sends a start message to the server.
      */
     playButtonPressed() {
-        for (var e of document.getElementsByClassName('properties')) {
-            e.style.display = 'none';
-        }
+        this.setHostViewVisibility(false);
         this.game.multiplayerHandler.sendStartMessage();
+    }
+    /**
+     * Make the game property sliders and labels and the play button
+     * visible or invisible.
+     */
+    setHostViewVisibility(visible) {
+        this.playButton.visible = visible;
+        console.log(visible);
+        for (var e of document.getElementsByClassName('properties')) {
+            e.style.display = visible ? 'block' : 'none';
+        }
     }
 }

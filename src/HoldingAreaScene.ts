@@ -28,9 +28,7 @@ export class HoldingAreaScene extends GameMap {
     this.playButton.on('pointerdown',this.playButtonPressed.bind(this));
     this.playButton.visible = this.game.multiplayerHandler.amHost;
     if (this.game.multiplayerHandler.amHost) { //show property sliders if host
-      for (var e of document.getElementsByClassName('properties')) {
-        (<HTMLElement>e).style.display = 'block';
-      }
+      this.setHostViewVisibility(true);
     }
   }
 
@@ -43,6 +41,10 @@ export class HoldingAreaScene extends GameMap {
       );
     }
     this.updateFog();
+    if (this.game.multiplayerHandler.hostChangedFlag) {
+      this.game.multiplayerHandler.hostChangedFlag = false;
+      this.setHostViewVisibility(this.game.multiplayerHandler.amHost);
+    }
   }
 
   /**
@@ -50,9 +52,19 @@ export class HoldingAreaScene extends GameMap {
    * labels and sends a start message to the server.
    */
   private playButtonPressed() {
-    for (var e of document.getElementsByClassName('properties')) {
-      (<HTMLElement>e).style.display = 'none';
-    }
+    this.setHostViewVisibility(false);
     this.game.multiplayerHandler.sendStartMessage();
+  }
+
+  /**
+   * Make the game property sliders and labels and the play button
+   * visible or invisible.
+   */
+  private setHostViewVisibility(visible: boolean) {
+    this.playButton.visible = visible;
+    console.log(visible);
+    for (var e of document.getElementsByClassName('properties')) {
+      (<HTMLElement>e).style.display = visible ? 'block' : 'none';
+    }
   }
 }

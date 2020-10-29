@@ -205,4 +205,9 @@ export class RemotePlayer extends Player {
     this.nametag.visible = v;
   }
 
+  public destroy() {
+    this.sprite.destroy();
+    this.nametag.destroy();
+  }
+
 }

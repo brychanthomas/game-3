@@ -90,7 +90,9 @@ export class MultiplayerHandler {
   /** Whether the player has successfully joined a lobby yet. */
   private inLobby: boolean;
   /** Whether the local player is the game host or not. */
-  public  amHost : boolean;
+  public  amHost: boolean;
+  /** Set to true when player has changed to/from being host */
+  public  hostChangedFlag: boolean;
   /** The ID of the player that is currently the chaser. */
   private currentlyChosen: number;
   /** Whether or not the local player is the chaser. */
@@ -105,6 +107,8 @@ export class MultiplayerHandler {
   constructor() {
     this.playerSprites = [];
     this.inLobby = false;
+    this.amHost = false;
+    this.hostChangedFlag = false;
   }
 
   /**
@@ -146,6 +150,7 @@ export class MultiplayerHandler {
    */
   onMessage(raw: any) {
     var message = <serverMessage>JSON.parse(raw.data);
+
     switch(message.type) {
 
       case 0:
@@ -162,8 +167,7 @@ export class MultiplayerHandler {
       case 3: // Player listing
         this.otherPlayers = message.lobby;
         this.inLobby = true;
-        let hostId = this.otherPlayers.reduce((m, c) => m = Math.min(m, c.id), this.myid);
-        this.amHost = (hostId === this.myid);
+        this.updateHost();
         break
 
       case 5: // Velocity update from another player
@@ -172,11 +176,20 @@ export class MultiplayerHandler {
 
       case 6: // New player joined lobby
         this.addNewPlayer(message);
+        this.updateHost();
         break;
 
       case 9: // Game starting
         this.gameProperties = message.properties;
         this.scene.fadeOutAndStartScene('scifi');
+        break;
+
+      case 11: // Left
+        var player = this.playerSprites.find((p) => p.id === message.id);
+        player.destroy();
+        this.playerSprites.splice(this.playerSprites.indexOf(player), 1);
+        this.otherPlayers.splice(this.otherPlayers.findIndex((i) => i.id === message.id), 1);
+        this.updateHost();
         break;
 
       case 12: // Choice
@@ -328,5 +341,15 @@ export class MultiplayerHandler {
    */
   get gameStarted() {
     return this.currentlyChosen !== undefined;
+  }
+
+  /** Update amHost and hostChangedFlag, check if I'm now the host */
+  private updateHost() {
+    let hostId = this.otherPlayers.reduce((m, c) => m = Math.min(m, c.id), this.myid);
+    let amNowHost = (hostId === this.myid);
+    if (amNowHost !== this.amHost) {
+      this.hostChangedFlag = true;
+    }
+    this.amHost = amNowHost;
   }
 }
