@@ -115,7 +115,7 @@ public class Lobby {
 			message.addProperty("type", 15);
 			message.add("scores", getScores());
 			broadcast(message);
-			delete();
+			disconnectAll();
 		}
 	}
 	
@@ -131,7 +131,7 @@ public class Lobby {
 	}
 	
 	/** Close all connections with players in the lobby */
-	private void delete() {
+	private void disconnectAll() {
 		ArrayList<Player> playersCopy = new ArrayList<Player>(players);
 		for (Player p: playersCopy) {
 			try {
