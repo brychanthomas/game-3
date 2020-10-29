@@ -132,7 +132,8 @@ public class Lobby {
 	
 	/** Close all connections with players in the lobby */
 	private void delete() {
-		for (Player p: players) {
+		ArrayList<Player> playersCopy = new ArrayList<Player>(players);
+		for (Player p: playersCopy) {
 			try {
 				p._connection.close();
 			} catch (IOException e) {
