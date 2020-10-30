@@ -4,6 +4,10 @@ import javax.websocket.Session;
 import java.io.IOException;
 import com.google.gson.JsonObject;
 
+/**
+ * Class representing a single player with a WebSocket connection, id, coordinates
+ * and a username
+ */
 public class Player {
 	/** The WebSocket session that the player is using to communicate */
 	public Session _connection;
@@ -32,7 +36,7 @@ public class Player {
 		return jo;
 	}
 	
-	/** Send a string to the player */
+	/** Send a string to the player over their WebSocket connection */
 	public void send(String message) {
 		if (_connection.isOpen()) {
 			try { _connection.getBasicRemote().sendText(message); }

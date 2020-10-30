@@ -12,6 +12,9 @@ import java.lang.Math;
 
 import java.util.Timer;
 
+/**
+ * Class representing a single lobby of players who play the game together
+ */
 public class Lobby {
 	
 	private ArrayList<Player> players;
@@ -38,7 +41,6 @@ public class Lobby {
 			players.add(p);
 			this.scores.put(p._id, 0);
 			idsLeft.add(p._id);
-			System.out.println(p._id);
 		}
 	}
 	
@@ -59,7 +61,8 @@ public class Lobby {
 		return ja;
 	}
 	
-	public Player getPlayerById(int id) throws Exception {
+	/** Find a Player object by its ID (used to set position) */
+	private Player getPlayerById(int id) throws Exception {
 		for (Player p : players) {
 			if (p._id == id) {
 				return p;
@@ -68,7 +71,7 @@ public class Lobby {
 		throw new Exception("Player not found in lobby");
 	}
 	
-	/** Set the position of a player as stored in its object. */
+	/** Set the position of a player stored in its object. */
 	public void setPosition(int id, double x, double y) {
 		try {
 			Player p = getPlayerById(id);
@@ -80,17 +83,17 @@ public class Lobby {
 	}
 	
 	/** Select a random ID to be the next chaser from the IDs that haven't been chosen yet */
-	public int chooseNextChaser() {
+	private int chooseNextChaser() {
 		if (idsLeft.size() > 0) {
 			int id = idsLeft.get((int)(Math.random() * idsLeft.size()));
 			idsLeft.remove(Integer.valueOf(id));
-			System.out.println(idsLeft);
 			return id;
 		}
 		return -1;
 	}
 	
-	/** Start the next round or the score screen and set the nextRoundTime */
+	/** Start the next round and schedule a task to start the
+	 * round after that (or show the score screen) */
 	public void startNextRound() {
 		int chosen = this.chooseNextChaser();
 		if (chosen != -1) {
@@ -119,6 +122,7 @@ public class Lobby {
 		}
 	}
 	
+	/** Get a JsonArray of JsonObjects containing the players' usernames and scores */
 	private JsonArray getScores() {
 		JsonArray ja = new JsonArray();
 		for (Player p : players) {

@@ -18,8 +18,8 @@ public class Game3Server {
 	@OnOpen
 	public void onOpen(Session session) {
 		System.out.println("ID "+DataStorer.idCounter+" connected");
-		String message = "{\"type\": 1, \"idAssign\": "+DataStorer.idCounter+"}";
-		DataStorer.assignedIds.put(session, DataStorer.idCounter);
+		String message = "{\"type\": 1, \"idAssign\": "+DataStorer.idCounter+"}"; //assign ID
+		DataStorer.assignedIds.put(session, DataStorer.idCounter); //store ID for session
 		try {
 			session.getBasicRemote().sendText(message);
 		} catch (IOException e) {
@@ -35,24 +35,24 @@ public class Game3Server {
 		Lobby lobby = DataStorer.lobbies.get(lobbyCode);
 		if (lobby != null) {
 			System.out.println("ID "+id+" disconnected");
-			DataStorer.assignedIds.remove(session);
-			DataStorer.players.remove(id);
-			lobby.removePlayer(id);
+			DataStorer.assignedIds.remove(session); //remove stored session-id mapping
+			DataStorer.players.remove(id); //remove stored ID-lobby code mapping
+			lobby.removePlayer(id); //remove player from lobby
 			if (lobby.numPlayers() == 0) { //if lobby is empty
-				DataStorer.lobbies.remove(lobbyCode);
+				DataStorer.lobbies.remove(lobbyCode); //remove lobby
 				return;
 			}
 			JsonObject leftMessage = new JsonObject();
 			leftMessage.addProperty("type", 11);
 			leftMessage.addProperty("id", id);
-			lobby.broadcast(leftMessage);
+			lobby.broadcast(leftMessage); //send left message to others in lobby
 		}
 	}
 	
 	@OnMessage
 	public void onMessage(String message, Session conn){
-		Gson gson = new Gson();
-	    MessageTemplate decoded = gson.fromJson(message, MessageTemplate.class);
+		Gson gson = new Gson(); 
+	    MessageTemplate decoded = gson.fromJson(message, MessageTemplate.class); //decode JSON message
 	    
 	    //if message is not from ID it is claiming to be from
 	    if(DataStorer.assignedIds.get(conn) != decoded.id) {
