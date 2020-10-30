@@ -16,8 +16,6 @@ Next tasks:
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   pixelArt: true,
-  width: 800,
-  height: 600,
   scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene, ScoreScene],
   physics: {
     default: 'arcade',
@@ -25,6 +23,13 @@ const config: Phaser.Types.Core.GameConfig = {
       gravity: { y: 0 },
       debug: true
     }
+  },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 800,
+    height: 600,
+    parent: 'phaser-div',
   },
 }
 
