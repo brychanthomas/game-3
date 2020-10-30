@@ -1,4 +1,5 @@
-export class MainMenuScene extends Phaser.Scene {
+import { AScene } from './scenes.js';
+export class MainMenuScene extends AScene {
     constructor() {
         super('mainMenu');
     }
@@ -12,7 +13,7 @@ export class MainMenuScene extends Phaser.Scene {
         document.getElementById('lobbyCode').style.display = 'block';
         document.getElementById('username').style.display = 'block';
         document.getElementById('joinButton').style.display = 'block';
-        document.getElementById('joinButton').addEventListener("click", this.joinPressed.bind(this));
+        document.getElementById('joinButton').onclick = this.joinPressed.bind(this);
     }
     update() { }
     joinPressed() {
@@ -20,6 +21,7 @@ export class MainMenuScene extends Phaser.Scene {
         document.getElementById('lobbyCode').style.display = 'none';
         document.getElementById('username').style.display = 'none';
         document.getElementById('joinButton').style.display = 'none';
+        document.getElementById('joinButton').onclick = undefined;
         this.scene.start('loading');
     }
 }

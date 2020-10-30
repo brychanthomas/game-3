@@ -51,7 +51,6 @@ export class HoldingAreaScene extends GameMap {
      */
     setHostViewVisibility(visible) {
         this.playButton.visible = visible;
-        console.log(visible);
         for (var e of document.getElementsByClassName('properties')) {
             e.style.display = visible ? 'block' : 'none';
         }
