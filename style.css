@@ -1,30 +1,25 @@
 #serverAddress {
   position: absolute;
-  left: 350px;
-  top: 230px;
+  left: 45%;
+  top: 37%;
   display: none;
 }
 #lobbyCode {
   position: absolute;
-  left: 350px;
-  top: 330px;
+  left: 45%;
+  top: 53%;
   display: none;
 }
 #username {
   position: absolute;
-  left: 350px;
-  top: 430px;
+  left: 45%;
+  top: 69%;
   display: none;
 }
 #joinButton {
   position: absolute;
-  left: 350px;
-  top: 530px;
-  display: none;
-  font-family: "Courier";
-}
-.menuInputs {
-  position: absolute;
+  left: 45%;
+  top: 80%;
   display: none;
   font-family: "Courier";
 }
@@ -74,4 +69,5 @@
   display: none;
   color: white;
   font-family: "Courier";
+  white-space: nowrap;
 }

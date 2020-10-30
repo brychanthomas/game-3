@@ -14,7 +14,7 @@ Next tasks:
 */
 
 const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
+  type: Phaser.WEBGL,
   pixelArt: true,
   scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene, ScoreScene],
   physics: {

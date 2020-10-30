@@ -12,7 +12,7 @@ Next tasks:
 - Fix weird bug when connecting on second attempt?
 */
 const config = {
-    type: Phaser.AUTO,
+    type: Phaser.WEBGL,
     pixelArt: true,
     scene: [MainMenuScene, LoadingScene, HoldingAreaScene, SciFiScene, ScoreScene],
     physics: {
