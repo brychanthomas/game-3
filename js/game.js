@@ -4,12 +4,12 @@ import { MainMenuScene } from './MainMenuScene.js';
 import { LoadingScene } from './LoadingScene.js';
 import { MultiplayerHandler } from './multiplayer.js';
 import { ScoreScene } from './ScoreScene.js';
-/**
+/*
 Next tasks:
 
-- Better font
+- Better font / increase font size
 - Loading icon
-- Fix weird bug when connecting on second attempt?
+- Multiple maps???
 */
 const config = {
     type: Phaser.WEBGL,

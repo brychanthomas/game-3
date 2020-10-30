@@ -18,5 +18,14 @@ export class ScoreScene extends AScene {
             this.add.text(450, 110 + (20 * i), this.scores[i].score.toString().padStart(2, "0"));
         }
         this.cameras.main.fadeIn(500, 0, 0, 0);
+        this.button = document.getElementById("joinButton");
+        this.button.style.display = 'block';
+        this.button.innerHTML = "Return to menu";
+        this.button.onclick = this.menuButtonPressed.bind(this);
+    }
+    menuButtonPressed() {
+        this.button.innerHTML = "Join/create lobby";
+        this.button.onclick = undefined;
+        this.scene.start('mainMenu');
     }
 }

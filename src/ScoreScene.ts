@@ -8,7 +8,10 @@ interface scoreObject {
 
 export class ScoreScene extends AScene {
 
+  /** Scores sent by server */
   private scores: scoreObject[];
+  /** Button to return to menu */
+  private button: HTMLElement;
 
   constructor() {
     super('score');
@@ -30,5 +33,16 @@ export class ScoreScene extends AScene {
       this.add.text(450, 110+(20*i), this.scores[i].score.toString().padStart(2, "0"));
     }
     this.cameras.main.fadeIn(500, 0, 0, 0);
+
+    this.button = document.getElementById("joinButton");
+    this.button.style.display = 'block';
+    this.button.innerHTML = "Return to menu";
+    this.button.onclick = this.menuButtonPressed.bind(this);
+  }
+
+  private menuButtonPressed() {
+    this.button.innerHTML = "Join/create lobby";
+    this.button.onclick = undefined;
+    this.scene.start('mainMenu');
   }
 }
