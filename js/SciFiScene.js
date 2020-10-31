@@ -5,10 +5,10 @@ export class SciFiScene extends GameMap {
     }
     preload() {
         let map = this.game.multiplayerHandler.gameProperties.map;
-        this.tilesetKey = 'tileset';
+        this.tilesetKey = map + '-tileset';
         this.tilemapKey = map + '-tilemap';
-        this.load.image('tileset', 'assets/scifitiles-sheet.png');
-        this.load.tilemapTiledJSON(map + '-tilemap', 'assets/' + map + '.json');
+        this.load.image(map + '-tileset', this.game.mapFilesData[map].tileset);
+        this.load.tilemapTiledJSON(map + '-tilemap', this.game.mapFilesData[map].tilemap);
         this.load.image('player', 'assets/circle.png');
         this.load.image('vision', 'assets/mask.png');
     }
