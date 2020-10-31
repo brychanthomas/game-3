@@ -134,7 +134,7 @@ public class Lobby {
 		return ja;
 	}
 	
-	/** Close all connections with players in the lobby */
+	/** Close all connections with players in the lobby and terminate the timer */
 	private void disconnectAll() {
 		ArrayList<Player> playersCopy = new ArrayList<Player>(players);
 		for (Player p: playersCopy) {
@@ -144,6 +144,7 @@ public class Lobby {
 				System.out.println("ERR: IOException when closing socket connection.");
 			}
 		}
+		this.timer.cancel();
 	}
 	
 	/** Increase the score of the current chaser when player caught */
@@ -175,6 +176,17 @@ public class Lobby {
 	/** Get the number of players currently in the lobby */
 	public int numPlayers() {
 		return players.size();
+	}
+	
+	/** Returns lowest ID in the lobby (the lowest ID is the host) */
+	public int getHostId() {
+		int lowestId = players.get(0)._id;
+		for (Player p : players) {
+			if (p._id < lowestId) {
+				lowestId = p._id;
+			}
+		}
+		return lowestId;
 	}
 	
 }

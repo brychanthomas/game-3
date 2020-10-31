@@ -108,8 +108,10 @@ public class Game3Server {
 	    		
 	    	case 8: //start game
 	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
-	    		lobby.gameProperties = decoded.properties;
-	    		lobby.startNextRound();
+	    		if (lobby.getHostId() == decoded.id) { 
+		    		lobby.gameProperties = decoded.properties;
+		    		lobby.startNextRound();
+	    		}
 	    		break;
 	    		
 	    	case 13: //catch
