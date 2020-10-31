@@ -72,6 +72,14 @@
   left: 10px;
   top: 240px;
 }
+#mapLabel {
+  left: 15px;
+  top: 260px;
+}
+#map {
+  left: 10px;
+  top: 280px;
+}
 .properties {
   position: absolute;
   display: none;
