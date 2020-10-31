@@ -115,9 +115,11 @@ public class Lobby {
 			this.timer.schedule(new NextRoundTimerTask(lobbyCode) {
 				@Override
 				public void run() {
-					DataStorer.lobbies.get(lobbyCode).enableChaser();
+					if (DataStorer.lobbies.containsKey(lobbyCode)) {
+						DataStorer.lobbies.get(lobbyCode).enableChaser();
+					}
 				}
-			}, (int)(this.gameProperties.get("waitTime")*1000)+500);
+			}, (int)(this.gameProperties.get("waitTime")*1000));
 			
 		} else {
 			JsonObject message = new JsonObject();
@@ -201,9 +203,11 @@ public class Lobby {
 		this.timer.schedule(new NextRoundTimerTask(lobbyCode) {
 			@Override
 			public void run() {
-				DataStorer.lobbies.get(lobbyCode).startNextRound();
+				if (DataStorer.lobbies.containsKey(lobbyCode)) {
+					DataStorer.lobbies.get(lobbyCode).startNextRound();
+				}
 			}
-		}, (int)(this.gameProperties.get("roundLength")*1000));
+		}, (int)(this.gameProperties.get("roundLength")*1000)+1500);
 	}
 	
 }

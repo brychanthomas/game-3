@@ -95,7 +95,7 @@ public class Game3Server {
 	    		
 	    	case 5: //velocity update
 	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
-	    		if (lobby.currentlyChosen == decoded.id && lobby.chaserWaiting) {
+	    		if (lobby.currentlyChosen == decoded.id && lobby.chaserWaiting && (decoded.velocityX != 0 || decoded.velocityY != 0)) {
 	    			System.out.println("WARN: Chaser is moving while waiting");
 	    			return;
 	    		}
