@@ -27,6 +27,7 @@ interface gameProperties {
   runnerSpeed: number;
   waitTime: integer;
   roundLength: integer;
+  map: string;
 }
 
 /**
@@ -302,6 +303,7 @@ export class MultiplayerHandler {
            chaserSpeed: Number((<HTMLInputElement>document.getElementById("chaserSpeed")).value),
            waitTime: Number((<HTMLInputElement>document.getElementById("waitTime")).value),
            roundLength: Number((<HTMLInputElement>document.getElementById("roundLength")).value),
+           map: Number((<HTMLInputElement>document.getElementById("map")).value),
          }
        });
      }

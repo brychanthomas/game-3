@@ -204,6 +204,7 @@ export class MultiplayerHandler {
                     chaserSpeed: Number(document.getElementById("chaserSpeed").value),
                     waitTime: Number(document.getElementById("waitTime").value),
                     roundLength: Number(document.getElementById("roundLength").value),
+                    map: Number(document.getElementById("map").value),
                 }
             });
         }

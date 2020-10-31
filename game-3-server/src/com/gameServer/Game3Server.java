@@ -52,6 +52,7 @@ public class Game3Server {
 	@OnMessage
 	public void onMessage(String message, Session conn){
 		Gson gson = new Gson(); 
+		System.out.println(message);
 	    MessageTemplate decoded = gson.fromJson(message, MessageTemplate.class); //decode JSON message
 	    
 	    //if message is not from ID it is claiming to be from

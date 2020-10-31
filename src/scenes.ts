@@ -35,10 +35,8 @@ export abstract class GameMap extends AScene {
   protected tilemapKey: string;
   protected vision: Phaser.GameObjects.Image;
 
-  constructor(sceneName: string, tilesetKey: string, tilemapKey: string) {
+  constructor(sceneName: string) {
     super(sceneName);
-    this.tilesetKey = tilesetKey;
-    this.tilemapKey = tilemapKey;
   }
 
   /**
