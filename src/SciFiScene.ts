@@ -4,6 +4,8 @@ export class SciFiScene extends GameMap {
 
   /** Text showing seconds left in round. */
   private countdownText: Phaser.GameObjects.Text;
+  /** Whether the countdown is showing the wait time or the round time */
+  private countdownType: "wait"|"round";
 
   constructor() {
     super('scifi', 'scifi-tileset', 'tileset', 'scifi-tilemap');
@@ -18,6 +20,7 @@ export class SciFiScene extends GameMap {
   }
 
   create() {
+    this.countdownType = "wait";
     this.cameras.main.fadeOut(0, 0, 0, 0);
     this.game.multiplayerHandler.setScene(this);
     this.createTilemapPlayerAndFog();
@@ -40,10 +43,10 @@ export class SciFiScene extends GameMap {
       delay: 1000,
       callback: this.updateTimer,
       callbackScope: this,
-      repeat: this.game.multiplayerHandler.gameProperties.roundLength
+      repeat: this.game.multiplayerHandler.gameProperties.roundLength+this.game.multiplayerHandler.gameProperties.waitTime
     });
     this.countdownText = this.add.text(0, 0,
-      String(this.game.multiplayerHandler.gameProperties.roundLength), {fontSize: '30px'});
+      String(this.game.multiplayerHandler.gameProperties.waitTime), {fontSize: '30px', color: 'green'});
     this.countdownText.depth = 21; //bring to front
   }
 
@@ -68,7 +71,12 @@ export class SciFiScene extends GameMap {
   /**
    * Called every second by Phaser clock to update countdown text.
    */
-  updateTimer() {
+  private updateTimer() {
+    if (Number(this.countdownText.text) - 1 < 0 && this.countdownType === "wait") {
+      this.countdownText.text = String(this.game.multiplayerHandler.gameProperties.roundLength);
+      this.countdownText.setFill("pink");
+      return;
+    }
     this.countdownText.text = String(Number(this.countdownText.text) - 1);
   }
 }

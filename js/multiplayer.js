@@ -105,6 +105,9 @@ export class MultiplayerHandler {
             case 12: // Choice
                 this.currentlyChosen = message.id;
                 this.amChosen = (this.currentlyChosen === this.myid);
+                if (this.amChosen) {
+                    this.scene.playerIsChosen();
+                }
                 this.amCaught = false;
                 break;
             case 14: // Caught
@@ -202,6 +205,7 @@ export class MultiplayerHandler {
                     chaserVision: Number(document.getElementById("chaserVision").value),
                     runnerSpeed: Number(document.getElementById("runnerSpeed").value),
                     chaserSpeed: Number(document.getElementById("chaserSpeed").value),
+                    waitTime: Number(document.getElementById("waitTime").value),
                     roundLength: Number(document.getElementById("roundLength").value),
                 }
             });

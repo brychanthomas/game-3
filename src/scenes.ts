@@ -116,4 +116,15 @@ export abstract class GameMap extends AScene {
   }
 
   abstract update(): void;
+
+  /**
+   * Locks the position of the player and adds a timeout to
+   * unlock them after wait time seconds
+   * */
+  playerIsChosen() {
+    this.player.locked = true;
+    setTimeout(function(){
+      this.player.locked = false
+    }.bind(this), this.game.multiplayerHandler.gameProperties.waitTime*1000);
+  }
 }

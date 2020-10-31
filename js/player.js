@@ -46,28 +46,35 @@ export class LocalPlayer extends Player {
         this.keys = scene.input.keyboard.addKeys('W,A,S,D');
         scene.physics.add.collider(this.sprite, obstacleLayer);
         this.speed = 200;
+        this.locked = false;
     }
     /**
      * Update the velocity of the player based on the WASD keys.
      */
     update() {
-        if (this.keys.W.isDown && this.y > 20 && !this.sprite.body.blocked.up) {
-            this.sprite.body.setVelocityY(-this.speed);
-        }
-        else if (this.keys.S.isDown && this.y < this.scene.height - 20 && !this.sprite.body.blocked.down) {
-            this.sprite.body.setVelocityY(this.speed);
-        }
-        else {
-            this.sprite.body.setVelocityY(0);
-        }
-        if (this.keys.A.isDown && this.x > 20 && !this.sprite.body.blocked.left) {
-            this.sprite.body.setVelocityX(-this.speed);
-        }
-        else if (this.keys.D.isDown && this.x < this.scene.width - 20 && !this.sprite.body.blocked.right) {
-            this.sprite.body.setVelocityX(this.speed);
+        if (!this.locked) {
+            if (this.keys.W.isDown && this.y > 20 && !this.sprite.body.blocked.up) {
+                this.sprite.body.setVelocityY(-this.speed);
+            }
+            else if (this.keys.S.isDown && this.y < this.scene.height - 20 && !this.sprite.body.blocked.down) {
+                this.sprite.body.setVelocityY(this.speed);
+            }
+            else {
+                this.sprite.body.setVelocityY(0);
+            }
+            if (this.keys.A.isDown && this.x > 20 && !this.sprite.body.blocked.left) {
+                this.sprite.body.setVelocityX(-this.speed);
+            }
+            else if (this.keys.D.isDown && this.x < this.scene.width - 20 && !this.sprite.body.blocked.right) {
+                this.sprite.body.setVelocityX(this.speed);
+            }
+            else {
+                this.sprite.body.setVelocityX(0);
+            }
         }
         else {
             this.sprite.body.setVelocityX(0);
+            this.sprite.body.setVelocityY(0);
         }
     }
     /**

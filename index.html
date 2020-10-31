@@ -16,6 +16,8 @@ function updatePropertyLabels() {
   .innerHTML = 'Runner speed: '+document.getElementById("runnerSpeed").value;
   document.getElementById("roundLengthLabel")
   .innerHTML = 'Round length: '+document.getElementById("roundLength").value+' seconds';
+  document.getElementById("waitTimeLabel")
+  .innerHTML = 'Chaser wait time: '+document.getElementById("waitTime").value+' seconds';
 }
   </script>
   <script>var exports = {};</script>
@@ -41,6 +43,8 @@ function updatePropertyLabels() {
     <input type="range" min="40" max="400" value="200" step="10" id="chaserSpeed" class="properties">
     <label for="runnerSpeed" id="runnerSpeedLabel" class="properties">Runner speed: 200</label>
     <input type="range" min="40" max="400" value="200" step="10" id="runnerSpeed" class="properties">
+    <label for="waitTime" id="waitTimeLabel" class="properties">Chaser wait time: 15 seconds</label>
+    <input type="range" min="0" max="30" value="15" step="5" id="waitTime" class="properties">
     <label for="roundLength" id="roundLengthLabel" class="properties">Round length: 20 seconds</label>
     <input type="range" min="5" max="60" value="20" step="5" id="roundLength" class="properties">
   </form>

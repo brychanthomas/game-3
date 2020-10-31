@@ -11,6 +11,7 @@ export class SciFiScene extends GameMap {
         this.load.image('vision', 'assets/mask.png');
     }
     create() {
+        this.countdownType = "wait";
         this.cameras.main.fadeOut(0, 0, 0, 0);
         this.game.multiplayerHandler.setScene(this);
         this.createTilemapPlayerAndFog();
@@ -31,9 +32,9 @@ export class SciFiScene extends GameMap {
             delay: 1000,
             callback: this.updateTimer,
             callbackScope: this,
-            repeat: this.game.multiplayerHandler.gameProperties.roundLength
+            repeat: this.game.multiplayerHandler.gameProperties.roundLength + this.game.multiplayerHandler.gameProperties.waitTime
         });
-        this.countdownText = this.add.text(0, 0, String(this.game.multiplayerHandler.gameProperties.roundLength), { fontSize: '30px' });
+        this.countdownText = this.add.text(0, 0, String(this.game.multiplayerHandler.gameProperties.waitTime), { fontSize: '30px', color: 'green' });
         this.countdownText.depth = 21; //bring to front
     }
     update() {
@@ -54,6 +55,11 @@ export class SciFiScene extends GameMap {
      * Called every second by Phaser clock to update countdown text.
      */
     updateTimer() {
+        if (Number(this.countdownText.text) - 1 < 0 && this.countdownType === "wait") {
+            this.countdownText.text = String(this.game.multiplayerHandler.gameProperties.roundLength);
+            this.countdownText.setFill("pink");
+            return;
+        }
         this.countdownText.text = String(Number(this.countdownText.text) - 1);
     }
 }

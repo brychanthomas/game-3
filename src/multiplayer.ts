@@ -25,6 +25,7 @@ interface gameProperties {
   runnerVision: number;
   chaserSpeed: number;
   runnerSpeed: number;
+  waitTime: integer;
   roundLength: integer;
 }
 
@@ -195,6 +196,9 @@ export class MultiplayerHandler {
       case 12: // Choice
         this.currentlyChosen = message.id;
         this.amChosen = (this.currentlyChosen === this.myid);
+        if (this.amChosen) {
+          this.scene.playerIsChosen();
+        }
         this.amCaught = false;
         break;
 
@@ -299,6 +303,7 @@ export class MultiplayerHandler {
            chaserVision: Number((<HTMLInputElement>document.getElementById("chaserVision")).value),
            runnerSpeed: Number((<HTMLInputElement>document.getElementById("runnerSpeed")).value),
            chaserSpeed: Number((<HTMLInputElement>document.getElementById("chaserSpeed")).value),
+           waitTime: Number((<HTMLInputElement>document.getElementById("waitTime")).value),
            roundLength: Number((<HTMLInputElement>document.getElementById("roundLength")).value),
          }
        });
