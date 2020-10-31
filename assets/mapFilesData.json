@@ -1,0 +1,10 @@
+[
+  {
+    "tilemap": "assets/sci-fi.json",
+    "tileset": "assets/scifitiles-sheet.png"
+  },
+  {
+    "tilemap": "assets/open.json",
+    "tileset": "assets/scifitiles-sheet.png"
+  }
+]

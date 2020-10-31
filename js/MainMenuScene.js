@@ -3,8 +3,12 @@ export class MainMenuScene extends AScene {
     constructor() {
         super('mainMenu');
     }
-    preload() { }
+    preload() {
+        this.load.json('mapData', 'assets/mapFilesData.json');
+    }
     create() {
+        this.game.mapFilesData = this.cache.json.get('mapData');
+        console.log(this.game.mapFilesData);
         this.add.text(240, 60, "The Game", { fontSize: '64px', fontFamily: "Arial Black" });
         this.add.text(350, 200, "Server address:");
         this.add.text(350, 300, "Lobby code:");

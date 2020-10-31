@@ -38,6 +38,7 @@ const config: Phaser.Types.Core.GameConfig = {
  */
 export class TheGame extends Phaser.Game {
   public multiplayerHandler: MultiplayerHandler;
+  public mapFilesData: any;
 
   constructor(config: Phaser.Types.Core.GameConfig) {
     super(config);
