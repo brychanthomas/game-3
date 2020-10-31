@@ -95,6 +95,10 @@ public class Game3Server {
 	    		
 	    	case 5: //velocity update
 	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
+	    		if (lobby.currentlyChosen == decoded.id && lobby.chaserWaiting) {
+	    			System.out.println("WARN: Chaser is moving while waiting");
+	    			return;
+	    		}
 	    		JsonObject velUpdate = new JsonObject();
 	    		velUpdate.addProperty("type", 5);
 	    		velUpdate.addProperty("id", decoded.id);
@@ -116,7 +120,7 @@ public class Game3Server {
 	    		
 	    	case 13: //catch
 	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.caughtId));
-		    	if (decoded.id == lobby.currentlyChosen && lobby.containsId(decoded.caughtId)) { 
+		    	if (decoded.id == lobby.currentlyChosen && lobby.containsId(decoded.caughtId) && !lobby.chaserWaiting) { 
 		    		JsonObject caughtMessage = new JsonObject();
 		    		caughtMessage.addProperty("type", 14);
 		    		caughtMessage.addProperty("id", decoded.caughtId);

@@ -25,6 +25,7 @@ public class Lobby {
 	public  HashMap<String, Double> gameProperties;
 	public  int currentlyChosen;
 	private Timer timer;
+	public  boolean chaserWaiting;
 	
 	public Lobby (String code) {
 		players = new ArrayList<Player>();
@@ -109,9 +110,14 @@ public class Lobby {
 			message.addProperty("id", chosen);
 			this.broadcast(message);
 			this.currentlyChosen = chosen;
+			this.chaserWaiting = true;
 			
-			this.timer.schedule(new NextRoundTimerTask(lobbyCode) {},
-					(int)(this.gameProperties.get("roundLength")*1000)+500);
+			this.timer.schedule(new NextRoundTimerTask(lobbyCode) {
+				@Override
+				public void run() {
+					DataStorer.lobbies.get(lobbyCode).enableChaser();
+				}
+			}, (int)(this.gameProperties.get("waitTime")*1000)+500);
 			
 		} else {
 			JsonObject message = new JsonObject();
@@ -187,6 +193,17 @@ public class Lobby {
 			}
 		}
 		return lowestId;
+	}
+	
+	/** Called when wait time has finished */
+	public void enableChaser() {
+		chaserWaiting = false;
+		this.timer.schedule(new NextRoundTimerTask(lobbyCode) {
+			@Override
+			public void run() {
+				DataStorer.lobbies.get(lobbyCode).startNextRound();
+			}
+		}, (int)(this.gameProperties.get("roundLength")*1000));
 	}
 	
 }

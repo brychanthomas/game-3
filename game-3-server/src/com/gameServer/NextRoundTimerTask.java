@@ -11,8 +11,6 @@ public class NextRoundTimerTask extends TimerTask {
 		lobbyCode = code;
 	}
 	
-	public void run() {
-		DataStorer.lobbies.get(lobbyCode).startNextRound();
-	}
+	public void run() {}
 
 }
