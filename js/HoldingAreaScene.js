@@ -4,7 +4,7 @@ import { GameMap } from './scenes.js';
  */
 export class HoldingAreaScene extends GameMap {
     constructor() {
-        super('holdingArea', 'scifi-tileset', 'tileset', 'holdingArea-tilemap');
+        super('holdingArea', 'tileset', 'holdingArea-tilemap');
     }
     preload() {
         this.load.image('tileset', 'assets/scifitiles-sheet.png');

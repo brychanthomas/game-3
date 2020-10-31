@@ -19,9 +19,8 @@ export class AScene extends Phaser.Scene {
  * Abstract class to create a scene using a tilemap.
  */
 export class GameMap extends AScene {
-    constructor(sceneName, tiledTilesetName, tilesetKey, tilemapKey) {
+    constructor(sceneName, tilesetKey, tilemapKey) {
         super(sceneName);
-        this.tiledTilesetName = tiledTilesetName;
         this.tilesetKey = tilesetKey;
         this.tilemapKey = tilemapKey;
     }
@@ -30,7 +29,7 @@ export class GameMap extends AScene {
      */
     createTilemapPlayerAndFog() {
         const map = this.make.tilemap({ key: this.tilemapKey });
-        const tileset = map.addTilesetImage(this.tiledTilesetName, this.tilesetKey);
+        const tileset = map.addTilesetImage('tileset', this.tilesetKey);
         var floorLayer = map.createStaticLayer('Background', tileset).setScale(2.5);
         var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
         obstacleLayer.setScale(2.5);

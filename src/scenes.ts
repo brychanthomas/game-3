@@ -31,14 +31,12 @@ export abstract class GameMap extends AScene {
   public height: number;
   public width: number;
   protected player: LocalPlayer;
-  protected tiledTilesetName: string;
   protected tilesetKey: string;
   protected tilemapKey: string;
   protected vision: Phaser.GameObjects.Image;
 
-  constructor(sceneName: string, tiledTilesetName: string, tilesetKey: string, tilemapKey: string) {
+  constructor(sceneName: string, tilesetKey: string, tilemapKey: string) {
     super(sceneName);
-    this.tiledTilesetName = tiledTilesetName;
     this.tilesetKey = tilesetKey;
     this.tilemapKey = tilemapKey;
   }
@@ -53,7 +51,7 @@ export abstract class GameMap extends AScene {
    */
    createTilemapPlayerAndFog() {
      const map = this.make.tilemap({ key: this.tilemapKey });
-     const tileset = map.addTilesetImage(this.tiledTilesetName, this.tilesetKey);
+     const tileset = map.addTilesetImage('tileset', this.tilesetKey);
      var floorLayer = map.createStaticLayer('Background', tileset).setScale(2.5);
      var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
      obstacleLayer.setScale(2.5);

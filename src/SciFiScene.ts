@@ -8,7 +8,7 @@ export class SciFiScene extends GameMap {
   private countdownType: "wait"|"round";
 
   constructor() {
-    super('scifi', 'scifi-tileset', 'tileset', 'scifi-tilemap');
+    super('scifi', 'tileset', 'scifi-tilemap');
   }
 
   preload() {
@@ -75,7 +75,7 @@ export class SciFiScene extends GameMap {
   private updateTimer() {
     if (Number(this.countdownText.text) - 1 < 0 && this.countdownType === "wait") {
       this.countdownText.text = String(this.game.multiplayerHandler.gameProperties.roundLength);
-      this.countdownText.setFill("pink");
+      this.countdownText.setFill("red");
       return;
     }
     this.countdownText.text = String(Number(this.countdownText.text) - 1);

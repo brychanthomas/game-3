@@ -1,7 +1,7 @@
 import { GameMap } from './scenes.js';
 export class SciFiScene extends GameMap {
     constructor() {
-        super('scifi', 'scifi-tileset', 'tileset', 'scifi-tilemap');
+        super('scifi', 'tileset', 'scifi-tilemap');
     }
     preload() {
         //https://opengameart.org/content/sci-fi-interior-tiles
@@ -58,7 +58,7 @@ export class SciFiScene extends GameMap {
     updateTimer() {
         if (Number(this.countdownText.text) - 1 < 0 && this.countdownType === "wait") {
             this.countdownText.text = String(this.game.multiplayerHandler.gameProperties.roundLength);
-            this.countdownText.setFill("pink");
+            this.countdownText.setFill("red");
             return;
         }
         this.countdownText.text = String(Number(this.countdownText.text) - 1);

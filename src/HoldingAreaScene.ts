@@ -8,7 +8,7 @@ export class HoldingAreaScene extends GameMap {
   private playButton: Phaser.GameObjects.Image;
 
   constructor() {
-    super('holdingArea', 'scifi-tileset', 'tileset', 'holdingArea-tilemap');
+    super('holdingArea', 'tileset', 'holdingArea-tilemap');
   }
 
   preload() {
