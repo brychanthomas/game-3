@@ -124,7 +124,7 @@ export abstract class GameMap extends AScene {
   playerIsChosen() {
     this.player.locked = true;
     setTimeout(function(){
-      this.player.locked = false
+      this.player.locked = false;
     }.bind(this), this.game.multiplayerHandler.gameProperties.waitTime*1000);
   }
 }

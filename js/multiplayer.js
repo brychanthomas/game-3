@@ -105,9 +105,6 @@ export class MultiplayerHandler {
             case 12: // Choice
                 this.currentlyChosen = message.id;
                 this.amChosen = (this.currentlyChosen === this.myid);
-                if (this.amChosen) {
-                    this.scene.playerIsChosen();
-                }
                 this.amCaught = false;
                 break;
             case 14: // Caught

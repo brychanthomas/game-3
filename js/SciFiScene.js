@@ -18,6 +18,7 @@ export class SciFiScene extends GameMap {
         setTimeout(function () {
             if (this.game.multiplayerHandler.amChosen) {
                 this.player.chosen();
+                this.playerIsChosen();
             }
             let p = this.game.multiplayerHandler.gameProperties;
             this.player.speed = (this.game.multiplayerHandler.amChosen) ? p.chaserSpeed : p.runnerSpeed;
