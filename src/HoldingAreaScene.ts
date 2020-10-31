@@ -8,10 +8,12 @@ export class HoldingAreaScene extends GameMap {
   private playButton: Phaser.GameObjects.Image;
 
   constructor() {
-    super('holdingArea', 'tileset', 'holdingArea-tilemap');
+    super('holdingArea');
   }
 
   preload() {
+    this.tilesetKey = 'tileset';
+    this.tilemapKey = 'holdingArea-tilemap';
     this.load.image('tileset', 'assets/scifitiles-sheet.png');
     this.load.tilemapTiledJSON('holdingArea-tilemap', 'assets/holdingArea.json');
     this.load.image('player', 'assets/circle.png');

@@ -19,10 +19,8 @@ export class AScene extends Phaser.Scene {
  * Abstract class to create a scene using a tilemap.
  */
 export class GameMap extends AScene {
-    constructor(sceneName, tilesetKey, tilemapKey) {
+    constructor(sceneName) {
         super(sceneName);
-        this.tilesetKey = tilesetKey;
-        this.tilemapKey = tilemapKey;
     }
     /**
      * Create the tilemap, the player and the fog of war.

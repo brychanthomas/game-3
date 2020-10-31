@@ -4,9 +4,11 @@ import { GameMap } from './scenes.js';
  */
 export class HoldingAreaScene extends GameMap {
     constructor() {
-        super('holdingArea', 'tileset', 'holdingArea-tilemap');
+        super('holdingArea');
     }
     preload() {
+        this.tilesetKey = 'tileset';
+        this.tilemapKey = 'holdingArea-tilemap';
         this.load.image('tileset', 'assets/scifitiles-sheet.png');
         this.load.tilemapTiledJSON('holdingArea-tilemap', 'assets/holdingArea.json');
         this.load.image('player', 'assets/circle.png');

@@ -8,13 +8,15 @@ export class SciFiScene extends GameMap {
   private countdownType: "wait"|"round";
 
   constructor() {
-    super('scifi', 'tileset', 'scifi-tilemap');
+    super('scifi');
   }
 
   preload() {
-    //https://opengameart.org/content/sci-fi-interior-tiles
+    let map = this.game.multiplayerHandler.gameProperties.map;
+    this.tilesetKey = 'tileset';
+    this.tilemapKey = map + '-tilemap';
     this.load.image('tileset', 'assets/scifitiles-sheet.png');
-    this.load.tilemapTiledJSON('scifi-tilemap', 'assets/sci-fi.json');
+    this.load.tilemapTiledJSON(map+'-tilemap', 'assets/'+map+'.json');
     this.load.image('player', 'assets/circle.png');
     this.load.image('vision', 'assets/mask.png');
   }
