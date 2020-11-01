@@ -103,12 +103,9 @@ public class Lobby {
 			Gson gson = new Gson();
 			JsonElement props = gson.toJsonTree(this.gameProperties);
 			message.add("properties", props);
+			message.addProperty("chosen", chosen);
 			this.broadcast(message);
 			this.gameStarted = true;
-			message = new JsonObject();
-			message.addProperty("type", 12);
-			message.addProperty("id", chosen);
-			this.broadcast(message);
 			this.currentlyChosen = chosen;
 			this.chaserWaiting = true;
 			

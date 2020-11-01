@@ -15,11 +15,11 @@ is denoted by a different integer value.
 | 5 | Velocity update | Client | velocityX, velocityY, x, y, id | {type: 5, id: 0, velocityX: 0, velocityY: 0, x: 200, y: 300} |
 | 6 | New player | Server | id, username, x, y | {type: 6, id: 1, username: "rodod",x: 100, y: 100} |
 | 7 | Set | Host Client | properties | |
-| 8 | Start | Host Client | id, properties | {type: 8, id: 0, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30}} |
-| 9 | Game starting | Server | properties | {type: 9, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30}} |
+| 8 | Start | Host Client | id, properties | {type: 8, id: 0, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30, waitTime: 15, map: 1}} |
+| 9 | Game starting | Server | properties, chosen | {type: 9, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30, waitTime: 15, map: 1}, chosen: 1} |
 | 10 | Leave | Client | id | {type: 10, id: 0} |
 | 11 | Left | Server | id | {type: 11, id: 0} |
-| 12 | Choice | Server | id | {type: 12, id: 1} |
+| 12 | ~~Choice~~ | ~~Server~~ | ~~id~~ | ~~{type: 12, id: 1}~~ |
 | 13 | Catch | Chosen Client | id, caughtId | {type: 13, id: 1, caughtId: 0} |
 | 14 | Caught | Server | id | {type: 14, id: 1} |
 | 15 | Scores | Server | score for each username | {type: 15, scores: [{username: "walter", score: 4}, {username: "rodod", score: 2}]} |
