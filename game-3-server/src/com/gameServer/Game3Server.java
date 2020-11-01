@@ -70,6 +70,11 @@ public class Game3Server {
 	    	return;
 	    }
 	    
+	    if (!decoded.isValid()) {
+	    	System.out.println("WARN: Message marked as invalid");
+	    	return;
+	    }
+	    
 	    Lobby lobby;
 	    switch	(decoded.type) {
 	    
@@ -139,8 +144,6 @@ public class Game3Server {
 		    	}
 		    	break;
 		    	
-		    default:
-		    	System.out.println("WARN: Invalid message type sent");
 	    }
 	}
 	
