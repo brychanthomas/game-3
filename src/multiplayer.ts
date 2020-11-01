@@ -27,7 +27,7 @@ interface gameProperties {
   runnerSpeed: number;
   waitTime: integer;
   roundLength: integer;
-  map: string;
+  map: number;
 }
 
 /**
@@ -46,6 +46,7 @@ interface serverMessage {
   error?: string;
   properties?: gameProperties;
   scores?: Object[];
+  chosen?: number;
 }
 
 /**
@@ -183,6 +184,9 @@ export class MultiplayerHandler {
 
       case 9: // Game starting
         this.gameProperties = message.properties;
+        this.currentlyChosen = message.chosen;
+        this.amChosen = (this.currentlyChosen === this.myid);
+        this.amCaught = false;
         this.scene.fadeOutAndStartScene('scifi');
         break;
 
@@ -192,12 +196,6 @@ export class MultiplayerHandler {
         this.playerSprites.splice(this.playerSprites.indexOf(player), 1);
         this.otherPlayers.splice(this.otherPlayers.findIndex((i) => i.id === message.id), 1);
         this.updateHost();
-        break;
-
-      case 12: // Choice
-        this.currentlyChosen = message.id;
-        this.amChosen = (this.currentlyChosen === this.myid);
-        this.amCaught = false;
         break;
 
       case 14: // Caught

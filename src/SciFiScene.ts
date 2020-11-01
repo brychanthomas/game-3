@@ -23,19 +23,16 @@ export class SciFiScene extends GameMap {
 
   create() {
     this.countdownType = "wait";
-    this.cameras.main.fadeOut(0, 0, 0, 0);
     this.game.multiplayerHandler.setScene(this);
     this.createTilemapPlayerAndFog();
-    setTimeout(function() {
-      if(this.game.multiplayerHandler.amChosen) {
-        this.player.chosen();
-        this.playerIsChosen();
-      }
-      let p = this.game.multiplayerHandler.gameProperties;
-      this.player.speed = (this.game.multiplayerHandler.amChosen) ? p.chaserSpeed : p.runnerSpeed;
-      this.visionSize = (this.game.multiplayerHandler.amChosen) ? p.chaserVision : p.runnerVision;
-      this.cameras.main.fadeIn(500, 0, 0, 0);
-    }.bind(this), 100);
+    if(this.game.multiplayerHandler.amChosen) {
+      this.player.chosen();
+      this.playerIsChosen();
+    }
+    let p = this.game.multiplayerHandler.gameProperties;
+    this.player.speed = (this.game.multiplayerHandler.amChosen) ? p.chaserSpeed : p.runnerSpeed;
+    this.visionSize = (this.game.multiplayerHandler.amChosen) ? p.chaserVision : p.runnerVision;
+    this.cameras.main.fadeIn(500, 0, 0, 0);
 
     this.input.keyboard.on('keydown-SPACE', function () {
       this.game.multiplayerHandler.catch(this.player.x, this.player.y);

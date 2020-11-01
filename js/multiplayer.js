@@ -93,6 +93,9 @@ export class MultiplayerHandler {
                 break;
             case 9: // Game starting
                 this.gameProperties = message.properties;
+                this.currentlyChosen = message.chosen;
+                this.amChosen = (this.currentlyChosen === this.myid);
+                this.amCaught = false;
                 this.scene.fadeOutAndStartScene('scifi');
                 break;
             case 11: // Left
@@ -101,11 +104,6 @@ export class MultiplayerHandler {
                 this.playerSprites.splice(this.playerSprites.indexOf(player), 1);
                 this.otherPlayers.splice(this.otherPlayers.findIndex((i) => i.id === message.id), 1);
                 this.updateHost();
-                break;
-            case 12: // Choice
-                this.currentlyChosen = message.id;
-                this.amChosen = (this.currentlyChosen === this.myid);
-                this.amCaught = false;
                 break;
             case 14: // Caught
                 if (message.id === this.myid) {
