@@ -9,7 +9,6 @@ Next tasks:
 
 - Better font / increase font size
 - Loading icon
-- Multiple maps???
 */
 const config = {
     type: Phaser.WEBGL,

@@ -18,7 +18,7 @@ export class LoadingScene extends AScene {
       .then(function() {
         this.scene.start('holdingArea');
       }.bind(this))
-      .catch(function(err) {
+      .catch(function(err: String) {
         this.scene.start('mainMenu');
         console.error(err);
         alert(err);

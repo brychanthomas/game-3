@@ -117,22 +117,22 @@ export class MultiplayerHandler {
   /**
    * Connect to a server and join a lobby. Returns a promise.
    */
-  join(address: string, lobbyCode: string, username: string) {
+  join(address: string, lobbyCode: string, username: string): Promise<String> {
     this.lobbyCode = lobbyCode;
     this.username = username;
     this.error = undefined;
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve: Function, reject: Function) {
       this.communicator = new Communicator(address, this.onMessage.bind(this));
       var timeWaited = 0;
 
       function checkIfConnected() {
-        if (this.inLobby) {
+        if ((<MultiplayerHandler>this).inLobby) {
           resolve();
         } else {
           timeWaited += 250;
           if (this.communicator.error !== undefined) {
             reject("Unable to connect - server is probably down or doesn't exist.");
-          } else if (this.error !== undefined) {
+          } else if ((<MultiplayerHandler>this).error !== undefined) {
             reject("Server error: " + this.error);
           }
           if (timeWaited >= 5000) {
