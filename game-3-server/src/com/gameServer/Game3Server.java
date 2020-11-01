@@ -52,8 +52,13 @@ public class Game3Server {
 	@OnMessage
 	public void onMessage(String message, Session conn){
 		Gson gson = new Gson(); 
-	    MessageTemplate decoded = gson.fromJson(message, MessageTemplate.class); //decode JSON message
-	    
+		MessageTemplate decoded;
+		try {
+			decoded = gson.fromJson(message, MessageTemplate.class); //decode JSON message
+		} catch (Exception e) {
+			System.out.println("WARN: '"+e.getClass()+"' when decoding message");
+			return;
+		}
 	    //if message is not from ID it is claiming to be from
 	    if(DataStorer.assignedIds.get(conn) != decoded.id) {
 	    	System.out.println("WARN: Client sent message with incorrect id");
