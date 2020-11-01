@@ -6,12 +6,12 @@
 </head>
 <body>
     <form>
-        <input id="message" type="text">
+        <input id="message" type="text" cols="60">
         <input onclick="wsSendMessage();" value="Echo" type="button">
         <input onclick="wsCloseConnection();" value="Disconnect" type="button">
     </form>
     <br>
-    <textarea id="echoText" rows="5" cols="80"></textarea>
+    <textarea id="echoText" rows="40" cols="100"></textarea>
     <script type="text/javascript">
         var webSocket = new WebSocket("ws://localhost:5000/game-3-server/websocketendpoint");
         var echoText = document.getElementById("echoText");

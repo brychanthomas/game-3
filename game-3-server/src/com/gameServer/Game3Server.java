@@ -60,6 +60,11 @@ public class Game3Server {
 	    	return;
 	    }
 	    
+	    if (decoded.type != 2 && !DataStorer.lobbies.containsKey(DataStorer.players.get(decoded.id))) {
+	    	System.out.println("WARN: Message type "+decoded.type+" sent by player not in lobby");
+	    	return;
+	    }
+	    
 	    Lobby lobby;
 	    switch	(decoded.type) {
 	    
@@ -128,6 +133,9 @@ public class Game3Server {
 		    		lobby.incrementChaserScore();
 		    	}
 		    	break;
+		    	
+		    default:
+		    	System.out.println("WARN: Invalid message type sent");
 	    }
 	}
 	
