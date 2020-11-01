@@ -6,5 +6,9 @@
   {
     "tilemap": "assets/open.json",
     "tileset": "assets/scifitiles-sheet.png"
+  },
+  {
+    "tilemap": "assets/sewer.json",
+    "tileset": "assets/sewer-tileset.png"
   }
 ]

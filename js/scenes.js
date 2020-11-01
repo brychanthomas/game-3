@@ -31,7 +31,7 @@ export class GameMap extends AScene {
         var floorLayer = map.createStaticLayer('Background', tileset).setScale(2.5);
         var obstacleLayer = map.createStaticLayer('Obstacles', tileset);
         obstacleLayer.setScale(2.5);
-        map.setCollisionBetween(0, 84);
+        map.setCollisionBetween(0, 200);
         // var debugGraphics = this.add.graphics();
         // map.renderDebug(debugGraphics, {
         //  tileColor: null,
