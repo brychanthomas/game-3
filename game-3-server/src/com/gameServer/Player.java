@@ -37,10 +37,13 @@ public class Player {
 	}
 	
 	/** Send a string to the player over their WebSocket connection */
-	public void send(String message) {
+	public synchronized void send(String message) {
 		if (_connection.isOpen()) {
 			try { _connection.getBasicRemote().sendText(message); }
 			catch (IOException e) { e.printStackTrace(); }
+			catch (IllegalStateException e) {
+				System.out.println("IllegalStateException in Player.send when sending "+message);
+			}
 		}
 	}
 	
