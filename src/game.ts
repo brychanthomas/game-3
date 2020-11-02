@@ -14,6 +14,8 @@ Next tasks:
 - More exception handling on the server (e.g. string in game properties
   or missing propertes / JSON parameters)
 - End round when everyone has been caught
+- Change menu screen to pure HTML to end the misalignment bug that
+  has plagued this land for generations
 */
 
 const config: Phaser.Types.Core.GameConfig = {
