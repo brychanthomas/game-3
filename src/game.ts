@@ -10,6 +10,9 @@ Next tasks:
 
 - Better font / increase font size
 - Loading icon
+- Player sprites with animations
+- More exception handling on the server (e.g. string in game properties
+  or missing propertes / JSON parameters)
 */
 
 const config: Phaser.Types.Core.GameConfig = {

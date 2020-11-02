@@ -1,8 +1,3 @@
-/*
-There is a bug where if you try and connect then go back to the main
-menu and try again it connects many times.
-*/
-
 import { RemotePlayer } from './player.js';
 import { GameMap } from './scenes.js';
 
@@ -72,6 +67,70 @@ public  error: any;
 
   close() {
     this.websocket.close(1000, "Leaving lobby");
+  }
+}
+
+/**
+ * Creates RemotePlayers and updates their positions
+ */
+class RemotePlayerManager {
+
+  private players: RemotePlayer[] = [];
+
+  /**
+   * Add a new player to the scene.
+   */
+  add(x: number, y: number, id: number, username: string, scene: GameMap) {
+    this.players.push(new RemotePlayer(x, y, id, username, scene));
+  }
+
+  /**
+   * Remove player with specific ID from scene
+   */
+  remove(id: number) {
+    var player = this.players.find((p) => p.id === id);
+    player.destroy();
+    this.players.splice(this.players.findIndex((p) => p.id === id), 1);
+  }
+
+  /**
+   * Remove all remote players from the scene
+   */
+  removeAll() {
+    for (var p of this.players) {
+      p.destroy();
+    }
+    this.players = [];
+  }
+
+  /**
+   * Create multiple remote players directly from a lobby listing
+   */
+  addMany(playerListing: playerObject[], scene: GameMap) {
+    for (var p of playerListing) {
+      this.players.push(new RemotePlayer(p.x, p.y, p.id, p.username, scene));
+    }
+  }
+
+  /**
+   * Set a specific player to be the chaser
+   */
+  choose(id: number) {
+    var player = this.players.find((p) => p.id === id);
+    player.chosen();
+  }
+
+  /**
+   * Update the velocity and position of a remote player
+   */
+  velocityUpdate(message: serverMessage) {
+    var player = this.players.find((p) => p.id === message.id);
+    if (player !== undefined) {
+      player.velocityX = message.velocityX;
+      player.velocityY = message.velocityY;
+      player.x = message.x;
+      player.y = message.y;
+    }
   }
 }
 
