@@ -1,7 +1,3 @@
-/*
-There is a bug where if you try and connect then go back to the main
-menu and try again it connects many times.
-*/
 import { RemotePlayer } from './player.js';
 /**
  * Opens a WebSocket connection for sending and receiving
@@ -22,11 +18,99 @@ class Communicator {
     }
 }
 /**
+ * Creates RemotePlayers and updates their positions
+ */
+class RemotePlayerManager {
+    constructor() {
+        this.players = [];
+    }
+    /**
+     * Add a new player to the scene.
+     */
+    add(x, y, id, username, scene) {
+        this.players.push(new RemotePlayer(x, y, id, username, scene));
+    }
+    /**
+     * Remove player with specific ID from scene
+     */
+    remove(id) {
+        var player = this.players.find((p) => p.id === id);
+        player.destroy();
+        this.players.splice(this.players.findIndex((p) => p.id === id), 1);
+    }
+    /**
+     * Remove all remote players from the scene
+     */
+    removeAll() {
+        for (var p of this.players) {
+            p.destroy();
+        }
+        this.players = [];
+    }
+    /**
+     * Create multiple remote players directly from a lobby listing
+     */
+    addMany(playerListing, scene) {
+        for (var p of playerListing) {
+            this.players.push(new RemotePlayer(p.x, p.y, p.id, p.username, scene));
+        }
+    }
+    /**
+     * Set a specific player to be the chaser
+     */
+    choose(id) {
+        var player = this.players.find((p) => p.id === id);
+        player.chosen();
+    }
+    /**
+     * Update the velocity and position of a remote player
+     */
+    velocityUpdate(message) {
+        var player = this.players.find((p) => p.id === message.id);
+        if (player !== undefined) {
+            player.velocityX = message.velocityX;
+            player.velocityY = message.velocityY;
+            player.x = message.x;
+            player.y = message.y;
+        }
+    }
+    /**
+     * Make the player sprite invisible when they have been caught
+     */
+    catch(id) {
+        var player = this.players.find((p) => p.id === id);
+        player.visible = false;
+    }
+    /**
+     * Update the positions of the nametags of the remote players
+     */
+    updateNametags() {
+        for (var p of this.players) {
+            p.updateNametag();
+        }
+    }
+    /**
+     * Get ID and distance of closest player to specific coords.
+     * Returns it as [distance, ID]
+     */
+    getClosestPlayer(playerX, playerY) {
+        let closestDist = Infinity;
+        let closestId = -1;
+        this.players.forEach(function (p) {
+            if (Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y) < closestDist) {
+                closestDist = Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y);
+                closestId = p.id;
+            }
+        });
+        return [closestDist, closestId];
+    }
+}
+/**
  * Creates and manages multiplayer sprites and communication.
  */
 export class MultiplayerHandler {
     constructor() {
-        this.playerSprites = [];
+        this.playerManager = new RemotePlayerManager();
         this.inLobby = false;
         this.amHost = false;
         this.hostChangedFlag = false;
@@ -99,9 +183,7 @@ export class MultiplayerHandler {
                 this.scene.fadeOutAndStartScene('scifi');
                 break;
             case 11: // Left
-                var player = this.playerSprites.find((p) => p.id === message.id);
-                player.destroy();
-                this.playerSprites.splice(this.playerSprites.indexOf(player), 1);
+                this.playerManager.remove(message.id);
                 this.otherPlayers.splice(this.otherPlayers.findIndex((i) => i.id === message.id), 1);
                 this.updateHost();
                 break;
@@ -110,8 +192,7 @@ export class MultiplayerHandler {
                     this.amCaught = true;
                 }
                 else {
-                    var player = this.playerSprites.find((p) => p.id === message.id);
-                    player.visible = false;
+                    this.playerManager.catch(message.id);
                 }
                 break;
             case 15: // Scores
@@ -124,18 +205,16 @@ export class MultiplayerHandler {
      */
     setScene(scene) {
         this.scene = scene;
-        this.playerSprites = [];
-        setTimeout(function () {
-            for (var player of this.otherPlayers) {
-                //spawn at (100, 100) if round started or server specified coords if in holding area
-                let x = (this.gameStarted) ? 100 : player.x;
-                let y = (this.gameStarted) ? 100 : player.y;
-                this.playerSprites.push(new RemotePlayer(x, y, player.id, player.username, this.scene));
-                if (player.id === this.currentlyChosen) {
-                    this.playerSprites[this.playerSprites.length - 1].chosen();
-                }
-            }
-        }.bind(this), 200);
+        this.playerManager.removeAll();
+        for (var player of this.otherPlayers) {
+            //spawn at (100, 100) if round started or server specified coords if in holding area
+            let x = (this.gameStarted) ? 100 : player.x;
+            let y = (this.gameStarted) ? 100 : player.y;
+            this.playerManager.add(x, y, player.id, player.username, this.scene);
+        }
+        if (this.currentlyChosen !== undefined && this.currentlyChosen !== this.myid) {
+            this.playerManager.choose(this.currentlyChosen);
+        }
     }
     /**
      * Send the player's current velocity and position.
@@ -151,13 +230,7 @@ export class MultiplayerHandler {
      */
     updateRemotePlayer(message) {
         if (message.id !== this.myid) {
-            var player = this.playerSprites.find((p) => p.id === message.id);
-            if (player !== undefined) {
-                player.velocityX = message.velocityX;
-                player.velocityY = message.velocityY;
-                player.x = message.x;
-                player.y = message.y;
-            }
+            this.playerManager.velocityUpdate(message);
         }
     }
     /**
@@ -168,15 +241,13 @@ export class MultiplayerHandler {
             id: message.id, username: message.username,
             x: message.x, y: message.y
         });
-        this.playerSprites.push(new RemotePlayer(message.x, message.y, message.id, message.username, this.scene));
+        this.playerManager.add(message.x, message.y, message.id, message.username, this.scene);
     }
     /**
      * Delete the remote player sprites and disconnect from the server.
      */
     leave() {
-        for (var p of this.playerSprites) {
-            p.destroy();
-        }
+        this.playerManager.removeAll();
         this.otherPlayers = undefined;
         if (this.communicator !== undefined) {
             this.communicator.close();
@@ -211,7 +282,7 @@ export class MultiplayerHandler {
      * Update the position of all the remote players' nametags.
      */
     updateNametags() {
-        this.playerSprites.forEach((p) => p.updateNametag());
+        this.playerManager.updateNametags();
     }
     /**
     * Called when space pressed. If local player is the catcher and is
@@ -220,14 +291,7 @@ export class MultiplayerHandler {
     */
     catch(playerX, playerY) {
         if (this.amChosen) {
-            let closestDist = Infinity;
-            let closestId = -1;
-            this.playerSprites.forEach(function (p) {
-                if (Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y) < closestDist) {
-                    closestDist = Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y);
-                    closestId = p.id;
-                }
-            });
+            let [closestDist, closestId] = this.playerManager.getClosestPlayer(playerX, playerY);
             if (closestDist < 80) {
                 this.communicator.send({
                     type: 13, id: this.myid, caughtId: closestId

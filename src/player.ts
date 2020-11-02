@@ -19,6 +19,7 @@ abstract class Player {
   constructor(x: number, y: number, scene: GameMap) {
     this.sprite = scene.physics.add.sprite(x, y, 'player');
     this.sprite.setScale(0.4);
+    this.sprite.depth = 21; //bring to front
     this.scene = scene;
   }
 

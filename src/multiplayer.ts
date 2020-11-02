@@ -132,6 +132,39 @@ class RemotePlayerManager {
       player.y = message.y;
     }
   }
+
+  /**
+   * Make the player sprite invisible when they have been caught
+   */
+  catch(id: number) {
+    var player = this.players.find((p) => p.id === id);
+    player.visible = false;
+  }
+
+  /**
+   * Update the positions of the nametags of the remote players
+   */
+  updateNametags() {
+    for (var p of this.players) {
+      p.updateNametag();
+    }
+  }
+
+  /**
+   * Get ID and distance of closest player to specific coords.
+   * Returns it as [distance, ID]
+   */
+  getClosestPlayer(playerX: number, playerY: number) {
+    let closestDist = Infinity;
+    let closestId = -1;
+    this.players.forEach(function(p) {
+      if (Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y) < closestDist) {
+        closestDist = Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y);
+        closestId = p.id;
+      }
+    });
+    return [closestDist, closestId];
+  }
 }
 
 /**
@@ -148,7 +181,7 @@ export class MultiplayerHandler {
   /** List of objects representing the other players. */
   private scene: GameMap;
   /** List of RemotePlayer instances specific to current scene. */
-  private playerSprites: RemotePlayer[];
+  private playerManager: RemotePlayerManager;
   /** Whether the player has successfully joined a lobby yet. */
   private inLobby: boolean;
   /** Whether the local player is the game host or not. */
@@ -167,7 +200,7 @@ export class MultiplayerHandler {
   public  gameProperties: gameProperties;
 
   constructor() {
-    this.playerSprites = [];
+    this.playerManager = new RemotePlayerManager();
     this.inLobby = false;
     this.amHost = false;
     this.hostChangedFlag = false;
@@ -250,9 +283,7 @@ export class MultiplayerHandler {
         break;
 
       case 11: // Left
-        var player = this.playerSprites.find((p) => p.id === message.id);
-        player.destroy();
-        this.playerSprites.splice(this.playerSprites.indexOf(player), 1);
+        this.playerManager.remove(message.id);
         this.otherPlayers.splice(this.otherPlayers.findIndex((i) => i.id === message.id), 1);
         this.updateHost();
         break;
@@ -261,8 +292,7 @@ export class MultiplayerHandler {
         if (message.id === this.myid) {
           this.amCaught = true;
         } else {
-          var player = this.playerSprites.find((p) => p.id === message.id);
-          player.visible = false;
+          this.playerManager.catch(message.id);
         }
         break;
 
@@ -277,18 +307,16 @@ export class MultiplayerHandler {
    */
   setScene(scene: GameMap) {
     this.scene = scene;
-    this.playerSprites = [];
-    setTimeout(function() {
-      for(var player of this.otherPlayers) {
-        //spawn at (100, 100) if round started or server specified coords if in holding area
-        let x = (this.gameStarted) ? 100 : player.x;
-        let y = (this.gameStarted) ? 100 : player.y;
-        this.playerSprites.push(new RemotePlayer(x, y, player.id, player.username, this.scene));
-        if (player.id === this.currentlyChosen) {
-          this.playerSprites[this.playerSprites.length-1].chosen();
-        }
-      }
-    }.bind(this), 200);
+    this.playerManager.removeAll();
+    for(var player of this.otherPlayers) {
+      //spawn at (100, 100) if round started or server specified coords if in holding area
+      let x = (this.gameStarted) ? 100 : player.x;
+      let y = (this.gameStarted) ? 100 : player.y;
+      this.playerManager.add(x, y, player.id, player.username, this.scene);
+    }
+    if (this.currentlyChosen !== undefined && this.currentlyChosen !== this.myid) {
+      this.playerManager.choose(this.currentlyChosen);
+    }
   }
 
   /**
@@ -306,13 +334,7 @@ export class MultiplayerHandler {
    */
   updateRemotePlayer(message: serverMessage) {
     if (message.id !== this.myid) {
-      var player = this.playerSprites.find((p) => p.id === message.id);
-      if (player !== undefined) {
-        player.velocityX = message.velocityX;
-        player.velocityY = message.velocityY;
-        player.x = message.x;
-        player.y = message.y;
-      }
+      this.playerManager.velocityUpdate(message);
     }
   }
 
@@ -324,17 +346,15 @@ export class MultiplayerHandler {
       id: message.id, username: message.username,
       x: message.x, y: message.y
     });
-    this.playerSprites.push(new RemotePlayer(message.x, message.y,
-      message.id, message.username, this.scene));
+    this.playerManager.add(message.x, message.y,
+      message.id, message.username, this.scene);
   }
 
   /**
    * Delete the remote player sprites and disconnect from the server.
    */
    leave() {
-     for (var p of this.playerSprites) {
-       p.destroy();
-     }
+     this.playerManager.removeAll();
      this.otherPlayers = undefined;
      if (this.communicator !== undefined) {
        this.communicator.close();
@@ -370,7 +390,7 @@ export class MultiplayerHandler {
     * Update the position of all the remote players' nametags.
     */
    updateNametags() {
-     this.playerSprites.forEach((p) => p.updateNametag());
+     this.playerManager.updateNametags();
    }
 
   /**
@@ -380,14 +400,7 @@ export class MultiplayerHandler {
   */
   catch(playerX: number, playerY: number) {
     if (this.amChosen) {
-      let closestDist = Infinity;
-      let closestId = -1;
-      this.playerSprites.forEach(function(p) {
-        if (Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y) < closestDist) {
-          closestDist = Phaser.Math.Distance.Between(playerX, playerY, p.x, p.y);
-          closestId = p.id;
-        }
-      });
+      let [closestDist, closestId] = this.playerManager.getClosestPlayer(playerX, playerY);
       if (closestDist < 80) {
         this.communicator.send({
           type: 13, id: this.myid, caughtId: closestId

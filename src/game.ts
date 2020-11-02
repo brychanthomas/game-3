@@ -13,6 +13,7 @@ Next tasks:
 - Player sprites with animations
 - More exception handling on the server (e.g. string in game properties
   or missing propertes / JSON parameters)
+- End round when everyone has been caught
 */
 
 const config: Phaser.Types.Core.GameConfig = {
