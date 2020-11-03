@@ -29,10 +29,13 @@ function updatePropertyLabels() {
 
   <div id="phaser-div" style="overflow: hidden; width: 100%; height: 100%;">
 
-  <input id="serverAddress" type="text"></input>
-  <input id="lobbyCode" type="text"></input>
-  <input id="username" type="text"></input>
-  <button id="joinButton">Join/create lobby</button>
+  <label for="serverAddress" id="serverAddressLabel" class="mainMenu">Server address:</label>
+  <input id="serverAddress" type="text" class="mainMenu"></input>
+  <label for="lobbyCode" id="lobbyCodeLabel" class="mainMenu">Lobby code:</label>
+  <input id="lobbyCode" type="text" class="mainMenu"></input>
+  <label for="username" id="usernameLabel" class="mainMenu">Lobby code:</label>
+  <input id="username" type="text" class="mainMenu"></input>
+  <button id="joinButton" class="mainMenu">Join/create lobby</button>
 
   <form onchange="updatePropertyLabels();" style="position: absolute;">
     <label for="chaserVision" id="chaserVisionLabel" class="properties">Chaser vision: 2</label>

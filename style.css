@@ -1,27 +1,43 @@
-#serverAddress {
+label {
+  color: white;
+  font-family: "Courier";
+}
+
+button {
+  font-family: "Courier";
+}
+
+.mainMenu {
   position: absolute;
-  left: 45%;
-  top: 37%;
   display: none;
+}
+#serverAddressLabel{
+  left: 45%;
+  top: 30%
+}
+#serverAddress {
+  left: 45%;
+  top: 35%;
+}
+#lobbyCodeLabel {
+  left: 45%;
+  top: 45%;
 }
 #lobbyCode {
-  position: absolute;
   left: 45%;
-  top: 53%;
-  display: none;
+  top: 50%;
+}
+#usernameLabel {
+  left: 45%;
+  top: 60%;
 }
 #username {
-  position: absolute;
   left: 45%;
-  top: 69%;
-  display: none;
+  top: 65%;
 }
 #joinButton {
-  position: absolute;
   left: 45%;
   top: 80%;
-  display: none;
-  font-family: "Courier";
 }
 
 #chaserVisionLabel {
@@ -83,7 +99,5 @@
 .properties {
   position: absolute;
   display: none;
-  color: white;
-  font-family: "Courier";
   white-space: nowrap;
 }
