@@ -172,6 +172,7 @@ export class RemotePlayer extends Player {
     this.nametag = scene.add.text(x, y-30, username, {backgroundColor: '#000'});
     this.nametag.setOrigin(0.5);
     this.nametag.setAlpha(0.6);
+    this.nametag.setDepth(19);
   }
 
   set x(x: number) {

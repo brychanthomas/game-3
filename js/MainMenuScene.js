@@ -9,6 +9,7 @@ export class MainMenuScene extends AScene {
     create() {
         this.game.mapFilesData = this.cache.json.get('mapData');
         this.add.text(240, 60, "The Game", { fontSize: '64px', fontFamily: "Arial Black" });
+        document.getElementById("joinButton").onclick = this.joinPressed.bind(this);
         this.setMenuElementsVisibility(true);
     }
     update() { }
