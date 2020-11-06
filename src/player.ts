@@ -154,6 +154,11 @@ export class LocalPlayer extends Player {
   get caught() {
     return this.amCaught;
   }
+
+  /** Check if W, A, S or D is down */
+  get keyDown() {
+    return (this.keys.W.isDown || this.keys.S.isDown || this.keys.A.isDown || this.keys.D.isDown);
+  }
 }
 
 /**

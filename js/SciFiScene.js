@@ -36,6 +36,9 @@ export class SciFiScene extends GameMap {
         });
         this.countdownText = this.add.text(0, 0, String(this.game.multiplayerHandler.gameProperties.waitTime), { fontSize: '30px', color: 'green' });
         this.countdownText.depth = 21; //bring to front
+        this.cannotMoveText = this.add.text(20, 20, "You cannot move yet!");
+        this.cannotMoveText.visible = false;
+        this.cannotMoveText.depth = 21;
     }
     update() {
         this.player.update();
@@ -50,6 +53,14 @@ export class SciFiScene extends GameMap {
         }
         this.countdownText.x = this.cameras.main.scrollX + 750;
         this.countdownText.y = this.cameras.main.scrollY + 550;
+        if (this.player.locked && this.player.keyDown) {
+            this.cannotMoveText.x = this.cameras.main.scrollX + 20;
+            this.cannotMoveText.y = this.cameras.main.scrollY + 20;
+            this.cannotMoveText.visible = true;
+        }
+        else {
+            this.cannotMoveText.visible = false;
+        }
     }
     /**
      * Called every second by Phaser clock to update countdown text.
