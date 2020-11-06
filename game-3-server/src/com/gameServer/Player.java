@@ -41,9 +41,6 @@ public class Player {
 		if (_connection.isOpen()) {
 			try { _connection.getBasicRemote().sendText(message); }
 			catch (IOException e) { e.printStackTrace(); }
-			catch (IllegalStateException e) {
-				System.out.println("IllegalStateException in Player.send when sending "+message);
-			}
 		}
 	}
 	

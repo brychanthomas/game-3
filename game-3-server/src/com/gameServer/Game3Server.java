@@ -40,6 +40,7 @@ public class Game3Server {
 			lobby.removePlayer(id); //remove player from lobby
 			if (lobby.numPlayers() == 0) { //if lobby is empty
 				DataStorer.lobbies.remove(lobbyCode); //remove lobby
+				System.out.println("Removed lobby "+lobbyCode);
 				return;
 			}
 			JsonObject leftMessage = new JsonObject();
@@ -59,6 +60,12 @@ public class Game3Server {
 			System.out.println("WARN: '"+e.getClass()+"' when decoding message");
 			return;
 		}
+		
+		//client sent empty string
+		if(decoded == null) {
+			return;
+		}
+		
 	    //if message is not from ID it is claiming to be from
 	    if(DataStorer.assignedIds.get(conn) != decoded.id) {
 	    	System.out.println("WARN: Client sent message with incorrect id");
@@ -81,6 +88,7 @@ public class Game3Server {
 	    	case 2: //lobby join request
 	    		if (!DataStorer.lobbies.containsKey(decoded.lobbyCode)) {
 	    			DataStorer.lobbies.put(decoded.lobbyCode, new Lobby());
+	    			System.out.println("Created lobby "+decoded.lobbyCode);
 	    		}
 	    		lobby = DataStorer.lobbies.get(decoded.lobbyCode);
 	    		if (!lobby.gameStarted) {
@@ -134,7 +142,7 @@ public class Game3Server {
 	    		break;
 	    		
 	    	case 13: //catch
-	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.caughtId));
+	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
 		    	if (decoded.id == lobby.currentlyChosen && lobby.containsId(decoded.caughtId) && !lobby.chaserWaiting) { 
 		    		JsonObject caughtMessage = new JsonObject();
 		    		caughtMessage.addProperty("type", 14);
