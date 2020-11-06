@@ -80,7 +80,7 @@ public class Game3Server {
 	    
 	    	case 2: //lobby join request
 	    		if (!DataStorer.lobbies.containsKey(decoded.lobbyCode)) {
-	    			DataStorer.lobbies.put(decoded.lobbyCode, new Lobby(decoded.lobbyCode));
+	    			DataStorer.lobbies.put(decoded.lobbyCode, new Lobby());
 	    		}
 	    		lobby = DataStorer.lobbies.get(decoded.lobbyCode);
 	    		if (!lobby.gameStarted) {

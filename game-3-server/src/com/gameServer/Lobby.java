@@ -18,7 +18,6 @@ import java.util.Timer;
 public class Lobby {
 	
 	private ArrayList<Player> players;
-	private String lobbyCode;
 	public  boolean gameStarted;
 	private HashMap<Integer, Integer> scores;
 	private ArrayList<Integer> idsLeft;
@@ -27,9 +26,8 @@ public class Lobby {
 	private Timer timer;
 	public  boolean chaserWaiting;
 	
-	public Lobby (String code) {
+	public Lobby () {
 		players = new ArrayList<Player>();
-		lobbyCode = code;
 		gameStarted = false;
 		scores = new HashMap<Integer, Integer>();
 		idsLeft = new ArrayList<Integer>();
@@ -109,11 +107,13 @@ public class Lobby {
 			this.currentlyChosen = chosen;
 			this.chaserWaiting = true;
 			
-			this.timer.schedule(new NextRoundTimerTask(lobbyCode) {
+			this.timer.schedule(new NextRoundTimerTask(this) {
 				@Override
 				public void run() {
-					if (DataStorer.lobbies.containsKey(lobbyCode)) {
-						DataStorer.lobbies.get(lobbyCode).enableChaser();
+					if (lobby.numPlayers() > 0) {
+						lobby.enableChaser();
+					} else {
+						this.cancel();
 					}
 				}
 			}, (int)(this.gameProperties.get("waitTime")*1000));
@@ -197,14 +197,15 @@ public class Lobby {
 	/** Called when wait time has finished */
 	public void enableChaser() {
 		chaserWaiting = false;
-		this.timer.schedule(new NextRoundTimerTask(lobbyCode) {
+		this.timer.schedule(new NextRoundTimerTask(this) {
 			@Override
 			public void run() {
-				if (DataStorer.lobbies.containsKey(lobbyCode)) {
-					DataStorer.lobbies.get(lobbyCode).startNextRound();
+				if (lobby.numPlayers() > 0) {
+					lobby.startNextRound();
+				} else {
+					this.cancel();
 				}
 			}
 		}, (int)(this.gameProperties.get("roundLength")*1000)+1500);
 	}
-	
 }
