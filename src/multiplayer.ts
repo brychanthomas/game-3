@@ -373,15 +373,7 @@ export class MultiplayerHandler {
    sendStartMessage() {
      if (this.amHost) {
        this.communicator.send({
-         type: 8, id: this.myid, properties: {
-           runnerVision: Number((<HTMLInputElement>document.getElementById("runnerVision")).value),
-           chaserVision: Number((<HTMLInputElement>document.getElementById("chaserVision")).value),
-           runnerSpeed: Number((<HTMLInputElement>document.getElementById("runnerSpeed")).value),
-           chaserSpeed: Number((<HTMLInputElement>document.getElementById("chaserSpeed")).value),
-           waitTime: Number((<HTMLInputElement>document.getElementById("waitTime")).value),
-           roundLength: Number((<HTMLInputElement>document.getElementById("roundLength")).value),
-           map: Number((<HTMLInputElement>document.getElementById("map")).value),
-         }
+         type: 8, id: this.myid, properties: this.gameProperties
        });
      }
    }
@@ -425,5 +417,39 @@ export class MultiplayerHandler {
       this.hostChangedFlag = true;
     }
     this.amHost = amNowHost;
+  }
+
+  /**
+   * Update values in gameProperties element based on values of
+   * HTML inputs.
+   */
+  public updateProperties() {
+    var props  = {
+      runnerVision: Number((<HTMLInputElement>document.getElementById("runnerVision")).value),
+      chaserVision: Number((<HTMLInputElement>document.getElementById("chaserVision")).value),
+      runnerSpeed: Number((<HTMLInputElement>document.getElementById("runnerSpeed")).value),
+      chaserSpeed: Number((<HTMLInputElement>document.getElementById("chaserSpeed")).value),
+      waitTime: Number((<HTMLInputElement>document.getElementById("waitTime")).value),
+      roundLength: Number((<HTMLInputElement>document.getElementById("roundLength")).value),
+      map: Number((<HTMLInputElement>document.getElementById("map")).value),
+    }
+    if (JSON.stringify(props) !== JSON.stringify(this.gameProperties)) {
+      this.gameProperties = props;
+      if (this.amHost) {
+        this.sendDisplayPropertiesMessage();
+      }
+    }
+  }
+
+  /**
+   * Send 'display properties' message (type 7) when properties set
+   * have changed (if host)
+   */
+  private sendDisplayPropertiesMessage() {
+    if (this.amHost) {
+      this.communicator.send(
+        {type: 7, id: this.myid, properties: this.gameProperties}
+      );
+    }
   }
 }
