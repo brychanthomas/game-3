@@ -57,14 +57,6 @@ export class HoldingAreaScene extends GameMap {
         this.game.multiplayerHandler.sendStartMessage();
     }
     /**
-     * Make the game property sliders and labels visible or invisible.
-     */
-    setPropertyInputVisibility(visible) {
-        for (var e of document.getElementsByClassName('properties')) {
-            e.style.display = visible ? 'block' : 'none';
-        }
-    }
-    /**
      * Make the game property sliders enabled or disabled.
      */
     setPropertyInputDisabled(disabled) {

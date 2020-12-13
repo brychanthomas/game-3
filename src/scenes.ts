@@ -14,11 +14,21 @@ export class AScene extends Phaser.Scene {
    * Fade out the camera and then start given scene.
    */
   public fadeOutAndStartScene(scene: string, data?: any) {
+    this.setPropertyInputVisibility(false);
     this.cameras.main.fadeOut(500, 0, 0, 0);
 
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
       this.scene.start(scene, data);
     });
+  }
+
+  /**
+   * Make the game property sliders and labels visible or invisible.
+   */
+  protected setPropertyInputVisibility(visible: boolean) {
+    for (var e of document.getElementsByClassName('properties')) {
+      (<HTMLElement>e).style.display = visible ? 'block' : 'none';
+    }
   }
 
 }
