@@ -14,7 +14,7 @@ is denoted by a different integer value.
 | 3 | Player listing | Server | lobby | {type: 3, lobby: [{id: 0, username: "Walter", x: 200, y: 300}]}
 | 5 | Velocity update | Client | velocityX, velocityY, x, y, id | {type: 5, id: 0, velocityX: 0, velocityY: 0, x: 200, y: 300} |
 | 6 | New player | Server | id, username, x, y | {type: 6, id: 1, username: "rodod",x: 100, y: 100} |
-| 7 | Set | Host Client | properties | |
+| 7 | Display properties | Host Client | id, properties | {type: 7, id: 0, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30, waitTime: 15, map: 1}} |
 | 8 | Start | Host Client | id, properties | {type: 8, id: 0, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30, waitTime: 15, map: 1}} |
 | 9 | Game starting | Server | properties, chosen | {type: 9, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30, waitTime: 15, map: 1}, chosen: 1} |
 | 10 | Leave | Client | id | {type: 10, id: 0} |
