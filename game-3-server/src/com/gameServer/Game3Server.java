@@ -11,6 +11,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.google.gson.JsonObject;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 @ServerEndpoint("/websocketendpoint")
 public class Game3Server {
@@ -131,6 +132,17 @@ public class Game3Server {
 	    		velUpdate.addProperty("y", decoded.y);
 	    		lobby.broadcast(velUpdate);
 	    		lobby.setPosition(decoded.id, decoded.x, decoded.y);
+	    		break;
+	    		
+	    	case 7: //display properties
+	    		lobby = DataStorer.lobbies.get(DataStorer.players.get(decoded.id));
+	    		if (lobby.getHostId() == decoded.id) {
+	    			JsonObject displayMessage = new JsonObject();
+	    			displayMessage.addProperty("type", 7);
+	    			JsonElement props = gson.toJsonTree(decoded.properties);
+	    			displayMessage.add("properties", props);
+	    			lobby.broadcast(displayMessage);
+	    		}
 	    		break;
 	    		
 	    	case 8: //start game

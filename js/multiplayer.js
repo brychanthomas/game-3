@@ -114,6 +114,15 @@ export class MultiplayerHandler {
         this.inLobby = false;
         this.amHost = false;
         this.hostChangedFlag = false;
+        this.gameProperties = {
+            chaserVision: 2,
+            runnerVision: 2,
+            chaserSpeed: 200,
+            runnerSpeed: 200,
+            waitTime: 15,
+            roundLength: 20,
+            map: 0,
+        };
     }
     /**
      * Connect to a server and join a lobby. Returns a promise.
@@ -178,6 +187,7 @@ export class MultiplayerHandler {
             case 7:
                 this.gameProperties = message.properties;
                 this.setHTMLPropertyInputs(message.properties);
+                break;
             case 9: // Game starting
                 this.gameProperties = message.properties;
                 this.currentlyChosen = message.chosen;
@@ -323,7 +333,9 @@ export class MultiplayerHandler {
             roundLength: Number(document.getElementById("roundLength").value),
             map: Number(document.getElementById("map").value),
         };
-        if (JSON.stringify(props) !== JSON.stringify(this.gameProperties)) {
+        var propsStr = JSON.stringify(props, Object.keys(props).sort());
+        var gamePropertiesStr = JSON.stringify(this.gameProperties, Object.keys(this.gameProperties).sort());
+        if (propsStr !== gamePropertiesStr) {
             this.gameProperties = props;
             if (this.amHost) {
                 this.sendDisplayPropertiesMessage();

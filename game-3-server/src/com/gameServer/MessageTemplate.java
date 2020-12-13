@@ -39,6 +39,7 @@ public class MessageTemplate {
 				}
 				break;
 				
+			case 7:
 			case 8:
 				if (properties != null) {
 					if (properties.containsKey("runnerVision") &&
