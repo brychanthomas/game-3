@@ -274,6 +274,10 @@ export class MultiplayerHandler {
         this.updateHost();
         break;
 
+      case 7:
+        this.gameProperties = message.properties;
+        this.setHTMLPropertyInputs(message.properties);
+
       case 9: // Game starting
         this.gameProperties = message.properties;
         this.currentlyChosen = message.chosen;
@@ -451,5 +455,19 @@ export class MultiplayerHandler {
         {type: 7, id: this.myid, properties: this.gameProperties}
       );
     }
+  }
+
+  /**
+   * Set values of HTML property inputs when 'display properties'
+   * message received.
+   */
+  private setHTMLPropertyInputs (properties: gameProperties) {
+    (<HTMLInputElement>document.getElementById("runnerVision")).value = String(properties.runnerVision);
+    (<HTMLInputElement>document.getElementById("chaserVision")).value = String(properties.chaserVision);
+    (<HTMLInputElement>document.getElementById("runnerSpeed")).value = String(properties.runnerSpeed);
+    (<HTMLInputElement>document.getElementById("chaserSpeed")).value = String(properties.chaserSpeed);
+    (<HTMLInputElement>document.getElementById("waitTime")).value = String(properties.waitTime);
+    (<HTMLInputElement>document.getElementById("roundLength")).value = String(properties.roundLength);
+    (<HTMLInputElement>document.getElementById("map")).value = String(properties.map);
   }
 }

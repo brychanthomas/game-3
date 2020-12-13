@@ -175,6 +175,9 @@ export class MultiplayerHandler {
                 this.addNewPlayer(message);
                 this.updateHost();
                 break;
+            case 7:
+                this.gameProperties = message.properties;
+                this.setHTMLPropertyInputs(message.properties);
             case 9: // Game starting
                 this.gameProperties = message.properties;
                 this.currentlyChosen = message.chosen;
@@ -265,16 +268,7 @@ export class MultiplayerHandler {
     sendStartMessage() {
         if (this.amHost) {
             this.communicator.send({
-                type: 8, id: this.myid,
-                properties: {
-                    runnerVision: Number(document.getElementById("runnerVision").value),
-                    chaserVision: Number(document.getElementById("chaserVision").value),
-                    runnerSpeed: Number(document.getElementById("runnerSpeed").value),
-                    chaserSpeed: Number(document.getElementById("chaserSpeed").value),
-                    waitTime: Number(document.getElementById("waitTime").value),
-                    roundLength: Number(document.getElementById("roundLength").value),
-                    map: Number(document.getElementById("map").value),
-                }
+                type: 8, id: this.myid, properties: this.gameProperties
             });
         }
     }
@@ -314,5 +308,48 @@ export class MultiplayerHandler {
             this.hostChangedFlag = true;
         }
         this.amHost = amNowHost;
+    }
+    /**
+     * Update values in gameProperties element based on values of
+     * HTML inputs.
+     */
+    updateProperties() {
+        var props = {
+            runnerVision: Number(document.getElementById("runnerVision").value),
+            chaserVision: Number(document.getElementById("chaserVision").value),
+            runnerSpeed: Number(document.getElementById("runnerSpeed").value),
+            chaserSpeed: Number(document.getElementById("chaserSpeed").value),
+            waitTime: Number(document.getElementById("waitTime").value),
+            roundLength: Number(document.getElementById("roundLength").value),
+            map: Number(document.getElementById("map").value),
+        };
+        if (JSON.stringify(props) !== JSON.stringify(this.gameProperties)) {
+            this.gameProperties = props;
+            if (this.amHost) {
+                this.sendDisplayPropertiesMessage();
+            }
+        }
+    }
+    /**
+     * Send 'display properties' message (type 7) when properties set
+     * have changed (if host)
+     */
+    sendDisplayPropertiesMessage() {
+        if (this.amHost) {
+            this.communicator.send({ type: 7, id: this.myid, properties: this.gameProperties });
+        }
+    }
+    /**
+     * Set values of HTML property inputs when 'display properties'
+     * message received.
+     */
+    setHTMLPropertyInputs(properties) {
+        document.getElementById("runnerVision").value = String(properties.runnerVision);
+        document.getElementById("chaserVision").value = String(properties.chaserVision);
+        document.getElementById("runnerSpeed").value = String(properties.runnerSpeed);
+        document.getElementById("chaserSpeed").value = String(properties.chaserSpeed);
+        document.getElementById("waitTime").value = String(properties.waitTime);
+        document.getElementById("roundLength").value = String(properties.roundLength);
+        document.getElementById("map").value = String(properties.map);
     }
 }

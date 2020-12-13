@@ -30,8 +30,12 @@ export class HoldingAreaScene extends GameMap {
     this.playButton.on('pointerdown',this.playButtonPressed.bind(this));
     this.playButton.visible = this.game.multiplayerHandler.amHost;
     if (this.game.multiplayerHandler.amHost) { //show property sliders if host
-      this.setHostViewVisibility(true);
+      this.playButton.visible = true;
+      this.setPropertyInputDisabled(false);
+    } else {
+      this.setPropertyInputDisabled(true);
     }
+    this.setPropertyInputVisibility(true);
   }
 
   update() {
@@ -45,10 +49,11 @@ export class HoldingAreaScene extends GameMap {
     this.updateFog();
     if (this.game.multiplayerHandler.hostChangedFlag) {
       this.game.multiplayerHandler.hostChangedFlag = false;
-      this.setHostViewVisibility(this.game.multiplayerHandler.amHost);
+      this.playButton.visible = this.game.multiplayerHandler.amHost;
     }
-    this.visionSize = Number((<HTMLInputElement>document.getElementById("runnerVision")).value);
-    this.player.speed = Number((<HTMLInputElement>document.getElementById("runnerSpeed")).value);
+    this.game.multiplayerHandler.updateProperties()
+    this.visionSize = this.game.multiplayerHandler.gameProperties.runnerVision;
+    this.player.speed = this.game.multiplayerHandler.gameProperties.runnerSpeed;
   }
 
   /**
@@ -56,18 +61,26 @@ export class HoldingAreaScene extends GameMap {
    * labels and sends a start message to the server.
    */
   private playButtonPressed() {
-    this.setHostViewVisibility(false);
+    this.setPropertyInputVisibility(false);
+    this.playButton.visible = false;
     this.game.multiplayerHandler.sendStartMessage();
   }
 
   /**
-   * Make the game property sliders and labels and the play button
-   * visible or invisible.
+   * Make the game property sliders and labels visible or invisible.
    */
-  private setHostViewVisibility(visible: boolean) {
-    this.playButton.visible = visible;
+  private setPropertyInputVisibility(visible: boolean) {
     for (var e of document.getElementsByClassName('properties')) {
       (<HTMLElement>e).style.display = visible ? 'block' : 'none';
+    }
+  }
+
+  /**
+   * Make the game property sliders enabled or disabled.
+   */
+  private setPropertyInputDisabled(disabled: boolean) {
+    for (var e of document.getElementsByClassName('properties')) {
+      (<HTMLInputElement>e).disabled = disabled;
     }
   }
 }

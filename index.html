@@ -39,19 +39,19 @@ function updatePropertyLabels() {
 
   <form onchange="updatePropertyLabels();" style="position: absolute;">
     <label for="chaserVision" id="chaserVisionLabel" class="properties">Chaser vision: 2</label>
-    <input type="range" min="1" max="5" value="2" step="0.5" id="chaserVision" class="properties">
+    <input type="range" min="1" max="5" value="2" step="0.5" id="chaserVision" class="properties" disabled="disabled">
     <label for="runnerVision" id="runnerVisionLabel" class="properties">Runner vision: 2</label>
-    <input type="range" min="1" max="5" value="2" step="0.5" id="runnerVision" class="properties">
+    <input type="range" min="1" max="5" value="2" step="0.5" id="runnerVision" class="properties" disabled="disabled">
     <label for="chaserSpeed" id="chaserSpeedLabel" class="properties">Chaser speed: 200</label>
-    <input type="range" min="40" max="400" value="200" step="10" id="chaserSpeed" class="properties">
+    <input type="range" min="40" max="400" value="200" step="10" id="chaserSpeed" class="properties" disabled="disabled">
     <label for="runnerSpeed" id="runnerSpeedLabel" class="properties">Runner speed: 200</label>
-    <input type="range" min="40" max="400" value="200" step="10" id="runnerSpeed" class="properties">
+    <input type="range" min="40" max="400" value="200" step="10" id="runnerSpeed" class="properties" disabled="disabled">
     <label for="waitTime" id="waitTimeLabel" class="properties">Chaser wait time: 15 seconds</label>
-    <input type="range" min="0" max="30" value="15" step="5" id="waitTime" class="properties">
+    <input type="range" min="0" max="30" value="15" step="5" id="waitTime" class="properties" disabled="disabled">
     <label for="roundLength" id="roundLengthLabel" class="properties">Round length: 20 seconds</label>
-    <input type="range" min="5" max="60" value="20" step="5" id="roundLength" class="properties">
+    <input type="range" min="5" max="60" value="20" step="5" id="roundLength" class="properties" disabled="disabled">
     <label for="map" id="mapLabel" class="properties">Map:</label>
-    <select name="map" id="map" class="properties" style="color: black;">
+    <select name="map" id="map" class="properties" style="color: black;" disabled="disabled">
       <option value="0">Scifi</option>
       <option value="1">Open</option>
       <option value="2">Sewer</option>
