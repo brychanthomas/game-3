@@ -38,6 +38,8 @@ export class HoldingAreaScene extends GameMap {
             this.game.multiplayerHandler.hostChangedFlag = false;
             this.setHostViewVisibility(this.game.multiplayerHandler.amHost);
         }
+        this.visionSize = Number(document.getElementById("runnerVision").value);
+        this.player.speed = Number(document.getElementById("runnerSpeed").value);
     }
     /**
      * Called when play button is pressed - Hides property sliders and
