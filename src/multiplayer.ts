@@ -481,5 +481,6 @@ export class MultiplayerHandler {
     (<HTMLInputElement>document.getElementById("waitTime")).value = String(properties.waitTime);
     (<HTMLInputElement>document.getElementById("roundLength")).value = String(properties.roundLength);
     (<HTMLInputElement>document.getElementById("map")).value = String(properties.map);
+    document.getElementById("propertiesForm").onchange(new Event(''));
   }
 }
