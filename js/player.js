@@ -8,6 +8,7 @@ class Player {
         this.sprite.setScale(0.4);
         this.sprite.depth = 19; //bring forwards but behind fog of war
         this.scene = scene;
+        this.isChaser = false;
     }
     /**
      * Remove the sprite from the scene.
@@ -37,6 +38,7 @@ class Player {
      */
     chosen() {
         //this.makeRed();
+        this.isChaser = true;
         this.texture = 'chaser';
         this.sprite.x = 1000;
         this.sprite.y = 200;
@@ -68,18 +70,30 @@ export class LocalPlayer extends Player {
         if (!this.locked) {
             if (this.keys.W.isDown && this.y > 20 && !this.sprite.body.blocked.up) {
                 this.sprite.body.setVelocityY(-this.speed);
+                if (this.isChaser) {
+                    this.sprite.anims.play('chaser-up', true);
+                }
             }
             else if (this.keys.S.isDown && this.y < this.scene.height - 20 && !this.sprite.body.blocked.down) {
                 this.sprite.body.setVelocityY(this.speed);
+                if (this.isChaser) {
+                    this.sprite.anims.play('chaser-down', true);
+                }
             }
             else {
                 this.sprite.body.setVelocityY(0);
             }
             if (this.keys.A.isDown && this.x > 20 && !this.sprite.body.blocked.left) {
                 this.sprite.body.setVelocityX(-this.speed);
+                if (this.isChaser) {
+                    this.sprite.anims.play('chaser-left', true);
+                }
             }
             else if (this.keys.D.isDown && this.x < this.scene.width - 20 && !this.sprite.body.blocked.right) {
                 this.sprite.body.setVelocityX(this.speed);
+                if (this.isChaser) {
+                    this.sprite.anims.play('chaser-right', true);
+                }
             }
             else {
                 this.sprite.body.setVelocityX(0);

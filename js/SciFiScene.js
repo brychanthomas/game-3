@@ -10,7 +10,7 @@ export class SciFiScene extends GameMap {
         this.load.image(map + '-tileset', this.game.mapFilesData[map].tileset);
         this.load.tilemapTiledJSON(map + '-tilemap', this.game.mapFilesData[map].tilemap);
         this.load.image('player', 'assets/circle.png');
-        this.load.spritesheet('chaser', 'assets/robot.png', { frameWidth: 340, frameHeight: 363 });
+        this.load.spritesheet('chaser', 'assets/robot.png', { frameWidth: 363, frameHeight: 363 });
         this.load.image('vision', 'assets/mask.png');
     }
     create() {
@@ -40,6 +40,7 @@ export class SciFiScene extends GameMap {
         this.cannotMoveText = this.add.text(20, 20, "You cannot move yet!");
         this.cannotMoveText.visible = false;
         this.cannotMoveText.depth = 21;
+        this.createAnimations();
     }
     update() {
         this.player.update();
@@ -73,5 +74,35 @@ export class SciFiScene extends GameMap {
             return;
         }
         this.countdownText.text = String(Number(this.countdownText.text) - 1);
+    }
+    /**
+   * Create the spritesheet animations of the chaser
+   */
+    createAnimations() {
+        let frameRate = 6;
+        this.anims.create({
+            key: 'chaser-right',
+            frames: this.anims.generateFrameNumbers('chaser', { start: 0, end: 3 }),
+            frameRate: frameRate,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'chaser-left',
+            frames: this.anims.generateFrameNumbers('chaser', { start: 4, end: 7 }),
+            frameRate: frameRate,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'chaser-down',
+            frames: this.anims.generateFrameNumbers('chaser', { start: 8, end: 11 }),
+            frameRate: frameRate,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'chaser-up',
+            frames: this.anims.generateFrameNumbers('chaser', { start: 12, end: 15 }),
+            frameRate: frameRate,
+            repeat: -1
+        });
     }
 }
