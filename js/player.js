@@ -49,6 +49,26 @@ class Player {
     get y() {
         return this.sprite.y;
     }
+    /**
+     * Apply the correct chaser animation based on player's velocity. Does
+     * nothing if the player isn't the chaser.
+     */
+    updateAnimation() {
+        if (this.isChaser) {
+            if (this.sprite.body.velocity.x > 0) {
+                this.sprite.anims.play('chaser-right', true);
+            }
+            else if (this.sprite.body.velocity.x < 0) {
+                this.sprite.anims.play('chaser-left', true);
+            }
+            if (this.sprite.body.velocity.y > 0) {
+                this.sprite.anims.play('chaser-down', true);
+            }
+            else if (this.sprite.body.velocity.y < 0) {
+                this.sprite.anims.play('chaser-up', true);
+            }
+        }
+    }
 }
 /**
  * Class representing the player that is being controlled
@@ -70,30 +90,18 @@ export class LocalPlayer extends Player {
         if (!this.locked) {
             if (this.keys.W.isDown && this.y > 20 && !this.sprite.body.blocked.up) {
                 this.sprite.body.setVelocityY(-this.speed);
-                if (this.isChaser) {
-                    this.sprite.anims.play('chaser-up', true);
-                }
             }
             else if (this.keys.S.isDown && this.y < this.scene.height - 20 && !this.sprite.body.blocked.down) {
                 this.sprite.body.setVelocityY(this.speed);
-                if (this.isChaser) {
-                    this.sprite.anims.play('chaser-down', true);
-                }
             }
             else {
                 this.sprite.body.setVelocityY(0);
             }
             if (this.keys.A.isDown && this.x > 20 && !this.sprite.body.blocked.left) {
                 this.sprite.body.setVelocityX(-this.speed);
-                if (this.isChaser) {
-                    this.sprite.anims.play('chaser-left', true);
-                }
             }
             else if (this.keys.D.isDown && this.x < this.scene.width - 20 && !this.sprite.body.blocked.right) {
                 this.sprite.body.setVelocityX(this.speed);
-                if (this.isChaser) {
-                    this.sprite.anims.play('chaser-right', true);
-                }
             }
             else {
                 this.sprite.body.setVelocityX(0);
@@ -103,6 +111,7 @@ export class LocalPlayer extends Player {
             this.sprite.body.setVelocityX(0);
             this.sprite.body.setVelocityY(0);
         }
+        this.updateAnimation();
     }
     /**
      * Checks if X or Y velocity has changed since last time method
@@ -178,9 +187,11 @@ export class RemotePlayer extends Player {
     }
     set velocityX(velX) {
         this.sprite.body.setVelocityX(velX);
+        this.updateAnimation();
     }
     set velocityY(velY) {
         this.sprite.body.setVelocityY(velY);
+        this.updateAnimation();
     }
     /**
      * Move the nametag to the position of the player
