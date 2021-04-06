@@ -22,12 +22,24 @@ class Player {
         this.sprite.setTint(0xff0000);
     }
     /**
-     * Make the player red and move them to (1000, 100).
+     * Set the texture of the player to "chaser" or "player"
+     */
+    set texture(t) {
+        this.sprite.setTexture(t);
+        let tex = this.scene.textures.get(t);
+        let frame = tex.frames[tex.firstFrame];
+        //set physics body size based on new texture
+        this.sprite.body.setSize(frame.width, frame.height);
+        this.sprite.setScale((t === "chaser") ? 0.2 : 0.4);
+    }
+    /**
+     * Change the player's texture and move them to (1000, 200). They are the chaser.
      */
     chosen() {
-        this.makeRed();
+        //this.makeRed();
+        this.texture = 'chaser';
         this.sprite.x = 1000;
-        this.sprite.y = 100;
+        this.sprite.y = 200;
     }
     get x() {
         return this.sprite.x;
