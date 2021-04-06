@@ -49,7 +49,7 @@ abstract class Player {
     let frame = tex.frames[tex.firstFrame];
     //set physics body size based on new texture
     this.sprite.body.setSize(frame.width, frame.height);
-    this.sprite.setScale((t==="chaser") ? 0.2 : 0.4);
+    this.sprite.setScale((t==="chaser") ? 0.3 : 0.4);
   }
 
   /**

@@ -10,7 +10,7 @@ export class SciFiScene extends GameMap {
         this.load.image(map + '-tileset', this.game.mapFilesData[map].tileset);
         this.load.tilemapTiledJSON(map + '-tilemap', this.game.mapFilesData[map].tilemap);
         this.load.image('player', 'assets/circle.png');
-        this.load.spritesheet('chaser', 'assets/robot.png', { frameWidth: 363, frameHeight: 363 });
+        this.load.spritesheet('chaser', 'assets/robot.png', { frameWidth: 250, frameHeight: 250 });
         this.load.image('vision', 'assets/mask.png');
     }
     create() {
