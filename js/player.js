@@ -83,19 +83,19 @@ export class LocalPlayer extends Player {
      */
     update() {
         if (!this.locked) {
-            if (this.keys.W.isDown && this.sprite.body.top > 0 && !this.sprite.body.blocked.up) {
+            if (this.keys.W.isDown && this.sprite.body.top > 0) {
                 this.sprite.body.setVelocityY(-this.speed);
             }
-            else if (this.keys.S.isDown && this.sprite.body.bottom < this.scene.height && !this.sprite.body.blocked.down) {
+            else if (this.keys.S.isDown && this.sprite.body.bottom < this.scene.height) {
                 this.sprite.body.setVelocityY(this.speed);
             }
             else {
                 this.sprite.body.setVelocityY(0);
             }
-            if (this.keys.A.isDown && this.sprite.body.left > 0 && !this.sprite.body.blocked.left) {
+            if (this.keys.A.isDown && this.sprite.body.left > 0) {
                 this.sprite.body.setVelocityX(-this.speed);
             }
-            else if (this.keys.D.isDown && this.sprite.body.right < this.scene.width && !this.sprite.body.blocked.right) {
+            else if (this.keys.D.isDown && this.sprite.body.right < this.scene.width) {
                 this.sprite.body.setVelocityX(this.speed);
             }
             else {
@@ -117,19 +117,39 @@ export class LocalPlayer extends Player {
             return false;
         }
         if (this.velocityX !== this.previousVelocityX) {
-            this.previousVelocityX = this.sprite.body.velocity.x;
+            this.previousVelocityX = this.velocityX;
             return true;
         }
         else if (this.velocityY !== this.previousVelocityY) {
-            this.previousVelocityY = this.sprite.body.velocity.y;
+            this.previousVelocityY = this.velocityY;
             return true;
         }
         return false;
     }
+    /**
+     * Gets the x velocity of the player. If they are pushing against an obstacle
+     * 0 is returned.
+     */
     get velocityX() {
+        if (this.sprite.body.velocity.x > 0 && this.sprite.body.blocked.right) {
+            return 0;
+        }
+        if (this.sprite.body.velocity.x < 0 && this.sprite.body.blocked.left) {
+            return 0;
+        }
         return this.sprite.body.velocity.x;
     }
+    /**
+     * Gets the y velocity of the player. If they are pushing against an obstacle
+     * 0 is returned.
+     */
     get velocityY() {
+        if (this.sprite.body.velocity.y > 0 && this.sprite.body.blocked.down) {
+            return 0;
+        }
+        if (this.sprite.body.velocity.y < 0 && this.sprite.body.blocked.up) {
+            return 0;
+        }
         return this.sprite.body.velocity.y;
     }
     /**
