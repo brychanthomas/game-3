@@ -56,7 +56,8 @@ export class SciFiScene extends GameMap {
     this.cannotMoveText.visible = false;
     this.cannotMoveText.depth = 21;
 
-    this.createAnimations();
+    this.createAnimations("player");
+    this.createAnimations("chaser");
   }
 
   update() {

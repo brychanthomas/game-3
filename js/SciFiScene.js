@@ -40,7 +40,8 @@ export class SciFiScene extends GameMap {
         this.cannotMoveText = this.add.text(20, 20, "You cannot move yet!");
         this.cannotMoveText.visible = false;
         this.cannotMoveText.depth = 21;
-        this.createAnimations();
+        this.createAnimations("player");
+        this.createAnimations("chaser");
     }
     update() {
         this.player.update();

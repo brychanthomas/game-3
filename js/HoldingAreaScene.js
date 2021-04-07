@@ -31,7 +31,7 @@ export class HoldingAreaScene extends GameMap {
             this.setPropertyInputDisabled(true);
         }
         this.setPropertyInputVisibility(true);
-        this.createAnimations();
+        this.createAnimations("player");
     }
     update() {
         this.player.update();
