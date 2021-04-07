@@ -11,7 +11,7 @@ is denoted by a different integer value.
 | 0 | Error | Server | error | {type: 0, error: "Lobby is full"} |
 | 1 | ID Assign | Server | idAssign | {type: 1, idAssign: 0} |
 | 2 | Join request | Client | lobbyCode, id | {type: 2, id: 0, lobbyCode: "cat", username: "walter"} |
-| 3 | Welcome | Server | lobby player list, properties | {type: 3, lobby: [{id: 0, username: "Walter", x: 200, y: 300}, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30, waitTime: 15, map: 1}]}
+| 3 | Welcome | Server | lobby player list, properties | {type: 3, lobby: [{id: 0, username: "Walter", x: 200, y: 300}], properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30, waitTime: 15, map: 1}}
 | 5 | Velocity update | Client | velocityX, velocityY, x, y, id | {type: 5, id: 0, velocityX: 0, velocityY: 0, x: 200, y: 300} |
 | 6 | New player | Server | id, username, x, y | {type: 6, id: 1, username: "rodod",x: 100, y: 100} |
 | 7 | Display properties | Host Client | id, properties | {type: 7, id: 0, properties:  {runnerVision: 1, chaserVision: 2, runnerSpeed: 20, chaserSpeed: 20, roundLength: 30, waitTime: 15, map: 1}} |
@@ -24,7 +24,7 @@ is denoted by a different integer value.
 | 14 | Caught | Server | id | {type: 14, id: 1} |
 | 15 | Scores | Server | score for each username | {type: 15, scores: [{username: "walter", score: 4}, {username: "rodod", score: 2}]} |
 
-When new players join they are sent a 'player listing' message with
+When new players join they are sent a 'welcome' message with
 a list of all of the existing players and their last reported
 positions. Existing players are send a 'new player' message with
 the id of the new player and their username. Their position is not
