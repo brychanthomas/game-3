@@ -268,9 +268,11 @@ export class MultiplayerHandler {
         });
         break;
 
-      case 3: // Player listing
+      case 3: // welcome
         this.otherPlayers = message.lobby;
         this.inLobby = true;
+        this.gameProperties = message.properties;
+        this.setHTMLPropertyInputs(message.properties);
         this.updateHost();
         break
 

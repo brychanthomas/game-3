@@ -172,9 +172,11 @@ export class MultiplayerHandler {
                     type: 2, id: this.myid, lobbyCode: this.lobbyCode, username: this.username
                 });
                 break;
-            case 3: // Player listing
+            case 3: // welcome
                 this.otherPlayers = message.lobby;
                 this.inLobby = true;
+                this.gameProperties = message.properties;
+                this.setHTMLPropertyInputs(message.properties);
                 this.updateHost();
                 break;
             case 5: // Velocity update from another player
