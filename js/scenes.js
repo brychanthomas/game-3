@@ -98,4 +98,60 @@ export class GameMap extends AScene {
             this.player.locked = false;
         }.bind(this), this.game.multiplayerHandler.gameProperties.waitTime * 1000);
     }
+    /**
+    * Create the spritesheet animations of the players and chaser
+    */
+    createAnimations() {
+        let frameRate = 8;
+        for (let prefix of ['chaser', 'player']) {
+            this.anims.create({
+                key: prefix + '-E',
+                frames: this.anims.generateFrameNumbers(prefix, { start: 0, end: 7 }),
+                frameRate: frameRate,
+                repeat: -1
+            });
+            this.anims.create({
+                key: prefix + '-W',
+                frames: this.anims.generateFrameNumbers(prefix, { start: 8, end: 15 }),
+                frameRate: frameRate,
+                repeat: -1
+            });
+            this.anims.create({
+                key: prefix + '-S',
+                frames: this.anims.generateFrameNumbers(prefix, { start: 16, end: 23 }),
+                frameRate: frameRate,
+                repeat: -1
+            });
+            this.anims.create({
+                key: prefix + '-N',
+                frames: this.anims.generateFrameNumbers(prefix, { start: 24, end: 31 }),
+                frameRate: frameRate,
+                repeat: -1
+            });
+            this.anims.create({
+                key: prefix + '-SE',
+                frames: this.anims.generateFrameNumbers(prefix, { start: 32, end: 39 }),
+                frameRate: frameRate,
+                repeat: -1
+            });
+            this.anims.create({
+                key: prefix + '-SW',
+                frames: this.anims.generateFrameNumbers(prefix, { start: 40, end: 47 }),
+                frameRate: frameRate,
+                repeat: -1
+            });
+            this.anims.create({
+                key: prefix + '-NW',
+                frames: this.anims.generateFrameNumbers(prefix, { start: 48, end: 55 }),
+                frameRate: frameRate,
+                repeat: -1
+            });
+            this.anims.create({
+                key: prefix + '-NE',
+                frames: this.anims.generateFrameNumbers(prefix, { start: 56, end: 63 }),
+                frameRate: frameRate,
+                repeat: -1
+            });
+        }
+    }
 }

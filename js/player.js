@@ -5,7 +5,7 @@
 class Player {
     constructor(x, y, scene) {
         this.sprite = scene.physics.add.sprite(x, y, 'player');
-        this.sprite.setScale(0.4);
+        this.sprite.setScale(0.3);
         this.sprite.depth = 19; //bring forwards but behind fog of war
         this.scene = scene;
         this.isChaser = false;
@@ -31,7 +31,7 @@ class Player {
         let frame = tex.frames[tex.firstFrame];
         //set physics body size based on new texture
         this.sprite.body.setSize(frame.width, frame.height);
-        this.sprite.setScale((t === "chaser") ? 0.3 : 0.4);
+        this.sprite.setScale((t === "chaser") ? 0.3 : 0.3);
     }
     /**
      * Change the player's texture and move them to (1000, 200). They are the chaser.
