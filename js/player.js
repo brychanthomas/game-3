@@ -6,6 +6,7 @@ class Player {
     constructor(x, y, scene) {
         this.sprite = scene.physics.add.sprite(x, y, 'player');
         this.sprite.setScale(0.3);
+        this.sprite.body.setSize(250 / 2.2, 250 / 2.2);
         this.sprite.depth = 19; //bring forwards but behind fog of war
         this.scene = scene;
         this.isChaser = false;
@@ -30,8 +31,8 @@ class Player {
         let tex = this.scene.textures.get(t);
         let frame = tex.frames[tex.firstFrame];
         //set physics body size based on new texture
-        this.sprite.body.setSize(frame.width, frame.height);
-        this.sprite.setScale((t === "chaser") ? 0.3 : 0.3);
+        let sideLength = (t === "chaser") ? frame.width : frame.width / 2.2;
+        this.sprite.body.setSize(sideLength, sideLength);
     }
     /**
      * Change the player's texture and move them to (1000, 200). They are the chaser.
@@ -82,19 +83,19 @@ export class LocalPlayer extends Player {
      */
     update() {
         if (!this.locked) {
-            if (this.keys.W.isDown && this.y > 20 && !this.sprite.body.blocked.up) {
+            if (this.keys.W.isDown && this.sprite.body.top > 0 && !this.sprite.body.blocked.up) {
                 this.sprite.body.setVelocityY(-this.speed);
             }
-            else if (this.keys.S.isDown && this.y < this.scene.height - 20 && !this.sprite.body.blocked.down) {
+            else if (this.keys.S.isDown && this.sprite.body.bottom < this.scene.height && !this.sprite.body.blocked.down) {
                 this.sprite.body.setVelocityY(this.speed);
             }
             else {
                 this.sprite.body.setVelocityY(0);
             }
-            if (this.keys.A.isDown && this.x > 20 && !this.sprite.body.blocked.left) {
+            if (this.keys.A.isDown && this.sprite.body.left > 0 && !this.sprite.body.blocked.left) {
                 this.sprite.body.setVelocityX(-this.speed);
             }
-            else if (this.keys.D.isDown && this.x < this.scene.width - 20 && !this.sprite.body.blocked.right) {
+            else if (this.keys.D.isDown && this.sprite.body.right < this.scene.width && !this.sprite.body.blocked.right) {
                 this.sprite.body.setVelocityX(this.speed);
             }
             else {
