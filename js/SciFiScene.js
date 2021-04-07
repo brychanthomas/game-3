@@ -10,7 +10,7 @@ export class SciFiScene extends GameMap {
         this.load.image(map + '-tileset', this.game.mapFilesData[map].tileset);
         this.load.tilemapTiledJSON(map + '-tilemap', this.game.mapFilesData[map].tilemap);
         this.load.image('player', 'assets/circle.png');
-        this.load.spritesheet('chaser', 'assets/robot.png', { frameWidth: 250, frameHeight: 250 });
+        this.load.spritesheet('chaser', 'assets/grey robot.png', { frameWidth: 250, frameHeight: 250 });
         this.load.image('vision', 'assets/mask.png');
     }
     create() {
@@ -82,25 +82,25 @@ export class SciFiScene extends GameMap {
         let frameRate = 6;
         this.anims.create({
             key: 'chaser-right',
-            frames: this.anims.generateFrameNumbers('chaser', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('chaser', { start: 0, end: 7 }),
             frameRate: frameRate,
             repeat: -1
         });
         this.anims.create({
             key: 'chaser-left',
-            frames: this.anims.generateFrameNumbers('chaser', { start: 4, end: 7 }),
+            frames: this.anims.generateFrameNumbers('chaser', { start: 8, end: 15 }),
             frameRate: frameRate,
             repeat: -1
         });
         this.anims.create({
             key: 'chaser-down',
-            frames: this.anims.generateFrameNumbers('chaser', { start: 8, end: 11 }),
+            frames: this.anims.generateFrameNumbers('chaser', { start: 16, end: 23 }),
             frameRate: frameRate,
             repeat: -1
         });
         this.anims.create({
             key: 'chaser-up',
-            frames: this.anims.generateFrameNumbers('chaser', { start: 12, end: 15 }),
+            frames: this.anims.generateFrameNumbers('chaser', { start: 24, end: 31 }),
             frameRate: frameRate,
             repeat: -1
         });
