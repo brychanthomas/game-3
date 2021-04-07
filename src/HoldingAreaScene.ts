@@ -51,6 +51,7 @@ export class HoldingAreaScene extends GameMap {
     if (this.game.multiplayerHandler.hostChangedFlag) {
       this.game.multiplayerHandler.hostChangedFlag = false;
       this.playButton.visible = this.game.multiplayerHandler.amHost;
+      this.setPropertyInputDisabled(!this.game.multiplayerHandler.amHost);
     }
     this.game.multiplayerHandler.updateProperties()
     this.visionSize = this.game.multiplayerHandler.gameProperties.runnerVision;
