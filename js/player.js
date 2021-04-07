@@ -55,17 +55,13 @@ class Player {
      */
     updateAnimation() {
         if (this.isChaser) {
-            if (this.sprite.body.velocity.x > 0) {
-                this.sprite.anims.play('chaser-right', true);
-            }
-            else if (this.sprite.body.velocity.x < 0) {
-                this.sprite.anims.play('chaser-left', true);
-            }
-            if (this.sprite.body.velocity.y > 0) {
-                this.sprite.anims.play('chaser-down', true);
-            }
-            else if (this.sprite.body.velocity.y < 0) {
-                this.sprite.anims.play('chaser-up', true);
+            let velX = this.sprite.body.velocity.x;
+            let velY = this.sprite.body.velocity.y;
+            if (velX !== 0 || velY !== 0) {
+                let direction = '';
+                direction += (velY === 0 ? '' : (velY > 0 ? 'S' : 'N'));
+                direction += (velX === 0 ? '' : (velX > 0 ? 'E' : 'W'));
+                this.sprite.anims.play('chaser-' + direction, true);
             }
         }
     }

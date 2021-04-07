@@ -101,30 +101,55 @@ export class SciFiScene extends GameMap {
  * Create the spritesheet animations of the chaser
  */
   private createAnimations() {
-    let frameRate = 6;
+    let frameRate = 8;
     this.anims.create({
-      key: 'chaser-right',
+      key: 'chaser-E',
       frames: this.anims.generateFrameNumbers('chaser', {start: 0, end: 7}),
       frameRate: frameRate,
       repeat: -1
     });
     this.anims.create({
-      key: 'chaser-left',
+      key: 'chaser-W',
       frames: this.anims.generateFrameNumbers('chaser', {start: 8, end: 15}),
       frameRate: frameRate,
       repeat: -1
     });
     this.anims.create({
-      key: 'chaser-down',
+      key: 'chaser-S',
       frames: this.anims.generateFrameNumbers('chaser', {start: 16, end: 23}),
       frameRate: frameRate,
       repeat: -1
     });
     this.anims.create({
-      key: 'chaser-up',
+      key: 'chaser-N',
       frames: this.anims.generateFrameNumbers('chaser', {start: 24, end: 31}),
       frameRate: frameRate,
       repeat: -1
     });
+    this.anims.create({
+      key: 'chaser-SE',
+      frames: this.anims.generateFrameNumbers('chaser', {start: 32, end: 39}),
+      frameRate: frameRate,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'chaser-SW',
+      frames: this.anims.generateFrameNumbers('chaser', {start: 40, end: 47}),
+      frameRate: frameRate,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'chaser-NW',
+      frames: this.anims.generateFrameNumbers('chaser', {start: 48, end: 55}),
+      frameRate: frameRate,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'chaser-NE',
+      frames: this.anims.generateFrameNumbers('chaser', {start: 56, end: 63}),
+      frameRate: frameRate,
+      repeat: -1
+    });
+
   }
 }
