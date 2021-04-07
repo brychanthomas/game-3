@@ -193,7 +193,7 @@ export class RemotePlayer extends Player {
      */
     updateNametag() {
         this.nametag.x = this.sprite.x;
-        this.nametag.y = this.sprite.y - 30;
+        this.nametag.y = this.sprite.body.top - 10;
     }
     get x() {
         return this.sprite.x;
