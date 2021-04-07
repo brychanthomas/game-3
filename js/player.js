@@ -50,19 +50,17 @@ class Player {
         return this.sprite.y;
     }
     /**
-     * Apply the correct chaser animation based on player's velocity. Does
-     * nothing if the player isn't the chaser.
+     * Apply the correct animation based on player's velocity.
      */
     updateAnimation() {
-        if (this.isChaser) {
-            let velX = this.sprite.body.velocity.x;
-            let velY = this.sprite.body.velocity.y;
-            if (velX !== 0 || velY !== 0) {
-                let direction = '';
-                direction += (velY === 0 ? '' : (velY > 0 ? 'S' : 'N'));
-                direction += (velX === 0 ? '' : (velX > 0 ? 'E' : 'W'));
-                this.sprite.anims.play('chaser-' + direction, true);
-            }
+        let prefix = this.isChaser ? 'chaser' : 'player';
+        let velX = this.sprite.body.velocity.x;
+        let velY = this.sprite.body.velocity.y;
+        if (velX !== 0 || velY !== 0) {
+            let direction = '';
+            direction += (velY === 0 ? '' : (velY > 0 ? 'S' : 'N'));
+            direction += (velX === 0 ? '' : (velX > 0 ? 'E' : 'W'));
+            this.sprite.anims.play(prefix + '-' + direction, true);
         }
     }
 }

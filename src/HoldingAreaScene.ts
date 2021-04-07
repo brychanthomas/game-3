@@ -16,7 +16,7 @@ export class HoldingAreaScene extends GameMap {
     this.tilemapKey = 'holdingArea-tilemap';
     this.load.image('tileset', 'assets/scifitiles-sheet.png');
     this.load.tilemapTiledJSON('holdingArea-tilemap', 'assets/holdingArea.json');
-    this.load.image('player', 'assets/circle.png');
+    this.load.spritesheet('player', 'assets/red robot.png', {frameWidth:250, frameHeight:250});
     this.load.image('vision', 'assets/mask.png');
     this.load.image('playButton', 'assets/playButton.png');
   }
