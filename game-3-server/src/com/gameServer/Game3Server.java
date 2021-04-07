@@ -101,9 +101,11 @@ public class Game3Server {
 	    			reply.addProperty("y", 100);
 	    			lobby.broadcast(reply);
 	    			Player player = new Player(conn, decoded.id, decoded.username);
-	    			reply = new JsonObject(); //player listing
+	    			reply = new JsonObject(); //welcome message
 	    			reply.addProperty("type", 3);
 	    			reply.add("lobby", lobby.encode());
+	    			JsonElement gameProps = gson.toJsonTree(lobby.gameProperties);
+	    			reply.add("properties", gameProps);
 					player.send(reply.toString());
 					lobby.addPlayer(player);
 					DataStorer.players.put(decoded.id, decoded.lobbyCode);
@@ -142,6 +144,7 @@ public class Game3Server {
 	    			JsonElement props = gson.toJsonTree(decoded.properties);
 	    			displayMessage.add("properties", props);
 	    			lobby.broadcast(displayMessage);
+	    			lobby.gameProperties = decoded.properties;
 	    		}
 	    		break;
 	    		

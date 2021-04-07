@@ -32,6 +32,15 @@ public class Lobby {
 		scores = new HashMap<Integer, Integer>();
 		idsLeft = new ArrayList<Integer>();
 		timer = new Timer();
+		gameProperties = new HashMap<String, Double>();
+		//default property values - sent to joining players if props haven't already been changed
+		gameProperties.put("map", 0.0); 
+		gameProperties.put("chaserVision", 2.0);
+		gameProperties.put("runnerVision", 2.0);
+		gameProperties.put("chaserSpeed", 200.0);
+		gameProperties.put("runnerSpeed", 200.0);
+		gameProperties.put("waitTime", 15.0);
+		gameProperties.put("roundLength", 20.0);
 	}
 	
 	/** Add player object to lobby */
