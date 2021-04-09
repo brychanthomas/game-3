@@ -139,8 +139,8 @@ export class LocalPlayer extends Player {
         velX = Math.sqrt((this.speed**2)/2) * velX/Math.abs(velX);
         velY = Math.sqrt((this.speed**2)/2) * velY/Math.abs(velY);
       }
-      this.sprite.body.setVelocityX(velX);
-      this.sprite.body.setVelocityY(velY);
+      this.sprite.body.setVelocityX(Math.round(velX));
+      this.sprite.body.setVelocityY(Math.round(velY));
     } else {
       this.sprite.body.setVelocityX(0);
       this.sprite.body.setVelocityY(0);
@@ -154,14 +154,16 @@ export class LocalPlayer extends Player {
    */
   hasVelocityChanged() {
     if (this.amCaught) { return false; }
+    var changed = false;
     if (this.velocityX !== this.previousVelocityX) {
       this.previousVelocityX = this.velocityX;
-      return true;
-    } else if (this.velocityY !== this.previousVelocityY) {
-      this.previousVelocityY = this.velocityY;
-      return true;
+      changed = true;
     }
-    return false;
+    if (this.velocityY !== this.previousVelocityY) {
+      this.previousVelocityY = this.velocityY;
+      changed = true;
+    }
+    return changed;
   }
 
   /**

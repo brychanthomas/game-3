@@ -78,6 +78,8 @@ export class LocalPlayer extends Player {
         this.speed = 200;
         this.locked = false;
     }
+    // BUG: if you go sideways across a wall then go diagonally
+    // into it you'll morph through it on remote screens
     /**
      * Update the velocity of the player based on the WASD keys.
      */
@@ -105,15 +107,14 @@ export class LocalPlayer extends Player {
                 velX = Math.sqrt((Math.pow(this.speed, 2)) / 2) * velX / Math.abs(velX);
                 velY = Math.sqrt((Math.pow(this.speed, 2)) / 2) * velY / Math.abs(velY);
             }
-            this.sprite.body.setVelocityX(velX);
-            this.sprite.body.setVelocityY(velY);
+            this.sprite.body.setVelocityX(Math.round(velX));
+            this.sprite.body.setVelocityY(Math.round(velY));
         }
         else {
             this.sprite.body.setVelocityX(0);
             this.sprite.body.setVelocityY(0);
         }
         this.updateAnimation();
-        console.log(this.velocityY);
     }
     /**
      * Checks if X or Y velocity has changed since last time method
@@ -123,15 +124,16 @@ export class LocalPlayer extends Player {
         if (this.amCaught) {
             return false;
         }
+        var changed = false;
         if (this.velocityX !== this.previousVelocityX) {
             this.previousVelocityX = this.velocityX;
-            return true;
+            changed = true;
         }
-        else if (this.velocityY !== this.previousVelocityY) {
+        if (this.velocityY !== this.previousVelocityY) {
             this.previousVelocityY = this.velocityY;
-            return true;
+            changed = true;
         }
-        return false;
+        return changed;
     }
     /**
      * Gets the x velocity of the player. If they are pushing against an obstacle
