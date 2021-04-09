@@ -83,30 +83,37 @@ export class LocalPlayer extends Player {
      */
     update() {
         if (!this.locked) {
-            if (this.keys.W.isDown && this.sprite.body.top > 0) {
-                this.sprite.body.setVelocityY(-this.speed);
+            var blockedTop = this.sprite.body.top <= 0;
+            var blockedBtm = this.sprite.body.bottom >= this.scene.height;
+            var blockedLft = this.sprite.body.left <= 0;
+            var blockedRgt = this.sprite.body.right >= this.scene.width;
+            var velX = 0;
+            var velY = 0;
+            if (this.keys.W.isDown && !blockedTop) {
+                velY = -this.speed;
             }
-            else if (this.keys.S.isDown && this.sprite.body.bottom < this.scene.height) {
-                this.sprite.body.setVelocityY(this.speed);
+            else if (this.keys.S.isDown && !blockedBtm) {
+                velY = this.speed;
             }
-            else {
-                this.sprite.body.setVelocityY(0);
+            if (this.keys.A.isDown && !blockedLft) {
+                velX = -this.speed;
             }
-            if (this.keys.A.isDown && this.sprite.body.left > 0) {
-                this.sprite.body.setVelocityX(-this.speed);
+            else if (this.keys.D.isDown && !blockedRgt) {
+                velX = this.speed;
             }
-            else if (this.keys.D.isDown && this.sprite.body.right < this.scene.width) {
-                this.sprite.body.setVelocityX(this.speed);
+            if (velX !== 0 && velY !== 0) {
+                velX = Math.sqrt((Math.pow(this.speed, 2)) / 2) * velX / Math.abs(velX);
+                velY = Math.sqrt((Math.pow(this.speed, 2)) / 2) * velY / Math.abs(velY);
             }
-            else {
-                this.sprite.body.setVelocityX(0);
-            }
+            this.sprite.body.setVelocityX(velX);
+            this.sprite.body.setVelocityY(velY);
         }
         else {
             this.sprite.body.setVelocityX(0);
             this.sprite.body.setVelocityY(0);
         }
         this.updateAnimation();
+        console.log(this.velocityY);
     }
     /**
      * Checks if X or Y velocity has changed since last time method
