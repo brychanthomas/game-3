@@ -142,7 +142,7 @@ export abstract class GameMap extends AScene {
   * error when chaser moves in SciFiScene
   */
   protected createAnimations(prefix:"chaser"|"player") {
-    let frameRate = 8;
+    let frameRate = 16;
     this.anims.create({
       key: prefix+'-E',
       frames: this.anims.generateFrameNumbers(prefix, {start: 0, end: 7}),
