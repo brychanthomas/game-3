@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
-@ServerEndpoint("/websocketendpoint")
+@ServerEndpoint("/ep")
 public class Game3Server {
 	
 	@OnOpen
